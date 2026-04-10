@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe Técnico — [CLIENTE] | FreshHouse</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg-base:      #F8FAFF;
+  --bg-deep:      #FFFFFF;
+  --bg-elevated:  #EEF3FD;
+  --bg-surface:   #E4EDF8;
+  --bg-glass:     rgba(255,255,255,0.90);
+  --fh-blue-900:  #0A1628;
+  --fh-blue-700:  #0F2D5C;
+  --fh-blue-500:  #1A52A8;
+  --fh-blue-400:  #2563EB;
+  --fh-blue-300:  #3B82F6;
+  --fh-blue-100:  rgba(59,130,246,0.09);
+  --fh-blue-glow: rgba(37,99,235,0.15);
+  --fh-orange:      #F97316;
+  --fh-orange-dark: #EA580C;
+  --fh-orange-muted: rgba(249,115,22,0.09);
+  --fh-orange-glow:  rgba(249,115,22,0.20);
+  --fh-orange-border: rgba(249,115,22,0.30);
+  --text-primary:   #0D1B2E;
+  --text-secondary: #3A5270;
+  --text-muted:     #849AB8;
+  --text-orange:    #EA580C;
+  --border-subtle: rgba(13,27,46,0.07);
+  --border-mid:    rgba(13,27,46,0.13);
+  --border-blue:   rgba(37,99,235,0.16);
+  --border-orange: rgba(249,115,22,0.26);
+  --status-critical: #DC2626;
+  --status-warning:  #EA580C;
+  --status-ok:       #16A34A;
+  --status-info:     #2563EB;
+  --glow-blue-sm:   0 2px 16px rgba(37,99,235,0.10), 0 8px 32px rgba(37,99,235,0.07);
+  --glow-blue-md:   0 4px 32px rgba(37,99,235,0.14), 0 16px 48px rgba(37,99,235,0.08);
+  --glow-orange-sm: 0 2px 16px rgba(249,115,22,0.10), 0 8px 32px rgba(249,115,22,0.07);
+  --glow-orange-md: 0 4px 32px rgba(249,115,22,0.14), 0 16px 48px rgba(249,115,22,0.08);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-base);color:var(--text-primary);line-height:1.65;overflow-x:hidden}
+h1,h2,h3,h4,h5{font-family:'Space Grotesk',sans-serif;color:var(--text-primary);line-height:1.2}
+img{max-width:100%;display:block}
+a{color:var(--fh-blue-400);text-decoration:none}
+strong{color:var(--text-primary);font-weight:600}
+
+/* === BLOBS === */
+@keyframes blobFloat1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-40px) scale(1.05)}66%{transform:translate(-20px,20px) scale(0.97)}}
+@keyframes blobFloat2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-35px,30px) scale(1.08)}}
+@keyframes blobFloat3{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(25px,25px) scale(0.95)}80%{transform:translate(-15px,-30px) scale(1.04)}}
+.blob{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+.blob-1{width:700px;height:700px;top:-200px;left:-150px;background:radial-gradient(circle,rgba(37,99,235,0.07),transparent 70%);animation:blobFloat1 18s ease-in-out infinite}
+.blob-2{width:500px;height:500px;top:30vh;right:-100px;background:radial-gradient(circle,rgba(249,115,22,0.05),transparent 70%);animation:blobFloat2 22s ease-in-out infinite}
+.blob-3{width:600px;height:600px;bottom:-100px;left:30%;background:radial-gradient(circle,rgba(37,99,235,0.05),transparent 70%);animation:blobFloat3 26s ease-in-out infinite}
+
+/* === STICKY NAV === */
+.sticky-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(248,250,255,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border-subtle);padding:.75rem 2.5rem;display:flex;align-items:center;justify-content:space-between;transform:translateY(-100%);transition:transform .4s cubic-bezier(.16,1,.3,1);box-shadow:0 1px 12px rgba(13,27,46,0.06)}
+.sticky-nav.visible{transform:translateY(0)}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;transition:color .2s ease}
+.nav-links a:hover,.nav-links a.active{color:var(--fh-blue-400)}
+.nav-ref{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--text-muted);letter-spacing:.06em}
+
+/* === WORDMARK === */
+.fh-wordmark{display:flex;flex-direction:column;gap:3px}
+.fh-mark{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;color:var(--text-primary);letter-spacing:-.03em;line-height:1}
+.fh-mark--accent{color:var(--fh-orange)}
+.fh-sub{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase}
+
+/* === COVER === */
+@keyframes coverReveal{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.cover-page{min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:3rem 4rem;position:relative;overflow:hidden;background:radial-gradient(ellipse at 15% 25%,rgba(37,99,235,.06) 0%,transparent 50%),radial-gradient(ellipse at 85% 75%,rgba(249,115,22,.04) 0%,transparent 50%),#FFFFFF}
+.cover-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(13,27,46,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(13,27,46,.028) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);pointer-events:none}
+.cover-accent-bar{position:absolute;left:0;top:15%;bottom:15%;width:4px;background:linear-gradient(to bottom,transparent,var(--fh-orange),transparent)}
+.cover-top{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;animation:coverReveal 1s cubic-bezier(.16,1,.3,1) .1s both}
+.cover-contact{font-family:'JetBrains Mono',monospace;font-size:.57rem;color:var(--text-muted);text-align:right;line-height:2.1}
+.cover-body{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;padding:4rem 0}
+.cover-client{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--fh-orange);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.2rem;animation:coverReveal 1s cubic-bezier(.16,1,.3,1) .3s both}
+.cover-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(3rem,6vw,5.5rem);font-weight:700;color:var(--text-primary);line-height:1.0;letter-spacing:-.04em;margin-bottom:1rem;animation:coverReveal 1s cubic-bezier(.16,1,.3,1) .5s both}
+.cover-subtitle{font-family:'Space Grotesk',sans-serif;font-size:clamp(1rem,2vw,1.25rem);font-weight:300;color:var(--text-secondary);margin-bottom:2.5rem;animation:coverReveal 1s cubic-bezier(.16,1,.3,1) .65s both}
+.cover-tags{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:0;animation:coverReveal 1s cubic-bezier(.16,1,.3,1) .75s both}
+.cover-tag{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;border:1px solid}
+.cover-tag--blue{background:var(--fh-blue-100);border-color:var(--border-blue);color:var(--fh-blue-300)}
+.cover-tag--orange{background:var(--fh-orange-muted);border-color:var(--fh-orange-border);color:var(--fh-orange)}
+.cover-tag-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.cover-bottom{position:relative;z-index:2;animation:coverReveal 1s cubic-bezier(.16,1,.3,1) .9s both}
+.cover-meta-bar{display:flex;background:rgba(255,255,255,.80);border:1px solid var(--border-subtle);border-radius:10px;overflow:hidden;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 2px 16px rgba(13,27,46,0.07)}
+.cover-meta-item{padding:1rem 1.5rem;border-right:1px solid var(--border-subtle);flex:1}
+.cover-meta-item:last-child{border-right:none}
+.cover-meta-label{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.3rem}
+.cover-meta-value{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:500;color:var(--text-primary)}
+
+/* === SHIMMER DIVIDER === */
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.section-divider{width:100%;height:1px;background:linear-gradient(90deg,transparent 0%,var(--fh-blue-300) 30%,var(--fh-orange) 70%,transparent 100%);background-size:200% 100%;animation:shimmer 4s ease-in-out infinite;margin:2.5rem 0;opacity:.4}
+
+/* === REPORT WRAPPER === */
+.report{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+
+/* === TOC === */
+.toc{padding:5rem 4rem;background:#FFFFFF;border-bottom:1px solid var(--border-subtle)}
+.toc-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.15em;margin-bottom:2.5rem}
+.toc-list{list-style:none}
+.toc-list>li{display:flex;align-items:baseline;gap:.75rem;padding:.75rem 0;border-bottom:1px solid var(--border-subtle)}
+.toc-list>li:last-child{border-bottom:none}
+.toc-num{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-muted);min-width:2rem;flex-shrink:0}
+.toc-name{font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:500;color:var(--text-primary);flex:1}
+.toc-name a{color:inherit;transition:color .2s}
+.toc-name a:hover{color:var(--fh-blue-300)}
+.toc-sub{list-style:none;padding:.3rem 0 .1rem 3rem}
+.toc-sub li{font-family:'Inter',sans-serif;font-size:.72rem;color:var(--text-muted);padding:.2rem 0}
+
+/* === SECTIONS === */
+.section{padding:4rem;position:relative;background:#FFFFFF}
+.section+.section{border-top:1px solid var(--border-subtle)}
+.section-code{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--fh-orange);letter-spacing:.16em;text-transform:uppercase;margin-bottom:.35rem;opacity:.85}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:1.7rem;font-weight:600;color:var(--text-primary);letter-spacing:-.02em}
+
+/* === EXEC SUMMARY === */
+.exec-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:3rem;align-items:start}
+.exec-lead{font-family:'Inter',sans-serif;font-size:.9rem;color:var(--text-secondary);line-height:1.85}
+.exec-lead p+p{margin-top:1rem}
+
+/* === KPI GRID === */
+.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.875rem}
+.kpi-card{background:#FFFFFF;border:1px solid var(--border-subtle);border-radius:12px;padding:1.25rem 1.5rem;text-align:center;transition:all .35s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;box-shadow:0 1px 4px rgba(13,27,46,0.05),0 4px 16px rgba(13,27,46,0.04)}
+.kpi-card::before{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(37,99,235,.04),transparent 60%);opacity:0;transition:opacity .35s ease}
+.kpi-card:hover{border-color:var(--border-blue);transform:translateY(-3px);box-shadow:var(--glow-blue-sm),0 12px 32px rgba(13,27,46,0.10)}
+.kpi-card:hover::before{opacity:1}
+.kpi-card--orange{border-color:var(--fh-orange-border);box-shadow:0 2px 16px rgba(249,115,22,0.10),0 4px 16px rgba(13,27,46,0.04)}
+.kpi-card--blue{border-color:var(--border-blue);box-shadow:0 2px 16px rgba(37,99,235,0.10),0 4px 16px rgba(13,27,46,0.04)}
+.kpi-label{font-family:'JetBrains Mono',monospace;font-size:.53rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.5rem}
+.kpi-value{font-family:'JetBrains Mono',monospace;font-size:2.1rem;font-weight:500;color:var(--fh-blue-400);line-height:1;margin-bottom:.35rem}
+.kpi-card--orange .kpi-value{color:var(--fh-orange)}
+.kpi-sub{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--text-muted)}
+
+/* === CHAPTER BANNER === */
+.chapter-banner{width:100%;min-height:280px;background:radial-gradient(ellipse at 30% 50%,rgba(37,99,235,.07) 0%,transparent 60%),radial-gradient(ellipse at 80% 50%,rgba(249,115,22,.04) 0%,transparent 60%),var(--bg-elevated);border-top:1px solid var(--border-blue);border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;padding:4rem;position:relative;overflow:hidden}
+.chapter-banner::after{content:'';position:absolute;right:-60px;top:50%;transform:translateY(-50%);width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(249,115,22,.04),transparent 70%);animation:blobFloat2 12s ease-in-out infinite}
+.chapter-number{font-family:'JetBrains Mono',monospace;font-size:9rem;font-weight:500;color:var(--fh-blue-400);opacity:.06;line-height:1;position:absolute;right:3rem;top:50%;transform:translateY(-50%);letter-spacing:-.04em;user-select:none}
+.chapter-content{position:relative;z-index:1}
+.chapter-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 1rem;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;background:var(--fh-orange-muted);border:1px solid var(--fh-orange-border);color:var(--fh-orange);margin-bottom:1.2rem}
+.chapter-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--fh-orange);animation:criticalPulse 2s ease-in-out infinite}
+.chapter-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:var(--text-primary);letter-spacing:-.03em;margin-bottom:.5rem}
+.chapter-subtitle{font-family:'Inter',sans-serif;font-size:.88rem;color:var(--text-secondary);margin-bottom:0}
+.chapter-stats{display:flex;gap:2.5rem;margin-top:2rem}
+.chapter-stat{display:flex;flex-direction:column;gap:.25rem}
+.chapter-stat-val{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--text-primary);letter-spacing:-.02em}
+.chapter-stat-label{font-size:.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em}
+.chapter-line{position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--fh-blue-400),transparent);opacity:.4}
+
+/* === Chapter banner slides — generic pattern (P01 / P02 / PN) === */
+body.mode-slides .chapter-banner{padding:5vw 6vw!important;flex-direction:column!important;justify-content:space-between!important;align-items:stretch!important}
+body.mode-slides .chapter-banner .chapter-content{display:flex!important;flex-direction:column!important;justify-content:space-between!important;flex:1!important;width:100%!important}
+body.mode-slides .chapter-banner .chapter-badge{margin-bottom:0!important;font-size:.85rem!important}
+body.mode-slides .chapter-banner .chapter-title{font-size:clamp(4rem,7vw,6rem)!important;line-height:1.0!important;margin:auto 0!important;padding:3rem 0!important}
+body.mode-slides .chapter-banner .chapter-subtitle{font-size:1rem!important;margin-bottom:0!important}
+body.mode-slides .chapter-banner .chapter-stats{margin-top:0!important;display:grid!important;grid-template-columns:repeat(3,1fr)!important;border-top:1px solid var(--border-subtle)!important;padding-top:2rem!important;width:100%!important;gap:0!important}
+body.mode-slides .chapter-banner .chapter-stat{padding-right:2rem!important;border-right:1px solid var(--border-subtle)!important}
+body.mode-slides .chapter-banner .chapter-stat:last-child{border-right:none!important}
+body.mode-slides .chapter-banner .chapter-stat-val{font-size:2.4rem!important}
+body.mode-slides .chapter-banner .chapter-stat-label{font-size:.8rem!important;margin-top:.3rem!important}
+body.mode-slides .chapter-banner .chapter-number{font-size:32vw!important;opacity:.035!important;right:0!important;top:50%!important}
+
+/* === CARDS === */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem}
+.card{background:#FFFFFF;border:1px solid var(--border-subtle);border-radius:12px;padding:1.5rem;transition:all .35s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;box-shadow:0 1px 4px rgba(13,27,46,0.05),0 4px 16px rgba(13,27,46,0.03)}
+.card::before{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(37,99,235,.04),transparent 60%);opacity:0;transition:opacity .35s ease}
+.card:hover{border-color:var(--border-blue);transform:translateY(-4px);box-shadow:var(--glow-blue-sm),0 16px 40px rgba(13,27,46,0.10)}
+.card:hover::before{opacity:1}
+.card-icon{width:36px;height:36px;border-radius:8px;background:var(--fh-blue-100);display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:1rem}
+.card h4{font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:600;color:var(--text-primary);margin-bottom:.35rem}
+.card p{font-family:'Inter',sans-serif;font-size:.78rem;color:var(--text-secondary);line-height:1.6}
+
+/* === BADGES === */
+@keyframes criticalPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
+.badge{display:inline-flex;align-items:center;gap:.4rem;padding:.25rem .75rem;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:500;letter-spacing:.08em;margin-top:.75rem}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.badge--critical{background:rgba(220,38,38,.09);border:1px solid rgba(220,38,38,.25);color:#DC2626}
+.badge--warning{background:rgba(234,88,12,.09);border:1px solid rgba(234,88,12,.25);color:#EA580C}
+.badge--ok{background:rgba(22,163,74,.09);border:1px solid rgba(22,163,74,.25);color:#16A34A}
+.badge--info{background:var(--fh-blue-100);border:1px solid var(--border-blue);color:var(--fh-blue-400)}
+.badge--critical .badge-dot{animation:criticalPulse 1.4s ease-in-out infinite}
+
+/* === QTY BADGES (contratado / ejecutado) === */
+.qty-badges{display:flex;flex-direction:column;gap:.35rem;margin-top:auto;padding-top:.75rem}
+
+/* === STATUS PILLS === */
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:500;white-space:nowrap}
+.pill::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.pill-done{background:rgba(22,163,74,.08);color:#15803D;border:1px solid rgba(22,163,74,.22)}
+.pill-done::before{background:#16A34A}
+.pill-pend{background:rgba(234,88,12,.08);color:#C2410C;border:1px solid rgba(234,88,12,.22)}
+.pill-pend::before{background:#EA580C}
+.pill-extra{background:var(--fh-blue-100);color:var(--fh-blue-500);border:1px solid var(--border-blue)}
+.pill-extra::before{background:var(--fh-blue-400)}
+
+/* === TABLES === */
+.table-wrap{border-radius:12px;overflow:hidden;border:1px solid var(--border-subtle);box-shadow:0 1px 4px rgba(13,27,46,0.05)}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+thead tr{background:var(--fh-blue-100)}
+th{padding:.85rem 1rem;text-align:left;font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--fh-blue-500);border-bottom:1px solid var(--border-blue)}
+td{padding:.85rem 1rem;border-bottom:1px solid var(--border-subtle);color:var(--text-secondary);font-family:'Inter',sans-serif;transition:background .15s;background:#FFFFFF}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--bg-base)}
+td:first-child{color:var(--text-primary);font-weight:500}
+
+/* === NUMBERED LIST === */
+.num-list{list-style:none}
+.num-list li{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border-subtle);align-items:flex-start}
+.num-list li:last-child{border-bottom:none}
+.num-marker{width:26px;height:26px;border-radius:50%;flex-shrink:0;margin-top:2px;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:600;color:var(--bg-base);display:flex;align-items:center;justify-content:center;background:var(--fh-blue-400)}
+.num-marker--orange{background:var(--fh-orange)}
+.num-content{font-family:'Inter',sans-serif;font-size:.85rem;color:var(--text-secondary);line-height:1.7;flex:1}
+.num-title{font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:600;color:var(--text-primary);margin-bottom:.25rem}
+
+/* === FINDINGS === */
+.finding{display:flex;gap:1rem;padding:1.25rem 1.5rem;border-radius:12px;background:#FFFFFF;border:1px solid var(--border-subtle);margin-bottom:.75rem;transition:transform .2s ease;box-shadow:0 1px 4px rgba(13,27,46,0.05)}
+.finding:hover{transform:translateX(3px)}
+.finding--warning{border-left:3px solid var(--status-warning);background:rgba(234,88,12,.03)}
+.finding--critical{border-left:3px solid var(--status-critical);background:rgba(220,38,38,.03)}
+.finding--ok{border-left:3px solid var(--status-ok);background:rgba(22,163,74,.03)}
+.finding-num{width:28px;height:28px;border-radius:50%;flex-shrink:0;background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:600;color:var(--text-secondary)}
+.finding--warning .finding-num{background:rgba(234,88,12,.10);color:#C2410C}
+.finding--critical .finding-num{background:rgba(220,38,38,.10);color:#DC2626}
+.finding--ok .finding-num{background:rgba(22,163,74,.10);color:#16A34A}
+.finding-body h4{font-family:'Space Grotesk',sans-serif;font-size:.9rem;color:var(--text-primary);margin-bottom:.3rem;font-weight:600}
+.finding-body p{font-family:'Inter',sans-serif;font-size:.8rem;color:var(--text-secondary);line-height:1.65}
+
+/* === CALLOUT === */
+.callout{display:flex;gap:1rem;align-items:flex-start;background:rgba(249,115,22,.06);border-left:3px solid var(--fh-orange);border-radius:0 10px 10px 0;padding:1rem 1.25rem;font-family:'Inter',sans-serif;font-size:.82rem;color:var(--text-secondary);line-height:1.65;margin-top:1.25rem}
+.callout-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+
+/* === RESULT CARD === */
+.result-card{background:#FFFFFF;border:1px solid rgba(22,163,74,.22);border-radius:12px;padding:2rem 2.5rem;position:relative;overflow:hidden;margin-bottom:1.25rem;box-shadow:0 1px 4px rgba(13,27,46,0.05)}
+.result-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--status-ok);border-radius:4px 0 0 4px}
+.result-card--blue{background:#FFFFFF;border-color:var(--border-blue)}
+.result-card--blue::before{background:var(--fh-blue-400)}
+.result-outcome{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:600;color:var(--text-primary);margin-bottom:.5rem}
+.result-outcome--blue{color:var(--fh-blue-300)}
+.result-detail{font-family:'Inter',sans-serif;font-size:.85rem;color:var(--text-secondary);line-height:1.7}
+
+/* === REC CARDS === */
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:1rem}
+.rec-card{background:#FFFFFF;border:1px solid var(--border-subtle);border-radius:12px;padding:1.5rem;transition:all .3s ease;box-shadow:0 1px 4px rgba(13,27,46,0.05),0 4px 16px rgba(13,27,46,0.03)}
+.rec-card:hover{border-color:var(--fh-orange-border);transform:translateY(-2px);box-shadow:0 4px 20px rgba(249,115,22,0.10),0 8px 32px rgba(13,27,46,0.07)}
+.rec-priority{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--fh-orange);margin-bottom:.5rem}
+.rec-card h4{font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600;color:var(--text-primary);margin-bottom:.5rem}
+.rec-card p{font-family:'Inter',sans-serif;font-size:.78rem;color:var(--text-secondary);line-height:1.65}
+.rec-timeframe{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--text-muted);margin-top:.75rem;text-transform:uppercase;letter-spacing:.08em}
+
+/* === PHOTO GRID === */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.photo-grid--2col{grid-template-columns:repeat(2,1fr)}
+.photo-item{border-radius:8px;overflow:hidden;border:1px solid var(--border-subtle);position:relative;aspect-ratio:4/3;background:var(--bg-surface)}
+.photo-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.16,1,.3,1),filter .5s ease;filter:brightness(.9) saturate(.9)}
+.photo-item:hover img{transform:scale(1.06);filter:brightness(1) saturate(1)}
+.photo-label{position:absolute;bottom:0;left:0;right:0;padding:.5rem .75rem;background:linear-gradient(to top,rgba(13,27,46,.75),transparent);font-family:'JetBrains Mono',monospace;font-size:.62rem;color:#FFFFFF;letter-spacing:.08em;text-transform:uppercase}
+.photo-placeholder{aspect-ratio:4/3;background:var(--bg-elevated);border:1px dashed rgba(13,27,46,0.15);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;color:var(--text-muted)}
+.photo-placeholder__icon{font-size:2rem;opacity:.3}
+.photo-placeholder__text{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase}
+.photo-category{margin-bottom:2rem}
+.photo-category:last-child{margin-bottom:0}
+.photo-cat-label{display:flex;align-items:center;gap:.75rem;font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:600;text-transform:uppercase;letter-spacing:.15em;color:var(--text-muted);margin-bottom:.75rem}
+.photo-cat-label span{background:var(--bg-glass);border:1px solid var(--fh-orange-border);padding:3px 10px;border-radius:999px;color:var(--fh-orange)}
+.photo-cat-label::after{content:'';flex:1;height:1px;background:var(--border-subtle)}
+
+/* === WARRANTIES === */
+.warranty{border-radius:12px;overflow:hidden;margin-bottom:1rem;border:1px solid var(--border-subtle);box-shadow:0 1px 4px rgba(13,27,46,0.05)}
+.warranty--featured{border-color:var(--fh-orange-border);box-shadow:0 2px 16px rgba(249,115,22,0.10)}
+.warranty-body{background:#FFFFFF;padding:1.75rem 2rem;display:flex;gap:1.75rem;align-items:center}
+.warranty-years{font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:500;color:var(--fh-orange);line-height:1;min-width:4rem;text-align:center}
+.warranty-years small{display:block;font-size:.52rem;font-weight:400;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted);margin-top:3px}
+.warranty-divider{width:1px;background:var(--border-mid);align-self:stretch;flex-shrink:0}
+.warranty-text h4{font-family:'Space Grotesk',sans-serif;font-size:.95rem;color:var(--text-primary);margin-bottom:.5rem;font-weight:600}
+.warranty-text p{font-family:'Inter',sans-serif;font-size:.8rem;color:var(--text-secondary);line-height:1.7}
+
+/* === CONCLUSION === */
+.conclusion-section{padding:5rem 4rem;background:radial-gradient(ellipse at 20% 50%,rgba(37,99,235,.05) 0%,transparent 60%),radial-gradient(ellipse at 80% 50%,rgba(249,115,22,.03) 0%,transparent 60%),var(--bg-elevated);border-top:1px solid var(--border-blue)}
+.conclusion-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin:2.5rem 0}
+.conclusion-pillar{background:#FFFFFF;border:1px solid var(--border-subtle);border-radius:12px;padding:2rem 1.75rem;transition:all .35s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;box-shadow:0 1px 4px rgba(13,27,46,0.05),0 4px 16px rgba(13,27,46,0.03)}
+.conclusion-pillar::before{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(37,99,235,.04),transparent 60%);opacity:0;transition:opacity .35s ease}
+.conclusion-pillar:hover{border-color:var(--border-blue);transform:translateY(-4px);box-shadow:var(--glow-blue-sm),0 16px 40px rgba(13,27,46,0.08)}
+.conclusion-pillar:hover::before{opacity:1}
+.pillar-num{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--fh-orange);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem}
+.pillar-title{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;color:var(--text-primary);margin-bottom:.75rem}
+.pillar-text{font-family:'Inter',sans-serif;font-size:.82rem;color:var(--text-secondary);line-height:1.7}
+.conclusion-statement{font-family:'Space Grotesk',sans-serif;font-size:clamp(1rem,2vw,1.35rem);font-weight:500;color:var(--text-primary);line-height:1.55;text-align:center;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border-subtle);font-style:italic;opacity:.85}
+
+/* === SIGNATURES === */
+.signatures-section{padding:4rem;border-top:1px solid var(--border-subtle);background:#FFFFFF}
+.sig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-bottom:3rem}
+.sig-line{height:60px;border-bottom:1px solid var(--border-mid);margin-bottom:.75rem}
+.sig-name{font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:600;color:var(--text-primary)}
+.sig-role{font-family:'JetBrains Mono',monospace;font-size:.57rem;color:var(--text-muted);margin-top:3px;letter-spacing:.04em}
+.footer-bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding-top:1.5rem;border-top:1px solid var(--border-subtle)}
+.footer-bar-info{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--text-muted)}
+
+/* === REPORT FOOTER === */
+.report-footer{max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:1rem 4rem;border-top:1px solid var(--border-subtle);background:#FFFFFF;position:relative;z-index:1}
+.footer-center{font-family:'JetBrains Mono',monospace;font-size:.57rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;text-align:center}
+.footer-right{font-family:'JetBrains Mono',monospace;font-size:.57rem;color:var(--text-muted);text-align:right}
+
+/* === ANEXOS === */
+.anexo-card{background:#FFFFFF;border:1px solid var(--border-subtle);border-radius:12px;padding:1.5rem;transition:all .3s cubic-bezier(.16,1,.3,1);box-shadow:0 1px 4px rgba(13,27,46,0.05);display:flex;flex-direction:column;gap:.75rem}
+.anexo-card:hover{border-color:var(--border-blue);transform:translateY(-3px);box-shadow:var(--glow-blue-sm)}
+.anexo-icon{font-size:1.5rem}
+.anexo-title{font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:600;color:var(--text-primary)}
+.anexo-desc{font-family:'Inter',sans-serif;font-size:.78rem;color:var(--text-secondary);line-height:1.6;flex:1}
+.anexo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+
+/* === REVEAL === */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal:nth-child(1){transition-delay:.05s}
+.reveal:nth-child(2){transition-delay:.12s}
+.reveal:nth-child(3){transition-delay:.19s}
+.reveal:nth-child(4){transition-delay:.26s}
+
+/* === CONTENT FORMAT === */
+.content-resumen{background:var(--fh-blue-100);border-left:3px solid var(--fh-blue-400);border-radius:0 8px 8px 0;padding:1rem 1.5rem;font-family:'Inter',sans-serif;font-size:.92rem;color:var(--fh-blue-500);font-weight:500;line-height:1.75;margin-bottom:1.5rem}
+.content-body{font-family:'Inter',sans-serif;font-size:.9rem;color:var(--text-secondary);line-height:1.85;margin-bottom:.75rem}
+.content-body:last-child{margin-bottom:0}
+.content-points{list-style:none;margin:0 0 1.5rem 0;padding:0}
+.content-points li{display:flex;align-items:flex-start;gap:.75rem;padding:.6rem 0;border-bottom:1px solid var(--border-subtle);font-family:'Inter',sans-serif;font-size:.87rem;color:var(--text-secondary);line-height:1.4}
+.content-points li:last-child{border-bottom:none;padding-bottom:0}
+.content-points li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--fh-orange);flex-shrink:0;margin-top:.45rem}
+.content-points strong{color:var(--text-primary);font-weight:600}
+body.mode-slides .content-body{display:none!important}
+
+/* === HALLAZGOS BLOCKS === */
+.hallazgos-block{background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:10px;padding:1rem 1.25rem}
+.hallazgos-block-label{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--fh-orange);margin-bottom:.6rem}
+.hallazgos-block .content-points{margin:0;padding-left:1.1rem}
+.hallazgos-block .content-points li{font-size:.85rem;padding:.3rem 0;color:var(--text-secondary)}
+
+/* === HALLAZGOS: 2-col layout for slides (reusable — applies to any section with .hallazgos-col-text/.hallazgos-col-photos) === */
+body.mode-slides .section.hallazgos-2col{display:grid!important;grid-template-columns:3fr 2fr!important;column-gap:2.5rem!important;align-content:center!important;padding:3rem 5vw!important}
+body.mode-slides .section.hallazgos-2col .section-code,
+body.mode-slides .section.hallazgos-2col h2,
+body.mode-slides .section.hallazgos-2col .section-divider{grid-column:1/-1!important}
+body.mode-slides .section.hallazgos-2col h2{font-size:1.5rem!important;margin-bottom:.25rem!important}
+body.mode-slides .section.hallazgos-2col .section-divider{margin:.75rem 0!important}
+body.mode-slides .section.hallazgos-2col .hallazgos-col-text{grid-column:1!important;align-self:center}
+body.mode-slides .section.hallazgos-2col .hallazgos-col-photos{grid-column:2!important;align-self:center}
+body.mode-slides .section.hallazgos-2col .hallazgos-block{padding:.85rem 1rem!important}
+body.mode-slides .section.hallazgos-2col .content-points li{font-size:.8rem!important;padding:.3rem 0!important;word-break:normal!important;hyphens:none!important}
+body.mode-slides .section.hallazgos-2col .photo-grid{grid-template-columns:1fr 1fr!important;gap:.5rem!important}
+body.mode-slides .section.hallazgos-2col .photo-item{aspect-ratio:3/4!important;min-height:180px!important}
+
+/* === RESULTADO: 2-col layout for slides === */
+body.mode-slides .section.resultado-2col{display:grid!important;grid-template-columns:1fr 1fr!important;column-gap:2.5rem!important;align-content:center!important;padding:3rem 5vw!important}
+body.mode-slides .section.resultado-2col .section-code,
+body.mode-slides .section.resultado-2col h2,
+body.mode-slides .section.resultado-2col .section-divider{grid-column:1/-1!important}
+body.mode-slides .section.resultado-2col h2{font-size:1.5rem!important;margin-bottom:.25rem!important}
+body.mode-slides .section.resultado-2col .section-divider{margin:.75rem 0!important}
+body.mode-slides .section.resultado-2col .resultado-col-main{grid-column:1!important;align-self:center}
+body.mode-slides .section.resultado-2col .resultado-col-warranty{grid-column:2!important;align-self:center;display:flex!important;flex-direction:column!important;gap:.85rem!important}
+body.mode-slides .section.resultado-2col .content-resumen{display:none!important}
+body.mode-slides .section.resultado-2col .content-points li{font-size:.86rem!important;padding:.35rem 0!important}
+body.mode-slides .section.resultado-2col .result-card{padding:.9rem 1.2rem!important;margin-bottom:.65rem!important}
+body.mode-slides .section.resultado-2col .result-detail{display:none!important}
+body.mode-slides .section.resultado-2col .result-outcome{font-size:.88rem!important}
+body.mode-slides .section.resultado-2col .warranty-body{padding:1rem 1.25rem!important;gap:1rem!important}
+body.mode-slides .section.resultado-2col .warranty-years{font-size:2.4rem!important}
+body.mode-slides .section.resultado-2col .warranty-text h4{font-size:.88rem!important}
+body.mode-slides .section.resultado-2col .warranty-text p{font-size:.78rem!important;line-height:1.5!important}
+
+/* === ALCANCE: compact card grid for slides === */
+body.mode-slides .section.alcance-slide .card-grid{grid-template-columns:repeat(3,1fr)!important;gap:.75rem!important}
+body.mode-slides .section.alcance-slide .card{padding:1rem 1rem 1.1rem!important}
+body.mode-slides .section.alcance-slide .card h4{font-size:.82rem!important;margin-bottom:.3rem!important}
+body.mode-slides .section.alcance-slide .card p{font-size:.75rem!important;line-height:1.4!important;margin-bottom:.5rem!important}
+
+/* === RECO: compact for slides === */
+body.mode-slides .section.reco-slide{padding:3rem 5vw!important}
+body.mode-slides .section.reco-slide h2{font-size:1.5rem!important;margin-bottom:.25rem!important}
+body.mode-slides .section.reco-slide .section-divider{margin:.75rem 0!important}
+body.mode-slides .section.reco-slide .content-points{margin-bottom:.75rem!important}
+body.mode-slides .section.reco-slide .content-points li{font-size:.88rem!important;padding:.35rem 0!important}
+body.mode-slides .section.reco-slide .rec-grid{gap:1rem!important}
+body.mode-slides .section.reco-slide .rec-card{padding:1rem 1.25rem!important}
+body.mode-slides .section.reco-slide .rec-card p{font-size:.8rem!important;margin:.35rem 0 .5rem!important}
+
+/* === CONCLUSION: sin aire === */
+body.mode-slides #conclusion{padding:3.5rem 5vw!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important}
+body.mode-slides #conclusion h2{font-size:1.6rem!important;margin-bottom:.25rem!important}
+body.mode-slides #conclusion .section-divider{margin:.75rem 0!important}
+body.mode-slides #conclusion .conclusion-pillars{grid-template-columns:repeat(3,1fr)!important;gap:1.25rem!important;margin:1rem 0!important;flex:1!important}
+body.mode-slides #conclusion .conclusion-pillar{padding:1.5rem 1.25rem!important;display:flex!important;flex-direction:column!important}
+body.mode-slides #conclusion .pillar-num{font-size:.62rem!important;margin-bottom:.5rem!important}
+body.mode-slides #conclusion .pillar-title{font-size:1rem!important;margin-bottom:.6rem!important;flex:0!important}
+body.mode-slides #conclusion .pillar-text{font-size:.8rem!important;line-height:1.6!important;display:block!important}
+body.mode-slides #conclusion .conclusion-statement{font-size:1rem!important;margin-top:1.25rem!important;padding-top:1.25rem!important}
+
+/* === GALLERY VER MÁS === */
+.photo-more{overflow:hidden;transition:max-height .7s cubic-bezier(.16,1,.3,1);max-height:0}
+.photo-more.open{max-height:9999px}
+.gallery-toggle{margin-top:1.25rem;font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--fh-blue-400);border:1px solid var(--border-blue);background:var(--fh-blue-100);border-radius:999px;padding:.45rem 1.25rem;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;transition:all .25s ease}
+.gallery-toggle:hover{background:var(--fh-blue-400);color:#fff}
+
+/* === DUAL MODE === */
+.mode-bar{position:fixed;top:1rem;right:1.5rem;z-index:500;display:flex;align-items:center;gap:.2rem;padding:.3rem;background:rgba(255,255,255,0.96);border:1px solid var(--border-subtle);border-radius:999px;box-shadow:0 2px 16px rgba(13,27,46,0.12);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.mode-btn{padding:.38rem .9rem;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:.55rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;border:none;cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1);background:transparent;color:var(--text-muted);white-space:nowrap;line-height:1}
+.mode-btn.active{background:var(--fh-blue-400);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,0.30)}
+body.mode-presentacion .content-body,
+body.mode-presentacion .table-wrap,
+body.mode-presentacion .num-list,
+body.mode-presentacion .callout,
+body.mode-presentacion .conditions-grid,
+body.mode-presentacion .product-kpi-grid{display:none!important}
+body.mode-presentacion .section-title{font-size:2.3rem}
+body.mode-presentacion .chapter-title{font-size:clamp(2.4rem,4.5vw,3.6rem)}
+body.mode-presentacion .cover-title{font-size:clamp(4.5rem,9vw,7.5rem)}
+body.mode-presentacion .section{padding:5.5rem 4rem}
+body.mode-presentacion .content-resumen{font-size:1rem;padding:1.35rem 1.75rem;line-height:1.95;margin-bottom:2.5rem}
+body.mode-presentacion .section-divider{margin:3rem 0}
+body.mode-presentacion .kpi-card{padding:1.75rem 1.5rem}
+body.mode-presentacion .kpi-value{font-size:2.6rem}
+body.mode-presentacion .card-grid{gap:1.25rem}
+body.mode-presentacion .card{padding:2rem}
+body.mode-presentacion .finding{padding:1.75rem 2rem}
+body.mode-presentacion .conclusion-pillars{gap:2rem}
+body.mode-presentacion .conclusion-pillar{padding:2.5rem}
+body.mode-presentacion .chapter-banner{min-height:340px}
+
+/* === SLIDE MODE === */
+body.mode-slides{overflow:hidden!important}
+body.mode-slides .sticky-nav,
+body.mode-slides .blob,
+body.mode-slides .report-footer{display:none!important}
+body.mode-slides .report{
+  position:fixed!important;
+  inset:0!important;
+  max-width:100vw!important;
+  margin:0!important;
+  overflow:hidden!important;
+  background:var(--bg-base);
+  z-index:10;
+}
+body.mode-slides .report > *{
+  position:absolute!important;
+  inset:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  z-index:1!important;
+  transition:opacity .38s cubic-bezier(.4,0,.2,1),transform .38s cubic-bezier(.4,0,.2,1)!important;
+  transform:translateX(var(--slide-from,65px))!important;
+  border-top:none!important;
+}
+body.mode-slides .report > *.slide-active{
+  opacity:1!important;
+  pointer-events:auto!important;
+  transform:translateX(0)!important;
+  z-index:3!important;
+}
+body.mode-slides .report > *.slide-leaving{
+  opacity:0!important;
+  pointer-events:none!important;
+  transform:translateX(var(--slide-to,-65px))!important;
+  z-index:2!important;
+}
+body.mode-slides .section-title{font-size:2.25rem!important}
+body.mode-slides .chapter-title{font-size:clamp(2.4rem,4.5vw,3.5rem)!important}
+body.mode-slides .cover-title{font-size:clamp(5rem,9vw,8rem)!important}
+body.mode-slides .kpi-value{font-size:2.8rem!important}
+body.mode-slides .section,
+body.mode-slides .toc,
+body.mode-slides .conclusion-section,
+body.mode-slides .signatures-section{padding:4rem 6vw!important}
+body.mode-slides .content-body,
+body.mode-slides .table-wrap,
+body.mode-slides .num-list,
+body.mode-slides .callout,
+body.mode-slides .conditions-grid,
+body.mode-slides .product-kpi-grid,
+body.mode-slides .progress-bar,
+body.mode-slides .gallery-toggle{display:none!important}
+body.mode-slides .photo-more{max-height:9999px!important;overflow:visible!important}
+body.mode-slides .content-resumen{font-size:1rem!important;line-height:1.95!important;padding:1.25rem 1.75rem!important;margin-bottom:1.25rem!important}
+body.mode-slides .content-points{display:block!important;margin-bottom:0!important}
+body.mode-slides .content-points li{font-size:.9rem!important;padding:.65rem 0!important}
+body.mode-slides .finding-body p{display:none!important}
+body.mode-slides .finding-body h4{margin-bottom:0!important;font-size:.88rem!important}
+body.mode-slides .photo-placeholder{display:none!important}
+body.mode-slides .content-points--secondary{display:none!important}
+
+/* Slide progress bar */
+.slide-progress{
+  position:fixed;bottom:0;left:0;height:2px;
+  background:linear-gradient(90deg,var(--fh-blue-400),var(--fh-orange));
+  transition:width .4s cubic-bezier(.4,0,.2,1);
+  z-index:2000;
+  display:none;
+}
+body.mode-slides .slide-progress{display:block}
+
+/* Slide nav controls */
+.slide-nav{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);
+  z-index:2000;
+  display:none;
+  align-items:center;gap:.75rem;
+  background:rgba(13,27,46,0.82);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-radius:999px;
+  padding:.55rem 1.25rem;
+  box-shadow:0 4px 32px rgba(13,27,46,0.30);
+  border:1px solid rgba(255,255,255,0.08);
+  user-select:none;
+}
+body.mode-slides .slide-nav{display:flex;opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease;transform:translateY(12px)}
+body.mode-slides .slide-nav.nav-visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+.slide-arrow{
+  width:30px;height:30px;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.08);
+  color:rgba(255,255,255,0.9);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s ease,border-color .2s ease;
+  padding:0;
+  flex-shrink:0;
+}
+.slide-arrow:hover:not(:disabled){background:rgba(255,255,255,0.20);border-color:rgba(255,255,255,0.30)}
+.slide-arrow:disabled{opacity:.25;cursor:default}
+.slide-arrow svg{width:12px;height:12px;stroke-width:2.5;display:block}
+.slide-counter{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.62rem;font-weight:500;
+  color:rgba(255,255,255,0.75);
+  letter-spacing:.06em;
+  min-width:4.5rem;
+  text-align:center;
+}
+.slide-sep{color:rgba(255,255,255,0.25);margin:0 .15rem}
+.slide-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.55rem;
+  color:rgba(255,255,255,0.45);
+  letter-spacing:.05em;
+  max-width:200px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  text-transform:uppercase;
+  padding-left:.75rem;
+  border-left:1px solid rgba(255,255,255,0.12);
+}
+@media(max-width:600px){
+  .slide-label{display:none}
+  body.mode-slides .section,
+  body.mode-slides .toc,
+  body.mode-slides .conclusion-section,
+  body.mode-slides .signatures-section{padding:2.5rem 1.5rem!important}
+}
+
+/* === PRINT === */
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .blob,.sticky-nav,.mode-bar,.gallery-toggle{display:none!important}
+  .photo-more{max-height:9999px!important}
+  .reveal{opacity:1!important;transform:none!important}
+  .cover-page{page-break-after:always;min-height:100vh}
+  .chapter-banner{page-break-before:always}
+  .card,.finding,.photo-item{page-break-inside:avoid}
+  @page{size:A4;margin:0}
+}
+
+/* === RESPONSIVE === */
+@media(max-width:720px){
+  .section,.toc,.conclusion-section,.signatures-section{padding:2rem 1.5rem}
+  .cover-page{padding:1.5rem}
+  .chapter-banner{padding:2.5rem 1.5rem}
+  .cover-title{font-size:2.8rem}
+  .exec-grid{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .conclusion-pillars{grid-template-columns:1fr}
+  .photo-grid{grid-template-columns:repeat(2,1fr)}
+  .sig-grid{grid-template-columns:1fr}
+  .report-footer{padding:1rem 1.5rem;flex-direction:column;gap:.5rem;text-align:center}
+  .cover-meta-bar{flex-direction:column}
+  .cover-meta-item{border-right:none;border-bottom:1px solid var(--border-subtle)}
+  .cover-meta-item:last-child{border-bottom:none}
+  .chapter-number{font-size:5rem}
+}
+</style>
+</head>
+<body>
+
+<div class="blob blob-1" aria-hidden="true"></div>
+<div class="blob blob-2" aria-hidden="true"></div>
+<div class="blob blob-3" aria-hidden="true"></div>
+
+<!-- MODE TOGGLE -->
+<div class="mode-bar" id="mode-bar">
+  <button class="mode-btn active" id="btn-informe" onclick="setMode('informe')">Informe</button>
+  <button class="mode-btn" id="btn-presentacion" onclick="setMode('presentacion')">Presentación</button>
+  <button class="mode-btn" id="btn-slides" onclick="setMode('slides')">Slides</button>
+</div>
+
+<!-- SLIDE PROGRESS -->
+<div class="slide-progress" id="slide-progress"></div>
+
+<!-- SLIDE NAV -->
+<div class="slide-nav" id="slide-nav" aria-label="Navegación de slides">
+  <button class="slide-arrow" id="slide-prev" onclick="slidePrev()" title="Anterior (←)" disabled>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg>
+  </button>
+  <div class="slide-counter"><span id="slide-cur">1</span><span class="slide-sep">/</span><span id="slide-tot">—</span></div>
+  <button class="slide-arrow" id="slide-next" onclick="slideNext()" title="Siguiente (→)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,18 15,12 9,6"/></svg>
+  </button>
+  <div class="slide-label" id="slide-label"></div>
+</div>
+
+<nav class="sticky-nav" id="sticky-nav">
+  <div style="display:flex;gap:0;align-items:center">
+    <!-- LOGO: reemplazar src con ruta del logo -->
+    <img src="" alt="FreshHouse" style="height:38px;width:auto;object-fit:contain" class="nav-logo">
+  </div>
+  <div class="nav-links">
+    <a href="#resumen">Resumen</a>
+    <a href="#proyecto-01">Proyecto 01</a>
+    <!-- Agregar más links si hay más proyectos -->
+    <a href="#conclusion">Conclusiones</a>
+    <a href="#anexos">Anexos</a>
+  </div>
+  <div class="nav-ref">[REF-CONTRATO]</div>
+</nav>
+
+<main class="report">
+
+<!-- ============================================================
+     PORTADA
+     ============================================================ -->
+<section class="cover-page" id="cover">
+  <div class="cover-grid" aria-hidden="true"></div>
+  <div class="cover-accent-bar" aria-hidden="true"></div>
+  <div class="cover-top">
+    <div class="fh-wordmark">
+      <!-- LOGO: reemplazar src con ruta del logo -->
+      <img id="fh-logo" src="" alt="FreshHouse — Ingeniería de Fachadas y Humedades" style="height:80px;width:auto;display:block;object-fit:contain">
+    </div>
+    <div class="cover-contact">
+      NIT. 901.718.258-4<br>
+      Calle 3 Norte Cra 18-49 · Armenia, Quindío<br>
+      310 461 7353 · gerencia@freshouse.com.co
+    </div>
+  </div>
+  <div class="cover-body">
+    <div class="cover-client">Informe Técnico de Intervención</div>
+    <h1 class="cover-title">[Nombre<br>del Proyecto]</h1>
+    <p class="cover-subtitle">[Descripción breve del alcance general]</p>
+    <div class="cover-tags">
+      <span class="cover-tag cover-tag--blue"><span class="cover-tag-dot"></span>Proyecto 01 — [Tipo]</span>
+      <span class="cover-tag cover-tag--orange"><span class="cover-tag-dot"></span>Proyecto 02 — [Tipo]</span>
+    </div>
+  </div>
+  <div class="cover-bottom">
+    <div class="cover-meta-bar">
+      <div class="cover-meta-item"><div class="cover-meta-label">Cliente</div><div class="cover-meta-value">[Nombre del Cliente]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Fecha Corte</div><div class="cover-meta-value">[DD Mes AAAA]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Referencia</div><div class="cover-meta-value">[REF-CONTRATO]</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TABLA DE CONTENIDO
+     ============================================================ -->
+<section class="toc reveal">
+  <div class="toc-label">Contenido del informe</div>
+  <ol class="toc-list">
+    <li><span class="toc-num">01</span><span class="toc-name"><a href="#resumen">Resumen Ejecutivo</a></span></li>
+    <li>
+      <span class="toc-num">02</span>
+      <span class="toc-name">
+        <a href="#proyecto-01">Proyecto 01 — [Nombre]</a>
+        <ul class="toc-sub"><li>Hallazgos · Alcance · Registro fotográfico · Resultado · Recomendaciones</li></ul>
+      </span>
+    </li>
+    <li>
+      <span class="toc-num">03</span>
+      <span class="toc-name">
+        <a href="#proyecto-02">Proyecto 02 — [Nombre]</a>
+        <ul class="toc-sub"><li>Hallazgos · Alcance · Registro fotográfico · Resultado · Recomendaciones</li></ul>
+      </span>
+    </li>
+    <li><span class="toc-num">04</span><span class="toc-name"><a href="#conclusion">Conclusión General y Continuidad</a></span></li>
+    <li><span class="toc-num">05</span><span class="toc-name"><a href="#cantidades">Tabla de Cantidades Consolidada</a></span></li>
+    <li><span class="toc-num">06</span><span class="toc-name"><a href="#anexos">Anexos Técnicos</a></span></li>
+  </ol>
+</section>
+
+<!-- ============================================================
+     RESUMEN EJECUTIVO
+     ============================================================ -->
+<section class="section reveal" id="resumen">
+  <div class="section-code">01 — Resumen</div>
+  <h2 class="section-title">Resumen Ejecutivo</h2>
+  <div class="section-divider"></div>
+  <div class="exec-grid">
+    <div class="exec-lead">
+      <p>[Párrafo introductorio: contexto del proyecto y alcance general de las intervenciones.]</p>
+      <p>[Párrafo de resultados: hallazgos principales, decisiones técnicas tomadas y estado actual.]</p>
+      <p>[Párrafo de continuidad: qué valida este informe y qué pasos siguen.]</p>
+    </div>
+    <div class="kpi-grid">
+      <!-- KPI 1 -->
+      <div class="kpi-card kpi-card--blue reveal">
+        <div class="kpi-label">[Métrica 1]</div>
+        <div class="kpi-value counter" data-target="0">0</div>
+        <div class="kpi-sub">[Descripción corta]</div>
+      </div>
+      <!-- KPI 2 -->
+      <div class="kpi-card reveal">
+        <div class="kpi-label">[Métrica 2]</div>
+        <div class="kpi-value counter" data-target="0">0</div>
+        <div class="kpi-sub">[Descripción corta]</div>
+      </div>
+      <!-- KPI 3 -->
+      <div class="kpi-card reveal">
+        <div class="kpi-label">[Métrica 3]</div>
+        <div class="kpi-value counter" data-target="0">0</div>
+        <div class="kpi-sub">[Descripción corta]</div>
+      </div>
+      <!-- KPI 4 -->
+      <div class="kpi-card kpi-card--orange reveal">
+        <div class="kpi-label">[Métrica 4]</div>
+        <div class="kpi-value counter" data-target="0">0</div>
+        <div class="kpi-sub">[Descripción corta]</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CHAPTER BANNER — PROYECTO 01
+     Clase: no agregar — el CSS genérico aplica a .chapter-banner
+     ============================================================ -->
+<div class="chapter-banner reveal" id="proyecto-01">
+  <div class="chapter-content">
+    <div class="chapter-badge"><span class="chapter-badge-dot"></span>Proyecto 01</div>
+    <h2 class="chapter-title">[Nombre del<br>Proyecto 01]</h2>
+    <p class="chapter-subtitle">[Subtítulo descriptivo · Sistema · Contrato [REF]]</p>
+    <div class="chapter-stats">
+      <div class="chapter-stat"><span class="chapter-stat-val">[Valor]</span><span class="chapter-stat-label">[Etiqueta estadística]</span></div>
+      <div class="chapter-stat"><span class="chapter-stat-val">[Valor]</span><span class="chapter-stat-label">[Etiqueta estadística]</span></div>
+      <div class="chapter-stat"><span class="chapter-stat-val">[X años]</span><span class="chapter-stat-label">Garantía sistema</span></div>
+    </div>
+  </div>
+  <div class="chapter-number">01</div>
+  <div class="chapter-line"></div>
+</div>
+
+<!-- ============================================================
+     P01 — HALLAZGOS
+     Clase "hallazgos-2col" activa el layout 2 columnas en slides
+     ============================================================ -->
+<section class="section reveal hallazgos-2col" id="slide-hallazgos-p01">
+  <div class="section-code">P01 — 01 · Hallazgos</div>
+  <h2 class="section-title">[Diagnóstico principal del proyecto 01]</h2>
+  <div class="section-divider"></div>
+
+  <!-- Columna texto -->
+  <div class="hallazgos-col-text">
+    <!-- Bloque 1: Hallazgos -->
+    <div class="hallazgos-block reveal" style="margin-bottom:1rem">
+      <div class="hallazgos-block-label">Hallazgos</div>
+      <ul class="content-points">
+        <li>[Hallazgo 1 — descripción concisa]</li>
+        <li>[Hallazgo 2 — con <strong>énfasis</strong> si aplica]</li>
+        <li>[Hallazgo 3]</li>
+        <li>[Hallazgo 4]</li>
+      </ul>
+    </div>
+    <!-- Bloque 2: Productos -->
+    <div class="hallazgos-block reveal">
+      <div class="hallazgos-block-label">Productos utilizados por sus características</div>
+      <ul class="content-points">
+        <li><strong>[Producto A]</strong> — [justificación técnica breve]</li>
+        <li><strong>[Producto B]</strong> — [justificación técnica breve]</li>
+        <li><strong>[Producto C]</strong> — [justificación técnica breve]</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Columna fotos -->
+  <div class="hallazgos-col-photos">
+    <div class="photo-category reveal">
+      <div class="photo-cat-label"><span>Evidencia fotográfica</span></div>
+      <div class="photo-grid photo-grid--2col">
+        <!-- Reemplazar src con rutas de fotos reales -->
+        <div class="photo-item"><img src="" alt="[Descripción foto 1]" loading="lazy"></div>
+        <div class="photo-item"><img src="" alt="[Descripción foto 2]" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     P01 — ALCANCE
+     Clase "alcance-slide" activa grid compacto en slides
+     ============================================================ -->
+<section class="section reveal alcance-slide" id="slide-alcance-p01">
+  <div class="section-code">P01 — 02 · Alcance</div>
+  <h2 class="section-title">Cantidades contratadas y ejecutadas</h2>
+  <div class="section-divider"></div>
+  <div class="content-resumen">[Resumen ejecutivo del alcance — una línea.]</div>
+  <p class="content-body" style="margin-bottom:1.5rem">[Descripción completa del alcance para modo informe.]</p>
+  <div class="card-grid">
+    <!-- Patrón: card con qty-badges (contratado arriba, ejecutado abajo) -->
+    <div class="card reveal">
+      <div class="card-icon">🔧</div>
+      <h4>[Actividad 1]</h4>
+      <p>[Descripción breve de la actividad y producto usado.]</p>
+      <div class="qty-badges">
+        <span class="badge badge--info"><span class="badge-dot"></span>[XX ud] contratado</span>
+        <span class="badge badge--ok"><span class="badge-dot"></span>[XX ud] ejecutado</span>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">🎨</div>
+      <h4>[Actividad 2]</h4>
+      <p>[Descripción breve.]</p>
+      <div class="qty-badges">
+        <span class="badge badge--info"><span class="badge-dot"></span>[XX ud] contratado</span>
+        <span class="badge badge--ok"><span class="badge-dot"></span>[XX ud] ejecutado</span>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">📏</div>
+      <h4>[Actividad 3]</h4>
+      <p>[Descripción breve.]</p>
+      <div class="qty-badges">
+        <span class="badge badge--info"><span class="badge-dot"></span>[XX ud] contratado</span>
+        <span class="badge badge--warning"><span class="badge-dot"></span>[XX ud] ejecutado</span>
+      </div>
+    </div>
+    <!-- Agregar más cards según actividades -->
+  </div>
+</section>
+
+<!-- ============================================================
+     P01 — REGISTRO FOTOGRÁFICO
+     ============================================================ -->
+<section class="section reveal">
+  <div class="section-code">P01 — 03 · Registro</div>
+  <h2 class="section-title">Registro Fotográfico</h2>
+  <div class="section-divider"></div>
+  <div class="photo-category reveal">
+    <div class="photo-cat-label"><span>Antes — Estado Inicial</span></div>
+    <div class="photo-grid photo-grid--2col">
+      <div class="photo-item"><img src="" alt="[Estado inicial]" loading="lazy"><div class="photo-label">[Descripción]</div></div>
+      <div class="photo-item"><img src="" alt="[Estado inicial]" loading="lazy"><div class="photo-label">[Descripción]</div></div>
+    </div>
+  </div>
+  <div class="photo-category reveal" style="margin-top:1.5rem">
+    <div class="photo-cat-label"><span>Durante — Ejecución</span></div>
+    <div class="photo-grid">
+      <div class="photo-item"><img src="" alt="[Durante]" loading="lazy"><div class="photo-label">[Descripción]</div></div>
+      <div class="photo-item"><img src="" alt="[Durante]" loading="lazy"><div class="photo-label">[Descripción]</div></div>
+      <div class="photo-item"><img src="" alt="[Durante]" loading="lazy"><div class="photo-label">[Descripción]</div></div>
+    </div>
+  </div>
+  <button class="gallery-toggle" data-target="gallery-p01-more">▼ Ver más</button>
+  <div class="photo-more" id="gallery-p01-more">
+    <div class="photo-category" style="margin-top:1.5rem">
+      <div class="photo-cat-label"><span>Después — Resultado Final</span></div>
+      <div class="photo-grid">
+        <div class="photo-item"><img src="" alt="[Resultado]" loading="lazy"><div class="photo-label">[Descripción]</div></div>
+        <div class="photo-item"><img src="" alt="[Resultado]" loading="lazy"><div class="photo-label">[Descripción]</div></div>
+        <div class="photo-item"><img src="" alt="[Resultado]" loading="lazy"><div class="photo-label">[Descripción]</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     P01 — RESULTADO
+     Clase "resultado-2col" activa layout con garantías a la derecha en slides
+     ============================================================ -->
+<section class="section reveal resultado-2col" id="slide-resultado-p01">
+  <div class="section-code">P01 — 04 · Resultado</div>
+  <h2 class="section-title">[Titular del resultado principal]</h2>
+  <div class="section-divider"></div>
+
+  <!-- Columna izquierda: resultados cualitativos -->
+  <div class="resultado-col-main">
+    <div class="content-resumen">[Resumen ejecutivo del resultado.]</div>
+    <ul class="content-points">
+      <li><strong>[Resultado 1]</strong> — descripción</li>
+      <li>[Resultado 2]</li>
+    </ul>
+    <div class="result-card reveal">
+      <div class="result-outcome">[Resultado técnico principal]</div>
+      <div class="result-detail">[Detalle ampliado del resultado — visible solo en modo informe.]</div>
+    </div>
+    <div class="result-card result-card--blue reveal">
+      <div class="result-outcome result-outcome--blue">[Resultado secundario / validación]</div>
+      <div class="result-detail">[Detalle ampliado.]</div>
+    </div>
+  </div>
+
+  <!-- Columna derecha: garantías -->
+  <div class="resultado-col-warranty">
+    <div class="warranty warranty--featured reveal">
+      <div class="warranty-body">
+        <div class="warranty-years">[X]<small>Años</small></div>
+        <div class="warranty-divider"></div>
+        <div class="warranty-text">
+          <h4>[Nombre del sistema / producto garantizado]</h4>
+          <p>[Descripción de cobertura, condiciones y exclusiones de la garantía.]</p>
+        </div>
+      </div>
+    </div>
+    <!-- Garantía adicional (opcional) -->
+    <div class="warranty reveal" style="margin-top:.75rem">
+      <div class="warranty-body">
+        <div class="warranty-years">[X]<small>Años</small></div>
+        <div class="warranty-divider"></div>
+        <div class="warranty-text">
+          <h4>[Segundo sistema garantizado]</h4>
+          <p>[Condiciones de garantía.]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     P01 — RECOMENDACIONES
+     Clase "reco-slide" activa padding compacto en slides
+     ============================================================ -->
+<section class="section reveal reco-slide" id="slide-reco-p01">
+  <div class="section-code">P01 — 05 · Recomendaciones</div>
+  <h2 class="section-title">[Titular de la acción recomendada principal]</h2>
+  <div class="section-divider"></div>
+  <ul class="content-points">
+    <li><strong>Acción inmediata:</strong> [descripción de la acción más urgente]</li>
+    <li>[Segundo punto clave de recomendación]</li>
+  </ul>
+  <p class="content-body" style="margin-bottom:1.5rem">[Párrafo de contexto extendido para modo informe.]</p>
+  <div class="rec-grid">
+    <div class="rec-card reveal">
+      <div class="rec-priority">◆ Acción prioritaria</div>
+      <h4>[Recomendación 1]</h4>
+      <p>[Descripción de la acción y su justificación técnica.]</p>
+      <div class="rec-timeframe">[Plazo: inmediato / mes / trimestre]</div>
+    </div>
+    <div class="rec-card reveal">
+      <div class="rec-priority">▶ Seguimiento</div>
+      <h4>[Recomendación 2]</h4>
+      <p>[Descripción de seguimiento o mantenimiento preventivo.]</p>
+      <div class="rec-timeframe">[Plazo: permanente / X meses]</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CHAPTER BANNER — PROYECTO 02
+     Duplicar y ajustar si hay más proyectos
+     ============================================================ -->
+<div class="chapter-banner reveal" id="proyecto-02" style="background:radial-gradient(ellipse at 30% 50%,rgba(249,115,22,.06) 0%,transparent 60%),radial-gradient(ellipse at 80% 50%,rgba(37,99,235,.05) 0%,transparent 60%),var(--bg-elevated)">
+  <div class="chapter-content">
+    <div class="chapter-badge"><span class="chapter-badge-dot"></span>Proyecto 02</div>
+    <h2 class="chapter-title">[Nombre del<br>Proyecto 02]</h2>
+    <p class="chapter-subtitle">[Subtítulo · Sistema · Contrato [REF]]</p>
+    <div class="chapter-stats">
+      <div class="chapter-stat"><span class="chapter-stat-val">[Valor]</span><span class="chapter-stat-label">[Etiqueta]</span></div>
+      <div class="chapter-stat"><span class="chapter-stat-val">[Valor]</span><span class="chapter-stat-label">[Etiqueta]</span></div>
+      <div class="chapter-stat"><span class="chapter-stat-val">[X años]</span><span class="chapter-stat-label">Garantía sistema</span></div>
+    </div>
+  </div>
+  <div class="chapter-number">02</div>
+  <div class="chapter-line"></div>
+</div>
+
+<!-- P02 — HALLAZGOS -->
+<section class="section reveal hallazgos-2col" id="slide-hallazgos-p02">
+  <div class="section-code">P02 — 01 · Hallazgos</div>
+  <h2 class="section-title">[Diagnóstico principal del proyecto 02]</h2>
+  <div class="section-divider"></div>
+  <div class="hallazgos-col-text">
+    <div class="hallazgos-block reveal" style="margin-bottom:1rem">
+      <div class="hallazgos-block-label">Hallazgos</div>
+      <ul class="content-points">
+        <li>[Hallazgo 1]</li>
+        <li>[Hallazgo 2 — con <strong>énfasis</strong>]</li>
+        <li>[Hallazgo 3]</li>
+      </ul>
+    </div>
+    <div class="hallazgos-block reveal">
+      <div class="hallazgos-block-label">Productos utilizados por sus características</div>
+      <ul class="content-points">
+        <li><strong>[Producto A]</strong> — [justificación]</li>
+        <li><strong>[Producto B]</strong> — [justificación]</li>
+      </ul>
+    </div>
+  </div>
+  <div class="hallazgos-col-photos">
+    <div class="photo-category reveal">
+      <div class="photo-cat-label"><span>Evidencia fotográfica</span></div>
+      <div class="photo-grid photo-grid--2col">
+        <div class="photo-item"><img src="" alt="[Foto hallazgo 1]" loading="lazy"></div>
+        <div class="photo-item"><img src="" alt="[Foto hallazgo 2]" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- P02 — ALCANCE -->
+<section class="section reveal alcance-slide" id="slide-alcance-p02">
+  <div class="section-code">P02 — 02 · Alcance</div>
+  <h2 class="section-title">Cantidades contratadas y ejecutadas</h2>
+  <div class="section-divider"></div>
+  <div class="content-resumen">[Resumen del alcance del proyecto 02.]</div>
+  <p class="content-body" style="margin-bottom:1.5rem">[Descripción detallada del alcance.]</p>
+  <div class="card-grid">
+    <div class="card reveal">
+      <div class="card-icon">💧</div>
+      <h4>[Actividad 1]</h4>
+      <p>[Descripción.]</p>
+      <div class="qty-badges">
+        <span class="badge badge--info"><span class="badge-dot"></span>[XX ud] contratado</span>
+        <span class="badge badge--ok"><span class="badge-dot"></span>[XX ud] ejecutado</span>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">🏗️</div>
+      <h4>[Actividad 2]</h4>
+      <p>[Descripción.]</p>
+      <div class="qty-badges">
+        <span class="badge badge--info"><span class="badge-dot"></span>[XX ud] contratado</span>
+        <span class="badge badge--ok"><span class="badge-dot"></span>[XX ud] ejecutado</span>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">⚙️</div>
+      <h4>[Actividad 3]</h4>
+      <p>[Descripción.]</p>
+      <div class="qty-badges">
+        <span class="badge badge--info"><span class="badge-dot"></span>[XX ud] contratado</span>
+        <span class="badge badge--warning"><span class="badge-dot"></span>[XX ud] ejecutado</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- P02 — REGISTRO FOTOGRÁFICO -->
+<section class="section reveal">
+  <div class="section-code">P02 — 03 · Registro</div>
+  <h2 class="section-title">Registro Fotográfico</h2>
+  <div class="section-divider"></div>
+  <div class="photo-category reveal">
+    <div class="photo-cat-label"><span>[Categoría 1 — ej: Estado previo]</span></div>
+    <div class="photo-grid">
+      <div class="photo-item"><img src="" alt="[Foto]" loading="lazy"><div class="photo-label">[Etiqueta]</div></div>
+      <div class="photo-item"><img src="" alt="[Foto]" loading="lazy"><div class="photo-label">[Etiqueta]</div></div>
+      <div class="photo-item"><img src="" alt="[Foto]" loading="lazy"><div class="photo-label">[Etiqueta]</div></div>
+    </div>
+  </div>
+  <div class="photo-category reveal" style="margin-top:1.5rem">
+    <div class="photo-cat-label"><span>[Categoría 2 — ej: Sistema aplicado]</span></div>
+    <div class="photo-grid">
+      <div class="photo-item"><img src="" alt="[Foto]" loading="lazy"><div class="photo-label">[Etiqueta]</div></div>
+      <div class="photo-item"><img src="" alt="[Foto]" loading="lazy"><div class="photo-label">[Etiqueta]</div></div>
+      <div class="photo-item"><img src="" alt="[Foto]" loading="lazy"><div class="photo-label">[Etiqueta]</div></div>
+    </div>
+  </div>
+  <!-- Videos (opcional) -->
+  <button class="gallery-toggle" data-target="gallery-p02-more">▼ Ver videos</button>
+  <div class="photo-more" id="gallery-p02-more">
+    <div class="photo-category" style="margin-top:1.5rem">
+      <div class="photo-cat-label"><span>Videos — Registro de ejecución</span></div>
+      <div class="photo-grid photo-grid--2col">
+        <div class="photo-item" style="aspect-ratio:16/9;height:auto">
+          <video controls style="width:100%;height:100%;object-fit:cover;border-radius:0">
+            <source src="[ruta-video-1.mp4]" type="video/mp4">
+          </video>
+          <div class="photo-label">[Descripción video 1]</div>
+        </div>
+        <div class="photo-item" style="aspect-ratio:16/9;height:auto">
+          <video controls style="width:100%;height:100%;object-fit:cover;border-radius:0">
+            <source src="[ruta-video-2.mp4]" type="video/mp4">
+          </video>
+          <div class="photo-label">[Descripción video 2]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- P02 — RESULTADO -->
+<section class="section reveal resultado-2col" id="slide-resultado-p02">
+  <div class="section-code">P02 — 04 · Resultado</div>
+  <h2 class="section-title">[Titular del resultado P02]</h2>
+  <div class="section-divider"></div>
+  <div class="resultado-col-main">
+    <div class="content-resumen">[Resumen del resultado P02.]</div>
+    <ul class="content-points">
+      <li><strong>[Resultado 1]</strong> — descripción</li>
+      <li>[Resultado 2]</li>
+    </ul>
+    <div class="result-card reveal">
+      <div class="result-outcome">[Resultado técnico principal P02]</div>
+      <div class="result-detail">[Detalle para modo informe.]</div>
+    </div>
+  </div>
+  <div class="resultado-col-warranty">
+    <div class="warranty warranty--featured reveal">
+      <div class="warranty-body">
+        <div class="warranty-years">[X]<small>Años</small></div>
+        <div class="warranty-divider"></div>
+        <div class="warranty-text">
+          <h4>[Sistema garantizado P02]</h4>
+          <p>[Condiciones de la garantía.]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- P02 — RECOMENDACIONES -->
+<section class="section reveal reco-slide" id="slide-reco-p02">
+  <div class="section-code">P02 — 05 · Recomendaciones</div>
+  <h2 class="section-title">[Titular de recomendación P02]</h2>
+  <div class="section-divider"></div>
+  <ul class="content-points">
+    <li><strong>Acción inmediata:</strong> [descripción]</li>
+    <li>[Segundo punto]</li>
+  </ul>
+  <div class="rec-grid">
+    <div class="rec-card reveal">
+      <div class="rec-priority">◆ Acción prioritaria</div>
+      <h4>[Recomendación principal]</h4>
+      <p>[Descripción y justificación.]</p>
+      <div class="rec-timeframe">[Plazo]</div>
+    </div>
+    <div class="rec-card reveal">
+      <div class="rec-priority">▶ Mantenimiento</div>
+      <h4>[Recomendación de mantenimiento]</h4>
+      <p>[Descripción.]</p>
+      <div class="rec-timeframe">Permanente</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONCLUSIÓN GENERAL
+     ============================================================ -->
+<section class="conclusion-section reveal" id="conclusion">
+  <div class="section-code">04 — Análisis</div>
+  <h2 class="section-title">Conclusión General y Continuidad</h2>
+  <div class="section-divider"></div>
+  <div class="conclusion-pillars">
+    <div class="conclusion-pillar reveal">
+      <div class="pillar-num">◆ 01 — Cierre</div>
+      <h3 class="pillar-title">[Título pilar 1]</h3>
+      <p class="pillar-text">[Texto de conclusión 1 — validación de la intervención y sus resultados.]</p>
+    </div>
+    <div class="conclusion-pillar reveal">
+      <div class="pillar-num">◆ 02 — Base técnica</div>
+      <h3 class="pillar-title">[Título pilar 2]</h3>
+      <p class="pillar-text">[Texto de conclusión 2 — base técnica generada para próximas fases.]</p>
+    </div>
+    <div class="conclusion-pillar reveal">
+      <div class="pillar-num">◆ 03 — Continuidad</div>
+      <h3 class="pillar-title">[Título pilar 3]</h3>
+      <p class="pillar-text">[Texto de conclusión 3 — pasos siguientes y continuidad del proyecto.]</p>
+    </div>
+  </div>
+  <div class="conclusion-statement reveal">"[Frase de cierre que resume el valor de la intervención y la posición de FreshHouse.]"</div>
+</section>
+
+<!-- ============================================================
+     TABLA DE CANTIDADES CONSOLIDADA
+     ============================================================ -->
+<section class="section reveal" id="cantidades">
+  <div class="section-code">05 — Tabla consolidada</div>
+  <h2 class="section-title">Tabla de Cantidades Consolidada</h2>
+  <div class="section-divider"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Proyecto</th>
+          <th>Actividad</th>
+          <th>Unidad</th>
+          <th>Cant. Ejecutada</th>
+          <th>Observaciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- P01 -->
+        <tr><td>P01 — [Nombre]</td><td>[Actividad]</td><td>[ud]</td><td>[valor]</td><td>[nota]</td></tr>
+        <tr><td>P01 — [Nombre]</td><td>[Actividad]</td><td>[ud]</td><td>[valor]</td><td>[nota]</td></tr>
+        <!-- P02 -->
+        <tr><td>P02 — [Nombre]</td><td>[Actividad]</td><td>[ud]</td><td>[valor]</td><td>[nota]</td></tr>
+        <tr><td>P02 — [Nombre]</td><td>[Actividad]</td><td>[ud]</td><td>[valor]</td><td>[nota]</td></tr>
+        <!-- Total destacado -->
+        <tr style="background:rgba(249,115,22,.04);border-top:1px solid var(--fh-orange-border)">
+          <td style="color:var(--fh-orange);font-weight:700">Total [métrica]</td>
+          <td style="color:var(--text-primary)">[descripción total]</td>
+          <td>[ud]</td>
+          <td style="color:var(--fh-orange);font-family:'JetBrains Mono',monospace;font-weight:700">[valor total]</td>
+          <td>[nota final]</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================
+     ANEXOS TÉCNICOS
+     ============================================================ -->
+<section class="section reveal" id="anexos">
+  <div class="section-code">06 — Documentación</div>
+  <h2 class="section-title">Anexos Técnicos</h2>
+  <div class="section-divider"></div>
+  <div class="content-resumen">Fichas técnicas, certificaciones y soportes documentales de los materiales y sistemas aplicados.</div>
+  <div class="anexo-grid">
+    <div class="anexo-card reveal">
+      <div class="anexo-icon">📄</div>
+      <div class="anexo-title">Ficha Técnica — [Producto 1]</div>
+      <div class="anexo-desc">[Descripción, versión, consumo y especificaciones principales.]</div>
+      <span class="badge badge--info"><span class="badge-dot"></span>[Fabricante]</span>
+    </div>
+    <div class="anexo-card reveal">
+      <div class="anexo-icon">📋</div>
+      <div class="anexo-title">Ficha Técnica — [Producto 2]</div>
+      <div class="anexo-desc">[Descripción, versión, consumo y especificaciones principales.]</div>
+      <span class="badge badge--info"><span class="badge-dot"></span>[Fabricante]</span>
+    </div>
+    <div class="anexo-card reveal">
+      <div class="anexo-icon">🗂️</div>
+      <div class="anexo-title">Acta de Obra N°01 — [Fecha]</div>
+      <div class="anexo-desc">[Primer corte de obra. Resumen de valores y porcentajes ejecutados.]</div>
+      <span class="badge badge--ok"><span class="badge-dot"></span>[REF-CONTRATO]</span>
+    </div>
+    <div class="anexo-card reveal">
+      <div class="anexo-icon">🗂️</div>
+      <div class="anexo-title">Acta de Obra N°02 — [Fecha]</div>
+      <div class="anexo-desc">[Segundo corte. Resumen acumulado.]</div>
+      <span class="badge badge--warning"><span class="badge-dot"></span>[REF-CONTRATO]</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FIRMAS
+     ============================================================ -->
+<section class="signatures-section reveal">
+  <div class="sig-grid">
+    <div><div class="sig-line"></div><div class="sig-name">[Nombre Gerente]</div><div class="sig-role">Gerente — FreshHouse · CC [número]</div></div>
+    <div><div class="sig-line"></div><div class="sig-name">[Nombre Interventor]</div><div class="sig-role">Interventoría Técnica</div></div>
+    <div><div class="sig-line"></div><div class="sig-name">[Nombre Representante]</div><div class="sig-role">[Cargo — Entidad cliente]</div></div>
+  </div>
+  <div class="footer-bar">
+    <div>
+      <!-- LOGO: reemplazar src -->
+      <img src="" alt="FreshHouse" style="height:44px;width:auto;object-fit:contain;margin-bottom:4px" class="nav-logo">
+      <div class="footer-bar-info" style="margin-top:4px">NIT. 901.718.258-4 · Calle 3 Norte Cra 18-49, Armenia, Quindío · 310 461 7353 · gerencia@freshouse.com.co</div>
+    </div>
+    <div class="footer-bar-info">[REF-CONTRATO] · [Fecha]</div>
+  </div>
+</section>
+
+</main>
+
+<footer class="report-footer">
+  <img src="" alt="FreshHouse" style="height:32px;width:auto;object-fit:contain" class="nav-logo">
+  <div class="footer-center">Informe Técnico · [Nombre del Proyecto]</div>
+  <div class="footer-right">[REF-CONTRATO] &nbsp;·&nbsp; Confidencial</div>
+</footer>
+
+<script>
+// SCROLL REVEAL
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ANIMATED COUNTERS
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.target);
+  const duration = 1800;
+  const start = performance.now();
+  const isDecimal = el.dataset.target.includes('.');
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = eased * target;
+    el.textContent = isDecimal ? value.toFixed(1) : Math.round(value).toLocaleString('es-CO');
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !e.target.dataset.counted) {
+      e.target.dataset.counted = 'true';
+      animateCounter(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+
+// STICKY NAV
+const nav = document.querySelector('.sticky-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('visible', window.scrollY > window.innerHeight * 0.6);
+}, { passive: true });
+
+// ACTIVE NAV LINKS
+const navLinks = document.querySelectorAll('.nav-links a');
+const sectionIds = ['resumen','proyecto-01','proyecto-02','conclusion','cantidades','anexos'];
+const sectionObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+    }
+  });
+}, { threshold: 0.3 });
+sectionIds.forEach(id => { const el = document.getElementById(id); if(el) sectionObs.observe(el); });
+
+// GALLERY TOGGLES
+document.querySelectorAll('.gallery-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = document.getElementById(btn.dataset.target);
+    if (!target) return;
+    const open = target.classList.toggle('open');
+    btn.textContent = open ? '▲ Ver menos' : '▼ Ver más';
+  });
+});
+
+// ============================================================
+// MODE TOGGLE (Informe · Presentación · Slides)
+// ============================================================
+function setMode(mode) {
+  const body = document.body;
+  ['btn-informe','btn-presentacion','btn-slides'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  if (body.classList.contains('mode-slides') && mode !== 'slides') {
+    _destroySlides();
+  }
+  body.classList.remove('mode-presentacion','mode-slides');
+  if (mode === 'presentacion') {
+    body.classList.add('mode-presentacion');
+    document.getElementById('btn-presentacion').classList.add('active');
+  } else if (mode === 'slides') {
+    body.classList.add('mode-slides');
+    document.getElementById('btn-slides').classList.add('active');
+    requestAnimationFrame(_initSlides);
+  } else {
+    document.getElementById('btn-informe').classList.add('active');
+  }
+  localStorage.setItem('fh-mode', mode);
+}
+// Restore saved mode (never auto-restore slides)
+(function() {
+  const saved = localStorage.getItem('fh-mode');
+  if (saved === 'presentacion') setMode('presentacion');
+})();
+
+// ============================================================
+// SLIDE MODE ENGINE
+// ============================================================
+let _slides = [], _slideIdx = 0, _slideInFlight = false, _touchX = 0;
+
+const _SLIDE_SEL = '.report > .cover-page, .report > .toc, .report > .section, .report > .chapter-banner, .report > .conclusion-section, .report > .signatures-section';
+
+function _initSlides() {
+  _slides = Array.from(document.querySelectorAll(_SLIDE_SEL));
+  _slides.forEach(el => {
+    el.querySelectorAll('.reveal').forEach(r => r.classList.add('visible'));
+  });
+  _slideIdx = 0;
+  _slideInFlight = false;
+  document.getElementById('slide-tot').textContent = _slides.length;
+  _slides[0].style.setProperty('--slide-from','0px');
+  _slides[0].classList.add('slide-active');
+  _slides[0].style.removeProperty('--slide-from');
+  _slides[0].scrollTop = 0;
+  _updateSlideUI();
+  document.addEventListener('keydown', _slideKey);
+  document.addEventListener('touchstart', _slideTouch, {passive:true});
+  document.addEventListener('touchend', _slideTouchEnd, {passive:true});
+  document.addEventListener('mousemove', _slideNavProximity);
+}
+
+function _destroySlides() {
+  _slides.forEach(el => {
+    el.classList.remove('slide-active','slide-leaving');
+    el.style.removeProperty('--slide-from');
+    el.style.removeProperty('--slide-to');
+  });
+  document.getElementById('slide-nav').classList.remove('nav-visible');
+  document.removeEventListener('keydown', _slideKey);
+  document.removeEventListener('touchstart', _slideTouch);
+  document.removeEventListener('touchend', _slideTouchEnd);
+  document.removeEventListener('mousemove', _slideNavProximity);
+  _slides = [];
+}
+
+function _slideNavProximity(e) {
+  const threshold = 100;
+  const nearBottom = (window.innerHeight - e.clientY) < threshold;
+  document.getElementById('slide-nav').classList.toggle('nav-visible', nearBottom);
+}
+
+function _goSlide(dir) {
+  if (_slideInFlight || !_slides.length) return;
+  const next = _slideIdx + dir;
+  if (next < 0 || next >= _slides.length) return;
+  _slideInFlight = true;
+  const cur = _slides[_slideIdx];
+  const tgt = _slides[next];
+  const enterFrom = dir > 0 ? '70px' : '-70px';
+  const exitTo    = dir > 0 ? '-70px' : '70px';
+  tgt.style.setProperty('--slide-from', enterFrom);
+  cur.style.setProperty('--slide-to',   exitTo);
+  tgt.getBoundingClientRect();
+  cur.classList.remove('slide-active');
+  cur.classList.add('slide-leaving');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    tgt.classList.add('slide-active');
+    tgt.scrollTop = 0;
+  }));
+  _slideIdx = next;
+  _updateSlideUI();
+  setTimeout(() => {
+    cur.classList.remove('slide-leaving');
+    cur.style.removeProperty('--slide-to');
+    tgt.style.removeProperty('--slide-from');
+    _slideInFlight = false;
+  }, 520);
+}
+
+function slideNext() { _goSlide(1); }
+function slidePrev() { _goSlide(-1); }
+
+function _updateSlideUI() {
+  document.getElementById('slide-cur').textContent = _slideIdx + 1;
+  document.getElementById('slide-prev').disabled = (_slideIdx === 0);
+  document.getElementById('slide-next').disabled = (_slideIdx === _slides.length - 1);
+  const pct = _slides.length > 1 ? (_slideIdx / (_slides.length - 1)) * 100 : 100;
+  document.getElementById('slide-progress').style.width = pct + '%';
+  const el = _slides[_slideIdx];
+  const codeEl = el.querySelector('.section-code,.chapter-badge,.cover-client');
+  const label = codeEl ? codeEl.textContent.trim() : '';
+  document.getElementById('slide-label').textContent = label;
+  document.getElementById('slide-label').style.display = label ? '' : 'none';
+}
+
+function _slideKey(e) {
+  if (!document.body.classList.contains('mode-slides')) return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+    e.preventDefault(); slideNext();
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    e.preventDefault(); slidePrev();
+  }
+}
+
+function _slideTouch(e) { _touchX = e.touches[0].clientX; }
+function _slideTouchEnd(e) {
+  if (!document.body.classList.contains('mode-slides')) return;
+  const diff = _touchX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 48) { diff > 0 ? slideNext() : slidePrev(); }
+}
+</script>
+</body>
+</html>

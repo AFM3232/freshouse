@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cotización — {{PROYECTO}} | FreshHouse</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg-base:      #F8FAFF;
+  --bg-deep:      #FFFFFF;
+  --bg-elevated:  #EEF3FD;
+  --bg-surface:   #E4EDF8;
+  --bg-glass:     rgba(255,255,255,0.90);
+  --fh-blue-900:  #0A1628;
+  --fh-blue-700:  #0F2D5C;
+  --fh-blue-500:  #1A52A8;
+  --fh-blue-400:  #2563EB;
+  --fh-blue-300:  #3B82F6;
+  --fh-blue-100:  rgba(59,130,246,0.09);
+  --fh-blue-glow: rgba(37,99,235,0.15);
+  --fh-orange:      #F97316;
+  --fh-orange-dark: #EA580C;
+  --fh-orange-muted: rgba(249,115,22,0.09);
+  --fh-orange-glow:  rgba(249,115,22,0.20);
+  --fh-orange-border: rgba(249,115,22,0.30);
+  --text-primary:   #0D1B2E;
+  --text-secondary: #3A5270;
+  --text-muted:     #849AB8;
+  --text-orange:    #EA580C;
+  --border-subtle: rgba(13,27,46,0.07);
+  --border-mid:    rgba(13,27,46,0.13);
+  --border-blue:   rgba(37,99,235,0.16);
+  --border-orange: rgba(249,115,22,0.26);
+  --status-critical: #DC2626;
+  --status-warning:  #EA580C;
+  --status-ok:       #16A34A;
+  --status-info:     #2563EB;
+  --glow-blue-sm:   0 2px 16px rgba(37,99,235,0.10), 0 8px 32px rgba(37,99,235,0.07);
+  --glow-blue-md:   0 4px 32px rgba(37,99,235,0.14), 0 16px 48px rgba(37,99,235,0.08);
+  --glow-orange-sm: 0 2px 16px rgba(249,115,22,0.10), 0 8px 32px rgba(249,115,22,0.07);
+  --glow-orange-md: 0 4px 32px rgba(249,115,22,0.14), 0 16px 48px rgba(249,115,22,0.08);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-base);color:var(--text-primary);line-height:1.65;overflow-x:hidden}
+h1,h2,h3,h4,h5{font-family:'Space Grotesk',sans-serif;color:var(--text-primary);line-height:1.2}
+img{max-width:100%;display:block}
+a{color:var(--fh-blue-400);text-decoration:none}
+strong{color:var(--text-primary);font-weight:600}
+
+/* === BLOBS === */
+@keyframes blobFloat1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-40px) scale(1.05)}66%{transform:translate(-20px,20px) scale(0.97)}}
+@keyframes blobFloat2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-35px,30px) scale(1.08)}}
+@keyframes blobFloat3{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(25px,25px) scale(0.95)}80%{transform:translate(-15px,-30px) scale(1.04)}}
+.blob{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+.blob-1{width:700px;height:700px;top:-200px;left:-150px;background:radial-gradient(circle,rgba(37,99,235,0.07),transparent 70%);animation:blobFloat1 18s ease-in-out infinite}
+.blob-2{width:500px;height:500px;top:30vh;right:-100px;background:radial-gradient(circle,rgba(249,115,22,0.05),transparent 70%);animation:blobFloat2 22s ease-in-out infinite}
+.blob-3{width:600px;height:600px;bottom:-100px;left:30%;background:radial-gradient(circle,rgba(37,99,235,0.05),transparent 70%);animation:blobFloat3 26s ease-in-out infinite}
+
+/* === STICKY NAV === */
+.sticky-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(248,250,255,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border-subtle);padding:.75rem 2.5rem;display:flex;align-items:center;justify-content:space-between;transform:translateY(-100%);transition:transform .4s cubic-bezier(.16,1,.3,1);box-shadow:0 1px 12px rgba(13,27,46,0.06)}
+.sticky-nav.visible{transform:translateY(0)}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;transition:color .2s ease}
+.nav-links a:hover,.nav-links a.active{color:var(--fh-blue-400)}
+.nav-ref{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--text-muted);letter-spacing:.06em}
+
+/* === COVER === */
+@keyframes coverReveal{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.cover-page{min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:3rem 4rem;position:relative;overflow:hidden;background:radial-gradient(ellipse at 15% 25%,rgba(37,99,235,.06) 0%,transparent 50%),radial-gradient(ellipse at 85% 75%,rgba(249,115,22,.04) 0%,transparent 50%),#FFFFFF}
+.cover-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(13,27,46,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(13,27,46,.028) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);pointer-events:none}
+.cover-accent-bar{position:absolute;left:0;top:15%;bottom:15%;width:4px;background:linear-gradient(to bottom,transparent,var(--fh-orange),transparent)}
+.cover-top{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;animation:coverReveal 1s cubic-bezier(.16,1,.3,1) .1s both}
+.cover-contact{font-family:'JetBrains Mono',monospace;font-size:.57rem;color:var(--text-muted);text-align:right;line-height:2.1}
+.cover-body{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;padding:4rem 0}
+.cover-label{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--fh-orange);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.2rem;animation:coverReveal 1s cubic-bezier(.16,1,.3,1) .3s both}
+.cover-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(3rem,6vw,5.5rem);font-weight:700;color:var(--text-primary);line-height:1.0;letter-spacing:-.04em;margin-bottom:1rem;animation:coverReveal 1s cubic-bezier(.16,1,.3,1) .5s both}
+.cover-subtitle{font-family:'Space Grotesk',sans-serif;font-size:clamp(1rem,2vw,1.25rem);font-weight:300;color:var(--text-secondary);margin-bottom:2.5rem;animation:coverReveal 1s cubic-bezier(.16,1,.3,1) .65s both}
+.cover-tags{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:0;animation:coverReveal 1s cubic-bezier(.16,1,.3,1) .75s both}
+.cover-tag{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;border:1px solid}
+.cover-tag--blue{background:var(--fh-blue-100);border-color:var(--border-blue);color:var(--fh-blue-300)}
+.cover-tag--orange{background:var(--fh-orange-muted);border-color:var(--fh-orange-border);color:var(--fh-orange)}
+.cover-tag-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.cover-bottom{position:relative;z-index:2;animation:coverReveal 1s cubic-bezier(.16,1,.3,1) .9s both}
+.cover-meta-bar{display:flex;background:rgba(255,255,255,.80);border:1px solid var(--border-subtle);border-radius:10px;overflow:hidden;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 2px 16px rgba(13,27,46,0.07)}
+.cover-meta-item{padding:1rem 1.5rem;border-right:1px solid var(--border-subtle);flex:1}
+.cover-meta-item:last-child{border-right:none}
+.cover-meta-label{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.3rem}
+.cover-meta-value{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:500;color:var(--text-primary)}
+
+/* === SHIMMER DIVIDER === */
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.section-divider{width:100%;height:1px;background:linear-gradient(90deg,transparent 0%,var(--fh-blue-300) 30%,var(--fh-orange) 70%,transparent 100%);background-size:200% 100%;animation:shimmer 4s ease-in-out infinite;margin:2.5rem 0;opacity:.4}
+
+/* === REPORT WRAPPER === */
+.report{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+
+/* === TOC === */
+.toc{padding:5rem 4rem;background:#FFFFFF;border-bottom:1px solid var(--border-subtle)}
+.toc-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.15em;margin-bottom:2.5rem}
+.toc-list{list-style:none}
+.toc-list>li{display:flex;align-items:baseline;gap:.75rem;padding:.75rem 0;border-bottom:1px solid var(--border-subtle)}
+.toc-list>li:last-child{border-bottom:none}
+.toc-num{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-muted);min-width:2rem;flex-shrink:0}
+.toc-name{font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:500;color:var(--text-primary);flex:1}
+.toc-name a{color:inherit;transition:color .2s}
+.toc-name a:hover{color:var(--fh-blue-300)}
+.toc-sub{list-style:none;padding:.3rem 0 .1rem 3rem}
+.toc-sub li{font-family:'Inter',sans-serif;font-size:.72rem;color:var(--text-muted);padding:.2rem 0}
+
+/* === SECTIONS === */
+.section{padding:4rem;position:relative;background:#FFFFFF}
+.section+.section{border-top:1px solid var(--border-subtle)}
+.section-code{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--fh-orange);letter-spacing:.16em;text-transform:uppercase;margin-bottom:.35rem;opacity:.85}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:1.7rem;font-weight:600;color:var(--text-primary);letter-spacing:-.02em}
+
+/* === EXEC SUMMARY === */
+.exec-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:3rem;align-items:start}
+.exec-lead{font-family:'Inter',sans-serif;font-size:.9rem;color:var(--text-secondary);line-height:1.85}
+.exec-lead p+p{margin-top:1rem}
+
+/* === KPI GRID === */
+.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.875rem}
+.kpi-card{background:#FFFFFF;border:1px solid var(--border-subtle);border-radius:12px;padding:1.25rem 1.5rem;text-align:center;transition:all .35s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;box-shadow:0 1px 4px rgba(13,27,46,0.05),0 4px 16px rgba(13,27,46,0.04)}
+.kpi-card::before{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(37,99,235,.04),transparent 60%);opacity:0;transition:opacity .35s ease}
+.kpi-card:hover{border-color:var(--border-blue);transform:translateY(-3px);box-shadow:var(--glow-blue-sm),0 12px 32px rgba(13,27,46,0.10)}
+.kpi-card:hover::before{opacity:1}
+.kpi-card--orange{border-color:var(--fh-orange-border);box-shadow:0 2px 16px rgba(249,115,22,0.10),0 4px 16px rgba(13,27,46,0.04)}
+.kpi-card--blue{border-color:var(--border-blue);box-shadow:0 2px 16px rgba(37,99,235,0.10),0 4px 16px rgba(13,27,46,0.04)}
+.kpi-card--ok{border-color:rgba(22,163,74,.25);box-shadow:0 2px 16px rgba(22,163,74,0.10),0 4px 16px rgba(13,27,46,0.04)}
+.kpi-label{font-family:'JetBrains Mono',monospace;font-size:.53rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.5rem}
+.kpi-value{font-family:'JetBrains Mono',monospace;font-size:2.1rem;font-weight:500;color:var(--fh-blue-400);line-height:1;margin-bottom:.35rem}
+.kpi-card--orange .kpi-value{color:var(--fh-orange)}
+.kpi-card--ok .kpi-value{color:var(--status-ok)}
+.kpi-sub{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--text-muted)}
+
+/* === BADGES === */
+@keyframes criticalPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
+.badge{display:inline-flex;align-items:center;gap:.4rem;padding:.25rem .75rem;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:500;letter-spacing:.08em;margin-top:.75rem}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.badge--ok{background:rgba(22,163,74,.09);border:1px solid rgba(22,163,74,.25);color:#16A34A}
+.badge--warning{background:rgba(234,88,12,.09);border:1px solid rgba(234,88,12,.25);color:#EA580C}
+.badge--info{background:var(--fh-blue-100);border:1px solid var(--border-blue);color:var(--fh-blue-400)}
+
+/* === TABLES === */
+.table-wrap{border-radius:12px;overflow:hidden;border:1px solid var(--border-subtle);box-shadow:0 1px 4px rgba(13,27,46,0.05)}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+thead tr{background:var(--fh-blue-100)}
+th{padding:.85rem 1rem;text-align:left;font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--fh-blue-500);border-bottom:1px solid var(--border-blue)}
+td{padding:.85rem 1rem;border-bottom:1px solid var(--border-subtle);color:var(--text-secondary);font-family:'Inter',sans-serif;transition:background .15s;background:#FFFFFF}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--bg-base)}
+td:first-child{color:var(--text-primary);font-weight:500}
+td.num{font-family:'JetBrains Mono',monospace;text-align:right;color:var(--text-primary)}
+td.unit{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--text-muted);text-align:center}
+th.right{text-align:right}
+th.center{text-align:center}
+
+/* === TOTALS TABLE === */
+.totals-wrap{margin-top:1.5rem;border-radius:12px;overflow:hidden;border:1px solid var(--border-subtle);box-shadow:0 1px 4px rgba(13,27,46,0.05);max-width:440px;margin-left:auto}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding:.75rem 1.25rem;border-bottom:1px solid var(--border-subtle);background:#FFFFFF}
+.total-row:last-child{border-bottom:none}
+.total-row.subtotal{background:var(--bg-elevated)}
+.total-row.iva{background:#FFFFFF}
+.total-row.grand{background:var(--fh-blue-400);border-bottom:none}
+.total-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted)}
+.total-row.subtotal .total-label{color:var(--text-secondary)}
+.total-row.grand .total-label{color:rgba(255,255,255,.75);font-size:.65rem}
+.total-value{font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600;color:var(--text-primary)}
+.total-row.grand .total-value{color:#FFFFFF;font-size:1.1rem}
+.total-row.iva .total-label{color:var(--text-muted)}
+
+/* === CALLOUT === */
+.callout{display:flex;gap:1rem;align-items:flex-start;background:rgba(249,115,22,.06);border-left:3px solid var(--fh-orange);border-radius:0 10px 10px 0;padding:1rem 1.25rem;font-family:'Inter',sans-serif;font-size:.82rem;color:var(--text-secondary);line-height:1.65;margin-top:1.25rem}
+.callout-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+.callout--blue{background:rgba(37,99,235,.06);border-left-color:var(--fh-blue-400)}
+
+/* === CONDITIONS GRID === */
+.conditions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem}
+.condition-item{background:#FFFFFF;border:1px solid var(--border-subtle);border-radius:12px;padding:1.25rem 1rem;text-align:center;transition:all .2s ease;box-shadow:0 1px 4px rgba(13,27,46,0.05)}
+.condition-item:hover{border-color:var(--border-blue);box-shadow:var(--glow-blue-sm)}
+.condition-icon{font-size:1.5rem;margin-bottom:.6rem}
+.condition-label{font-family:'JetBrains Mono',monospace;font-size:.52rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:.3rem}
+.condition-value{font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:500;color:var(--text-primary)}
+
+/* === NUM LIST === */
+.num-list{list-style:none}
+.num-list li{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border-subtle);align-items:flex-start}
+.num-list li:last-child{border-bottom:none}
+.num-marker{width:26px;height:26px;border-radius:50%;flex-shrink:0;margin-top:2px;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:600;color:var(--bg-base);display:flex;align-items:center;justify-content:center;background:var(--fh-blue-400)}
+.num-marker--orange{background:var(--fh-orange)}
+.num-content{font-family:'Inter',sans-serif;font-size:.85rem;color:var(--text-secondary);line-height:1.7;flex:1}
+.num-title{font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:600;color:var(--text-primary);margin-bottom:.25rem}
+
+/* === CONTENT POINTS === */
+.content-points{list-style:none;margin:0 0 1.5rem 0;padding:0}
+.content-points li{display:flex;align-items:flex-start;gap:.75rem;padding:.6rem 0;border-bottom:1px solid var(--border-subtle);font-family:'Inter',sans-serif;font-size:.87rem;color:var(--text-secondary);line-height:1.4}
+.content-points li:last-child{border-bottom:none;padding-bottom:0}
+.content-points li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--fh-orange);flex-shrink:0;margin-top:.45rem}
+.content-points strong{color:var(--text-primary);font-weight:600}
+
+/* === CONTENT BODY === */
+.content-body{font-family:'Inter',sans-serif;font-size:.9rem;color:var(--text-secondary);line-height:1.85;margin-bottom:.75rem}
+.content-body:last-child{margin-bottom:0}
+.content-resumen{background:var(--fh-blue-100);border-left:3px solid var(--fh-blue-400);border-radius:0 8px 8px 0;padding:1rem 1.5rem;font-family:'Inter',sans-serif;font-size:.92rem;color:var(--fh-blue-500);font-weight:500;line-height:1.75;margin-bottom:1.5rem}
+
+/* === WARRANTIES === */
+.warranty{border-radius:12px;overflow:hidden;margin-bottom:1rem;border:1px solid var(--border-subtle);box-shadow:0 1px 4px rgba(13,27,46,0.05)}
+.warranty--featured{border-color:var(--fh-orange-border);box-shadow:0 2px 16px rgba(249,115,22,0.10)}
+.warranty-body{background:#FFFFFF;padding:1.75rem 2rem;display:flex;gap:1.75rem;align-items:center}
+.warranty-years{font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:500;color:var(--fh-orange);line-height:1;min-width:4rem;text-align:center}
+.warranty-years small{display:block;font-size:.52rem;font-weight:400;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted);margin-top:3px}
+.warranty-divider{width:1px;background:var(--border-mid);align-self:stretch;flex-shrink:0}
+.warranty-text h4{font-family:'Space Grotesk',sans-serif;font-size:.95rem;color:var(--text-primary);margin-bottom:.5rem;font-weight:600}
+.warranty-text p{font-family:'Inter',sans-serif;font-size:.8rem;color:var(--text-secondary);line-height:1.7}
+
+/* === CONCLUSION === */
+.conclusion-section{padding:5rem 4rem;background:radial-gradient(ellipse at 20% 50%,rgba(37,99,235,.05) 0%,transparent 60%),radial-gradient(ellipse at 80% 50%,rgba(249,115,22,.03) 0%,transparent 60%),var(--bg-elevated);border-top:1px solid var(--border-blue)}
+.conclusion-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin:2.5rem 0}
+.conclusion-pillar{background:#FFFFFF;border:1px solid var(--border-subtle);border-radius:12px;padding:2rem 1.75rem;transition:all .35s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;box-shadow:0 1px 4px rgba(13,27,46,0.05),0 4px 16px rgba(13,27,46,0.03)}
+.conclusion-pillar::before{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(37,99,235,.04),transparent 60%);opacity:0;transition:opacity .35s ease}
+.conclusion-pillar:hover{border-color:var(--border-blue);transform:translateY(-4px);box-shadow:var(--glow-blue-sm),0 16px 40px rgba(13,27,46,0.08)}
+.conclusion-pillar:hover::before{opacity:1}
+.pillar-num{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--fh-orange);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem}
+.pillar-title{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;color:var(--text-primary);margin-bottom:.75rem}
+.pillar-text{font-family:'Inter',sans-serif;font-size:.82rem;color:var(--text-secondary);line-height:1.7}
+.conclusion-statement{font-family:'Space Grotesk',sans-serif;font-size:clamp(1rem,2vw,1.35rem);font-weight:500;color:var(--text-primary);line-height:1.55;text-align:center;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border-subtle);font-style:italic;opacity:.85}
+
+/* === SIGNATURES === */
+.signatures-section{padding:4rem;border-top:1px solid var(--border-subtle);background:#FFFFFF}
+.sig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-bottom:3rem}
+.sig-line{height:60px;border-bottom:1px solid var(--border-mid);margin-bottom:.75rem}
+.sig-name{font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:600;color:var(--text-primary)}
+.sig-role{font-family:'JetBrains Mono',monospace;font-size:.57rem;color:var(--text-muted);margin-top:3px;letter-spacing:.04em}
+.footer-bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding-top:1.5rem;border-top:1px solid var(--border-subtle)}
+.footer-bar-info{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--text-muted)}
+
+/* === REPORT FOOTER === */
+.report-footer{max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:1rem 4rem;border-top:1px solid var(--border-subtle);background:#FFFFFF;position:relative;z-index:1}
+.footer-center{font-family:'JetBrains Mono',monospace;font-size:.57rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;text-align:center}
+.footer-right{font-family:'JetBrains Mono',monospace;font-size:.57rem;color:var(--text-muted);text-align:right}
+
+/* === REVEAL === */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal:nth-child(1){transition-delay:.05s}
+.reveal:nth-child(2){transition-delay:.12s}
+.reveal:nth-child(3){transition-delay:.19s}
+.reveal:nth-child(4){transition-delay:.26s}
+
+/* === MODE BAR === */
+.mode-bar{position:fixed;top:1rem;right:1.5rem;z-index:500;display:flex;align-items:center;gap:.2rem;padding:.3rem;background:rgba(255,255,255,0.96);border:1px solid var(--border-subtle);border-radius:999px;box-shadow:0 2px 16px rgba(13,27,46,0.12);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.mode-btn{padding:.38rem .9rem;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:.55rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;border:none;cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1);background:transparent;color:var(--text-muted);white-space:nowrap;line-height:1}
+.mode-btn.active{background:var(--fh-blue-400);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,0.30)}
+
+/* === PRESENTACION MODE === */
+body.mode-presentacion .content-body,
+body.mode-presentacion .table-wrap,
+body.mode-presentacion .num-list,
+body.mode-presentacion .callout,
+body.mode-presentacion .conditions-grid{display:none!important}
+body.mode-presentacion .section-title{font-size:2.3rem}
+body.mode-presentacion .cover-title{font-size:clamp(4.5rem,9vw,7.5rem)}
+body.mode-presentacion .section{padding:5.5rem 4rem}
+body.mode-presentacion .content-resumen{font-size:1rem;padding:1.35rem 1.75rem;line-height:1.95;margin-bottom:2.5rem}
+body.mode-presentacion .kpi-card{padding:1.75rem 1.5rem}
+body.mode-presentacion .kpi-value{font-size:2.6rem}
+body.mode-presentacion .totals-wrap{display:none!important}
+
+/* === SLIDE MODE === */
+.slide-progress{position:fixed;bottom:0;left:0;height:2px;background:linear-gradient(90deg,var(--fh-blue-400),var(--fh-orange));transition:width .4s cubic-bezier(.4,0,.2,1);z-index:2000;display:none}
+body.mode-slides .slide-progress{display:block}
+.slide-nav{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);z-index:2000;display:none;align-items:center;gap:.75rem;background:rgba(13,27,46,0.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:999px;padding:.55rem 1.25rem;box-shadow:0 4px 32px rgba(13,27,46,0.30);border:1px solid rgba(255,255,255,0.08);user-select:none}
+body.mode-slides .slide-nav{display:flex;opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease;transform:translateY(12px)}
+body.mode-slides .slide-nav.nav-visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+.slide-arrow{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.9);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s ease,border-color .2s ease;padding:0;flex-shrink:0}
+.slide-arrow:hover:not(:disabled){background:rgba(255,255,255,0.20);border-color:rgba(255,255,255,0.30)}
+.slide-arrow:disabled{opacity:.25;cursor:default}
+.slide-arrow svg{width:12px;height:12px;stroke-width:2.5;display:block}
+.slide-counter{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:500;color:rgba(255,255,255,0.75);letter-spacing:.06em;min-width:4.5rem;text-align:center}
+.slide-sep{color:rgba(255,255,255,0.25);margin:0 .15rem}
+.slide-label{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:rgba(255,255,255,0.45);letter-spacing:.05em;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase;padding-left:.75rem;border-left:1px solid rgba(255,255,255,0.12)}
+body.mode-slides{overflow:hidden!important}
+body.mode-slides .sticky-nav,body.mode-slides .blob,body.mode-slides .report-footer{display:none!important}
+body.mode-slides .report{position:fixed!important;inset:0!important;max-width:100vw!important;margin:0!important;overflow:hidden!important;background:var(--bg-base);z-index:10}
+body.mode-slides .report > *{position:absolute!important;inset:0!important;overflow-y:auto!important;overflow-x:hidden!important;opacity:0!important;pointer-events:none!important;z-index:1!important;transition:opacity .38s cubic-bezier(.4,0,.2,1),transform .38s cubic-bezier(.4,0,.2,1)!important;transform:translateX(var(--slide-from,65px))!important;border-top:none!important}
+body.mode-slides .report > *.slide-active{opacity:1!important;pointer-events:auto!important;transform:translateX(0)!important;z-index:3!important}
+body.mode-slides .report > *.slide-leaving{opacity:0!important;pointer-events:none!important;transform:translateX(var(--slide-to,-65px))!important;z-index:2!important}
+body.mode-slides .section-title{font-size:2.25rem!important}
+body.mode-slides .cover-title{font-size:clamp(5rem,9vw,8rem)!important}
+body.mode-slides .kpi-value{font-size:2.8rem!important}
+body.mode-slides .section,.report > .toc,.report > .conclusion-section,.report > .signatures-section{padding:4rem 6vw!important}
+body.mode-slides .content-body,body.mode-slides .table-wrap,body.mode-slides .num-list,body.mode-slides .callout,body.mode-slides .conditions-grid,body.mode-slides .totals-wrap{display:none!important}
+body.mode-slides .content-resumen{font-size:1rem!important;line-height:1.95!important;padding:1.25rem 1.75rem!important;margin-bottom:1.25rem!important}
+body.mode-slides .content-points{display:block!important;margin-bottom:0!important}
+body.mode-slides .content-points li{font-size:.9rem!important;padding:.65rem 0!important}
+
+/* === PRINT === */
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .blob,.sticky-nav,.mode-bar{display:none!important}
+  .reveal{opacity:1!important;transform:none!important}
+  .cover-page{page-break-after:always;min-height:100vh}
+  .card,.table-wrap{page-break-inside:avoid}
+  @page{size:A4;margin:0}
+}
+
+/* === RESPONSIVE === */
+@media(max-width:720px){
+  .section,.toc,.conclusion-section,.signatures-section{padding:2rem 1.5rem}
+  .cover-page{padding:1.5rem}
+  .cover-title{font-size:2.8rem}
+  .exec-grid{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .conclusion-pillars{grid-template-columns:1fr}
+  .sig-grid{grid-template-columns:1fr}
+  .report-footer{padding:1rem 1.5rem;flex-direction:column;gap:.5rem;text-align:center}
+  .cover-meta-bar{flex-direction:column}
+  .cover-meta-item{border-right:none;border-bottom:1px solid var(--border-subtle)}
+  .cover-meta-item:last-child{border-bottom:none}
+}
+</style>
+</head>
+<body>
+
+<div class="blob blob-1" aria-hidden="true"></div>
+<div class="blob blob-2" aria-hidden="true"></div>
+<div class="blob blob-3" aria-hidden="true"></div>
+
+<!-- MODE TOGGLE -->
+<div class="mode-bar" id="mode-bar">
+  <button class="mode-btn active" id="btn-informe" onclick="setMode('informe')">Cotización</button>
+  <button class="mode-btn" id="btn-presentacion" onclick="setMode('presentacion')">Resumen</button>
+  <button class="mode-btn" id="btn-slides" onclick="setMode('slides')">Slides</button>
+</div>
+
+<!-- SLIDE PROGRESS -->
+<div class="slide-progress" id="slide-progress"></div>
+
+<!-- SLIDE NAV -->
+<div class="slide-nav" id="slide-nav" aria-label="Navegación de slides">
+  <button class="slide-arrow" id="slide-prev" onclick="slidePrev()" title="Anterior (←)" disabled>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg>
+  </button>
+  <div class="slide-counter"><span id="slide-cur">1</span><span class="slide-sep">/</span><span id="slide-tot">—</span></div>
+  <button class="slide-arrow" id="slide-next" onclick="slideNext()" title="Siguiente (→)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,18 15,12 9,6"/></svg>
+  </button>
+  <div class="slide-label" id="slide-label"></div>
+</div>
+
+<nav class="sticky-nav" id="sticky-nav">
+  <div style="display:flex;gap:0;align-items:center">
+    <img src="" alt="FreshHouse" style="height:38px;width:auto;object-fit:contain" class="nav-logo">
+  </div>
+  <div class="nav-links">
+    <a href="#resumen">Resumen</a>
+    <a href="#items">Ítems</a>
+    <a href="#condiciones">Condiciones</a>
+    <a href="#garantias">Garantías</a>
+    <a href="#firmas">Firmas</a>
+  </div>
+  <!-- [REF-COTIZACION] Ej: FH-COT-001-2026 -->
+  <div class="nav-ref">{{REF_COTIZACION}}</div>
+</nav>
+
+<main class="report">
+
+<!-- ══════════════════════════════════════════════
+     PORTADA
+     ══════════════════════════════════════════════ -->
+<section class="cover-page" id="cover">
+  <div class="cover-grid" aria-hidden="true"></div>
+  <div class="cover-accent-bar" aria-hidden="true"></div>
+
+  <div class="cover-top">
+    <div>
+      <!-- Logo FreshHouse: reemplazar src con ruta o base64 -->
+      <img id="fh-logo" src="" alt="FreshHouse — Ingeniería de Fachadas y Humedades"
+           style="height:80px;width:auto;display:block;object-fit:contain">
+    </div>
+    <div class="cover-contact">
+      NIT. 901.718.258-4<br>
+      Calle 3 Norte Cra 18-49 · Armenia, Quindío<br>
+      310 461 7353 · gerencia@freshouse.com.co
+    </div>
+  </div>
+
+  <div class="cover-body">
+    <!-- [TIPO-DOC] Ej: Cotización de Obra / Propuesta Técnico-Comercial -->
+    <div class="cover-label">{{TIPO_DOCUMENTO}}</div>
+    <!-- [NOMBRE-PROYECTO] Ej: Edificio Los Cedros Torre 3 -->
+    <h1 class="cover-title">{{NOMBRE_PROYECTO}}</h1>
+    <!-- [DESCRIPCION] Breve descripción de los trabajos -->
+    <p class="cover-subtitle">{{DESCRIPCION_TRABAJOS}}</p>
+    <div class="cover-tags">
+      <!-- [TAGS] Tipos de trabajo incluidos — agregar o quitar según aplique -->
+      <span class="cover-tag cover-tag--blue"><span class="cover-tag-dot"></span>{{TAG_1}}</span>
+      <span class="cover-tag cover-tag--orange"><span class="cover-tag-dot"></span>{{TAG_2}}</span>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="cover-meta-bar">
+      <!-- [CLIENTE] Nombre del cliente o administración -->
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Cliente</div>
+        <div class="cover-meta-value">{{CLIENTE}}</div>
+      </div>
+      <!-- [FECHA] Fecha de emisión -->
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Fecha</div>
+        <div class="cover-meta-value">{{FECHA_EMISION}}</div>
+      </div>
+      <!-- [VALIDEZ] Fecha hasta la que es válida la oferta -->
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Válida hasta</div>
+        <div class="cover-meta-value">{{FECHA_VALIDEZ}}</div>
+      </div>
+      <!-- [REF] Número de referencia de la cotización -->
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Referencia</div>
+        <div class="cover-meta-value">{{REF_COTIZACION}}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     TABLA DE CONTENIDO
+     ══════════════════════════════════════════════ -->
+<section class="toc reveal">
+  <div class="toc-label">Contenido de la cotización</div>
+  <ol class="toc-list">
+    <li><span class="toc-num">01</span><span class="toc-name"><a href="#resumen">Resumen Ejecutivo</a></span></li>
+    <li>
+      <span class="toc-num">02</span>
+      <span class="toc-name">
+        <a href="#items">Ítems y Cantidades</a>
+        <ul class="toc-sub"><li>Descripción · Unidades · Cantidades · Precios unitarios · Totales</li></ul>
+      </span>
+    </li>
+    <li><span class="toc-num">03</span><span class="toc-name"><a href="#condiciones">Condiciones Comerciales</a></span></li>
+    <li><span class="toc-num">04</span><span class="toc-name"><a href="#garantias">Garantías y Exclusiones</a></span></li>
+    <li><span class="toc-num">05</span><span class="toc-name"><a href="#firmas">Aceptación y Firmas</a></span></li>
+  </ol>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     01 — RESUMEN EJECUTIVO
+     ══════════════════════════════════════════════ -->
+<section class="section reveal" id="resumen">
+  <div class="section-code">01 — Resumen Ejecutivo</div>
+  <h2 class="section-title">Resumen de la propuesta</h2>
+  <div class="section-divider"></div>
+
+  <div class="exec-grid">
+    <div class="exec-lead">
+      <!-- [RESUMEN-EJECUTIVO] Párrafo descriptivo del alcance general -->
+      <p class="content-resumen">{{RESUMEN_ALCANCE}}</p>
+      <p class="content-body">{{DESCRIPCION_ADICIONAL}}</p>
+
+      <!-- Puntos clave del alcance -->
+      <ul class="content-points">
+        <!-- [PUNTOS-ALCANCE] Cada li es un ítem principal del alcance -->
+        <li><strong>{{ACTIVIDAD_1}}</strong> — {{DETALLE_1}}</li>
+        <li><strong>{{ACTIVIDAD_2}}</strong> — {{DETALLE_2}}</li>
+        <li><strong>{{ACTIVIDAD_3}}</strong> — {{DETALLE_3}}</li>
+      </ul>
+    </div>
+
+    <!-- KPIs financieros principales -->
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-card--blue reveal">
+        <div class="kpi-label">Valor sin IVA</div>
+        <!-- [VALOR-SIN-IVA] -->
+        <div class="kpi-value" style="font-size:1.5rem">{{VALOR_SIN_IVA}}</div>
+        <div class="kpi-sub">COP</div>
+      </div>
+      <div class="kpi-card kpi-card--orange reveal">
+        <div class="kpi-label">Valor Total con IVA</div>
+        <!-- [VALOR-CON-IVA] -->
+        <div class="kpi-value" style="font-size:1.5rem">{{VALOR_CON_IVA}}</div>
+        <div class="kpi-sub">COP · IVA 19%</div>
+      </div>
+      <div class="kpi-card reveal">
+        <div class="kpi-label">Plazo de ejecución</div>
+        <!-- [PLAZO] -->
+        <div class="kpi-value counter" data-target="{{PLAZO_DIAS}}">0</div>
+        <div class="kpi-sub">días calendario</div>
+      </div>
+      <div class="kpi-card kpi-card--ok reveal">
+        <div class="kpi-label">Validez oferta</div>
+        <!-- [VALIDEZ-DIAS] -->
+        <div class="kpi-value counter" data-target="{{VALIDEZ_DIAS}}">0</div>
+        <div class="kpi-sub">días desde emisión</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     02 — ÍTEMS Y CANTIDADES
+     ══════════════════════════════════════════════ -->
+<section class="section reveal" id="items">
+  <div class="section-code">02 — Ítems y Cantidades</div>
+  <h2 class="section-title">Tabla de ítems y precios</h2>
+  <div class="section-divider"></div>
+
+  <div class="callout callout--blue">
+    <span class="callout-icon">ℹ</span>
+    <!-- [NOTA-TABLA] Aclaración sobre la tabla: qué incluye mano de obra, herramienta menor, etc. -->
+    <span>{{NOTA_TABLA_ITEMS}}</span>
+  </div>
+
+  <!-- ─────────────────────────────────────────────
+       GRUPO 1 — PRELIMINARES
+       ───────────────────────────────────────────── -->
+  <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;color:var(--text-primary);margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border-subtle)">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--fh-orange);margin-right:.75rem">GRP-1</span>
+    Preliminares
+  </h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:3.5rem">Ítem</th>
+          <th>Descripción</th>
+          <th class="center" style="width:4.5rem">Und</th>
+          <th class="right" style="width:5.5rem">Cant.</th>
+          <th class="right" style="width:7.5rem">V. Unitario</th>
+          <th class="right" style="width:7.5rem">V. Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- [FILA] Replicar <tr> por cada ítem del grupo -->
+        <tr>
+          <td>1.1</td>
+          <td>{{DESC_ITEM_1_1}}</td>
+          <td class="unit">{{UND_1_1}}</td>
+          <td class="num">{{CANT_1_1}}</td>
+          <td class="num">{{VU_1_1}}</td>
+          <td class="num">{{VT_1_1}}</td>
+        </tr>
+        <tr>
+          <td>1.2</td>
+          <td>{{DESC_ITEM_1_2}}</td>
+          <td class="unit">{{UND_1_2}}</td>
+          <td class="num">{{CANT_1_2}}</td>
+          <td class="num">{{VU_1_2}}</td>
+          <td class="num">{{VT_1_2}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─────────────────────────────────────────────
+       GRUPO 2 — FACHADAS
+       ───────────────────────────────────────────── -->
+  <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;color:var(--text-primary);margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border-subtle)">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--fh-orange);margin-right:.75rem">GRP-2</span>
+    <!-- [GRUPO-2] Nombre del segundo grupo de ítems -->
+    {{NOMBRE_GRUPO_2}}
+  </h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:3.5rem">Ítem</th>
+          <th>Descripción</th>
+          <th class="center" style="width:4.5rem">Und</th>
+          <th class="right" style="width:5.5rem">Cant.</th>
+          <th class="right" style="width:7.5rem">V. Unitario</th>
+          <th class="right" style="width:7.5rem">V. Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2.1</td>
+          <td>{{DESC_ITEM_2_1}}</td>
+          <td class="unit">{{UND_2_1}}</td>
+          <td class="num">{{CANT_2_1}}</td>
+          <td class="num">{{VU_2_1}}</td>
+          <td class="num">{{VT_2_1}}</td>
+        </tr>
+        <tr>
+          <td>2.2</td>
+          <td>{{DESC_ITEM_2_2}}</td>
+          <td class="unit">{{UND_2_2}}</td>
+          <td class="num">{{CANT_2_2}}</td>
+          <td class="num">{{VU_2_2}}</td>
+          <td class="num">{{VT_2_2}}</td>
+        </tr>
+        <tr>
+          <td>2.3</td>
+          <td>{{DESC_ITEM_2_3}}</td>
+          <td class="unit">{{UND_2_3}}</td>
+          <td class="num">{{CANT_2_3}}</td>
+          <td class="num">{{VU_2_3}}</td>
+          <td class="num">{{VT_2_3}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─────────────────────────────────────────────
+       GRUPO 3 — (agregar grupos según necesidad)
+       ───────────────────────────────────────────── -->
+  <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;color:var(--text-primary);margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border-subtle)">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--fh-orange);margin-right:.75rem">GRP-3</span>
+    {{NOMBRE_GRUPO_3}}
+  </h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:3.5rem">Ítem</th>
+          <th>Descripción</th>
+          <th class="center" style="width:4.5rem">Und</th>
+          <th class="right" style="width:5.5rem">Cant.</th>
+          <th class="right" style="width:7.5rem">V. Unitario</th>
+          <th class="right" style="width:7.5rem">V. Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>3.1</td>
+          <td>{{DESC_ITEM_3_1}}</td>
+          <td class="unit">{{UND_3_1}}</td>
+          <td class="num">{{CANT_3_1}}</td>
+          <td class="num">{{VU_3_1}}</td>
+          <td class="num">{{VT_3_1}}</td>
+        </tr>
+        <tr>
+          <td>3.2</td>
+          <td>{{DESC_ITEM_3_2}}</td>
+          <td class="unit">{{UND_3_2}}</td>
+          <td class="num">{{CANT_3_2}}</td>
+          <td class="num">{{VU_3_2}}</td>
+          <td class="num">{{VT_3_2}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─────────────────────────────────────────────
+       RESUMEN FINANCIERO
+       ───────────────────────────────────────────── -->
+  <div class="totals-wrap">
+    <div class="total-row">
+      <span class="total-label">Costo directo</span>
+      <span class="total-value">{{COSTO_DIRECTO}}</span>
+    </div>
+    <div class="total-row">
+      <span class="total-label">Herramienta menor (5%)</span>
+      <span class="total-value">{{HERRAMIENTA_MENOR}}</span>
+    </div>
+    <div class="total-row subtotal">
+      <span class="total-label">Subtotal sin IVA</span>
+      <span class="total-value">{{SUBTOTAL_SIN_IVA}}</span>
+    </div>
+    <div class="total-row iva">
+      <span class="total-label">IVA (19%)</span>
+      <span class="total-value">{{IVA}}</span>
+    </div>
+    <div class="total-row grand">
+      <span class="total-label">VALOR TOTAL</span>
+      <span class="total-value">{{VALOR_TOTAL_COP}}</span>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:1.5rem">
+    <span class="callout-icon">⚠</span>
+    <!-- [NOTA-FINANCIERA] Aclaración sobre los precios: vigencia, IVA, forma de cobro -->
+    <span>{{NOTA_FINANCIERA}}</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     03 — CONDICIONES COMERCIALES
+     ══════════════════════════════════════════════ -->
+<section class="section reveal" id="condiciones">
+  <div class="section-code">03 — Condiciones Comerciales</div>
+  <h2 class="section-title">Condiciones de la oferta</h2>
+  <div class="section-divider"></div>
+
+  <!-- Resumen rápido en tarjetas -->
+  <div class="conditions-grid">
+    <div class="condition-item">
+      <div class="condition-icon">📅</div>
+      <div class="condition-label">Validez oferta</div>
+      <!-- [VALIDEZ] -->
+      <div class="condition-value">{{VALIDEZ_TEXTO}}</div>
+    </div>
+    <div class="condition-item">
+      <div class="condition-icon">⏱</div>
+      <div class="condition-label">Plazo ejecución</div>
+      <!-- [PLAZO] -->
+      <div class="condition-value">{{PLAZO_TEXTO}}</div>
+    </div>
+    <div class="condition-item">
+      <div class="condition-icon">💳</div>
+      <div class="condition-label">Forma de pago</div>
+      <!-- [PAGO] -->
+      <div class="condition-value">{{FORMA_PAGO}}</div>
+    </div>
+    <div class="condition-item">
+      <div class="condition-icon">🏗</div>
+      <div class="condition-label">Inicio obras</div>
+      <!-- [INICIO] -->
+      <div class="condition-value">{{INICIO_OBRAS}}</div>
+    </div>
+  </div>
+
+  <!-- Forma de pago detallada -->
+  <p class="content-body">La propuesta económica tiene una validez de <strong>{{VALIDEZ_TEXTO}}</strong> contados a partir de la fecha de emisión. Pasado este plazo, FreshHouse se reserva el derecho de ajustar los precios según variación de insumos.</p>
+
+  <ul class="num-list">
+    <!-- [CUOTAS] Detallar cada hito de pago -->
+    <li>
+      <span class="num-marker">1</span>
+      <div class="num-content">
+        <div class="num-title">Anticipo — {{PCT_ANTICIPO}}</div>
+        <!-- [ANTICIPO] -->
+        {{DETALLE_ANTICIPO}}
+      </div>
+    </li>
+    <li>
+      <span class="num-marker">2</span>
+      <div class="num-content">
+        <div class="num-title">Segundo corte — {{PCT_SEGUNDO_CORTE}}</div>
+        <!-- [SEGUNDO-CORTE] -->
+        {{DETALLE_SEGUNDO_CORTE}}
+      </div>
+    </li>
+    <li>
+      <span class="num-marker">3</span>
+      <div class="num-content">
+        <div class="num-title">Saldo — {{PCT_SALDO}}</div>
+        <!-- [SALDO] -->
+        {{DETALLE_SALDO}}
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     04 — GARANTÍAS Y EXCLUSIONES
+     ══════════════════════════════════════════════ -->
+<section class="section reveal" id="garantias">
+  <div class="section-code">04 — Garantías y Exclusiones</div>
+  <h2 class="section-title">Garantías del sistema y exclusiones</h2>
+  <div class="section-divider"></div>
+
+  <!-- Garantías -->
+  <!-- [GARANTIA-1] Garantía principal del sistema -->
+  <div class="warranty warranty--featured">
+    <div class="warranty-body">
+      <div class="warranty-years">{{AÑOS_GARANTIA_1}}<small>años</small></div>
+      <div class="warranty-divider"></div>
+      <div class="warranty-text">
+        <h4>{{TITULO_GARANTIA_1}}</h4>
+        <p>{{DETALLE_GARANTIA_1}}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- [GARANTIA-2] Garantía de mano de obra -->
+  <div class="warranty">
+    <div class="warranty-body">
+      <div class="warranty-years" style="color:var(--fh-blue-400)">{{AÑOS_GARANTIA_2}}<small>años</small></div>
+      <div class="warranty-divider"></div>
+      <div class="warranty-text">
+        <h4>{{TITULO_GARANTIA_2}}</h4>
+        <p>{{DETALLE_GARANTIA_2}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider" style="margin:2rem 0"></div>
+
+  <!-- Exclusiones -->
+  <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;color:var(--text-primary);margin-bottom:1rem">Exclusiones</h3>
+  <ul class="content-points">
+    <!-- [EXCLUSIONES] Cada ítem es algo que NO está incluido en la cotización -->
+    <li>{{EXCLUSION_1}}</li>
+    <li>{{EXCLUSION_2}}</li>
+    <li>{{EXCLUSION_3}}</li>
+    <li>{{EXCLUSION_4}}</li>
+  </ul>
+
+  <div class="callout">
+    <span class="callout-icon">⚠</span>
+    <!-- [NOTA-EXCLUSIONES] Aclaración sobre cambios de alcance y adicionales -->
+    <span>{{NOTA_EXCLUSIONES}}</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     CIERRE / COLUMNAS DE CONFIANZA
+     ══════════════════════════════════════════════ -->
+<section class="conclusion-section reveal" id="cierre">
+  <div class="report" style="max-width:1000px;margin:0 auto;position:relative;z-index:1">
+    <div class="section-code">FreshHouse — Propuesta Técnico-Comercial</div>
+    <h2 class="section-title">¿Por qué FreshHouse?</h2>
+    <div class="section-divider"></div>
+
+    <div class="conclusion-pillars">
+      <div class="conclusion-pillar">
+        <div class="pillar-num">01 · Experiencia</div>
+        <div class="pillar-title">Especialistas en fachadas</div>
+        <div class="pillar-text">Más de 40 proyectos ejecutados en el Eje Cafetero. Conocimiento profundo de sistemas de pintura, impermeabilización y sellos en altura.</div>
+      </div>
+      <div class="conclusion-pillar">
+        <div class="pillar-num">02 · Materiales</div>
+        <div class="pillar-title">Productos de primer nivel</div>
+        <div class="pillar-text">Trabajamos exclusivamente con líneas profesionales Pintuco y Sika, con fichas técnicas, garantía de fábrica y respaldo de ingeniero de producto.</div>
+      </div>
+      <div class="conclusion-pillar">
+        <div class="pillar-num">03 · Respaldo</div>
+        <div class="pillar-title">Garantía real y trazable</div>
+        <div class="pillar-text">Cada obra queda documentada con actas, registros fotográficos y certificados de producto. La garantía es ejecutable y respaldada por FreshHouse.</div>
+      </div>
+    </div>
+
+    <!-- [STATEMENT] Frase de cierre de la propuesta -->
+    <p class="conclusion-statement">
+      "{{FRASE_CIERRE}}"
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     05 — FIRMAS / ACEPTACIÓN
+     ══════════════════════════════════════════════ -->
+<section class="signatures-section reveal" id="firmas">
+  <div class="sig-grid">
+    <div>
+      <div class="sig-line"></div>
+      <div class="sig-name">Renso Montoya</div>
+      <div class="sig-role">Gerente — FreshHouse · CC 98524704</div>
+    </div>
+    <!-- [FIRMA-2] Representante del cliente -->
+    <div>
+      <div class="sig-line"></div>
+      <div class="sig-name">{{NOMBRE_CLIENTE_FIRMA}}</div>
+      <div class="sig-role">{{ROL_CLIENTE_FIRMA}}</div>
+    </div>
+    <!-- [FIRMA-3] Interventoría o testigo (opcional — eliminar si no aplica) -->
+    <div>
+      <div class="sig-line"></div>
+      <div class="sig-name">{{NOMBRE_FIRMA_3}}</div>
+      <div class="sig-role">{{ROL_FIRMA_3}}</div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div>
+      <img src="" alt="FreshHouse" style="height:44px;width:auto;object-fit:contain;margin-bottom:4px" class="nav-logo">
+      <div class="footer-bar-info" style="margin-top:4px">
+        NIT. 901.718.258-4 · Calle 3 Norte Cra 18-49, Armenia, Quindío · 310 461 7353 · gerencia@freshouse.com.co
+      </div>
+    </div>
+    <!-- [REF + FECHA] -->
+    <div class="footer-bar-info">{{REF_COTIZACION}} · {{FECHA_EMISION}}</div>
+  </div>
+</section>
+
+</main>
+
+<footer class="report-footer">
+  <img src="" alt="FreshHouse" style="height:32px;width:auto;object-fit:contain" class="nav-logo">
+  <!-- [FOOTER-CENTRO] -->
+  <div class="footer-center">Cotización · {{NOMBRE_PROYECTO}}</div>
+  <div class="footer-right">{{REF_COTIZACION}} &nbsp;·&nbsp; Confidencial</div>
+</footer>
+
+<script>
+// SCROLL REVEAL
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ANIMATED COUNTERS
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.target);
+  if (isNaN(target)) return;
+  const duration = 1800;
+  const start = performance.now();
+  const isDecimal = el.dataset.target.includes('.');
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = eased * target;
+    el.textContent = isDecimal ? value.toFixed(1) : Math.round(value).toLocaleString('es-CO');
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !e.target.dataset.counted) {
+      e.target.dataset.counted = 'true';
+      animateCounter(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+
+// STICKY NAV
+const nav = document.querySelector('.sticky-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('visible', window.scrollY > window.innerHeight * 0.6);
+}, { passive: true });
+
+// ACTIVE NAV LINKS
+const navLinks = document.querySelectorAll('.nav-links a');
+const sectionIds = ['resumen','items','condiciones','garantias','firmas'];
+const sectionObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+    }
+  });
+}, { threshold: 0.3 });
+sectionIds.forEach(id => { const el = document.getElementById(id); if(el) sectionObs.observe(el); });
+
+// ============================================================
+// MODE TOGGLE
+// ============================================================
+function setMode(mode) {
+  const body = document.body;
+  ['btn-informe','btn-presentacion','btn-slides'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.classList.remove('active');
+  });
+  if (body.classList.contains('mode-slides') && mode !== 'slides') _destroySlides();
+  body.classList.remove('mode-presentacion','mode-slides');
+  if (mode === 'presentacion') {
+    body.classList.add('mode-presentacion');
+    document.getElementById('btn-presentacion').classList.add('active');
+  } else if (mode === 'slides') {
+    body.classList.add('mode-slides');
+    document.getElementById('btn-slides').classList.add('active');
+    requestAnimationFrame(_initSlides);
+  } else {
+    document.getElementById('btn-informe').classList.add('active');
+  }
+  localStorage.setItem('fh-mode', mode);
+}
+(function() {
+  const saved = localStorage.getItem('fh-mode');
+  if (saved === 'presentacion') setMode('presentacion');
+})();
+
+// ============================================================
+// SLIDE ENGINE
+// ============================================================
+let _slides = [], _slideIdx = 0, _slideInFlight = false, _touchX = 0;
+const _SLIDE_SEL = '.report > .cover-page, .report > .toc, .report > .section, .report > .conclusion-section, .report > .signatures-section';
+
+function _initSlides() {
+  _slides = Array.from(document.querySelectorAll(_SLIDE_SEL));
+  _slides.forEach(el => { el.querySelectorAll('.reveal').forEach(r => r.classList.add('visible')); });
+  _slideIdx = 0; _slideInFlight = false;
+  document.getElementById('slide-tot').textContent = _slides.length;
+  _slides[0].style.setProperty('--slide-from','0px');
+  _slides[0].classList.add('slide-active');
+  _slides[0].style.removeProperty('--slide-from');
+  _slides[0].scrollTop = 0;
+  _updateSlideUI();
+  document.addEventListener('keydown', _slideKey);
+  document.addEventListener('touchstart', _slideTouch, {passive:true});
+  document.addEventListener('touchend', _slideTouchEnd, {passive:true});
+  document.addEventListener('mousemove', _slideNavProximity);
+}
+function _destroySlides() {
+  _slides.forEach(el => { el.classList.remove('slide-active','slide-leaving'); el.style.removeProperty('--slide-from'); el.style.removeProperty('--slide-to'); });
+  document.getElementById('slide-nav').classList.remove('nav-visible');
+  document.removeEventListener('keydown', _slideKey);
+  document.removeEventListener('touchstart', _slideTouch);
+  document.removeEventListener('touchend', _slideTouchEnd);
+  document.removeEventListener('mousemove', _slideNavProximity);
+  _slides = [];
+}
+function _slideNavProximity(e) {
+  const nearBottom = (window.innerHeight - e.clientY) < 100;
+  document.getElementById('slide-nav').classList.toggle('nav-visible', nearBottom);
+}
+function _goSlide(dir) {
+  if (_slideInFlight || !_slides.length) return;
+  const next = _slideIdx + dir;
+  if (next < 0 || next >= _slides.length) return;
+  _slideInFlight = true;
+  const cur = _slides[_slideIdx], tgt = _slides[next];
+  tgt.style.setProperty('--slide-from', dir > 0 ? '70px' : '-70px');
+  cur.style.setProperty('--slide-to', dir > 0 ? '-70px' : '70px');
+  tgt.getBoundingClientRect();
+  cur.classList.remove('slide-active'); cur.classList.add('slide-leaving');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    tgt.classList.add('slide-active'); tgt.scrollTop = 0;
+  }));
+  _slideIdx = next; _updateSlideUI();
+  setTimeout(() => {
+    cur.classList.remove('slide-leaving'); cur.style.removeProperty('--slide-to');
+    tgt.style.removeProperty('--slide-from'); _slideInFlight = false;
+  }, 520);
+}
+function slideNext() { _goSlide(1); }
+function slidePrev() { _goSlide(-1); }
+function _updateSlideUI() {
+  document.getElementById('slide-cur').textContent = _slideIdx + 1;
+  document.getElementById('slide-prev').disabled = (_slideIdx === 0);
+  document.getElementById('slide-next').disabled = (_slideIdx === _slides.length - 1);
+  const pct = _slides.length > 1 ? (_slideIdx / (_slides.length - 1)) * 100 : 100;
+  document.getElementById('slide-progress').style.width = pct + '%';
+  const el = _slides[_slideIdx];
+  const codeEl = el.querySelector('.section-code,.cover-label');
+  const label = codeEl ? codeEl.textContent.trim() : '';
+  const lbl = document.getElementById('slide-label');
+  lbl.textContent = label; lbl.style.display = label ? '' : 'none';
+}
+function _slideKey(e) {
+  if (!document.body.classList.contains('mode-slides')) return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); slideNext(); }
+  else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); slidePrev(); }
+}
+function _slideTouch(e) { _touchX = e.touches[0].clientX; }
+function _slideTouchEnd(e) {
+  if (!document.body.classList.contains('mode-slides')) return;
+  const diff = _touchX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 48) { diff > 0 ? slideNext() : slidePrev(); }
+}
+
+// LIGHTBOX
+(function(){
+  const lb = document.createElement('div');
+  lb.id = 'lightbox';
+  lb.style.cssText = 'display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,16,28,0.96);backdrop-filter:blur(8px);align-items:center;justify-content:center;cursor:zoom-out';
+  lb.innerHTML = '<img id="lb-img" style="max-width:92vw;max-height:92vh;object-fit:contain;border-radius:6px;box-shadow:0 8px 64px rgba(0,0,0,0.6)"><button id="lb-close" style="position:absolute;top:1.25rem;right:1.5rem;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:50%;width:38px;height:38px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>';
+  document.body.appendChild(lb);
+  function lbClose(){ lb.style.display='none'; document.getElementById('lb-img').src=''; document.body.style.overflow=''; }
+  lb.addEventListener('click', e=>{ if(e.target.id!=='lb-img') lbClose(); });
+  document.getElementById('lb-close').addEventListener('click', lbClose);
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape'&&lb.style.display==='flex') lbClose(); });
+})();
+</script>
+</body>
+</html>

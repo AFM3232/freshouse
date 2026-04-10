@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe Técnico — Fresh House</title>
+<style>
+  /* ─── VARIABLES ─────────────────────────────────────── */
+  :root {
+    --blue:    #1B3A6B;
+    --blue-lt: #2D5DA1;
+    --orange:  #E87722;
+    --dark:    #1A1A1A;
+    --mid:     #5A5A5A;
+    --light:   #F4F5F7;
+    --border:  #DCDFE6;
+    --white:   #FFFFFF;
+    --radius:  6px;
+    --shadow:  0 2px 12px rgba(0,0,0,.08);
+  }
+
+  /* ─── RESET & BASE ──────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 15px; }
+  body {
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: var(--dark);
+    background: var(--light);
+    line-height: 1.65;
+  }
+  h1,h2,h3,h4 { font-weight: 700; line-height: 1.25; }
+  p { color: var(--mid); }
+  img { max-width: 100%; display: block; }
+
+  /* ─── LAYOUT ────────────────────────────────────────── */
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--white);
+  }
+
+  /* ─── PORTADA ───────────────────────────────────────── */
+  .cover {
+    background: var(--blue);
+    color: var(--white);
+    padding: 0;
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-accent {
+    position: absolute;
+    top: 0; right: 0;
+    width: 220px; height: 220px;
+    background: var(--orange);
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+    opacity: .9;
+  }
+  .cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 36px 48px 0;
+  }
+  .cover-logo { display: flex; align-items: center; gap: 12px; }
+  .logo-icon {
+    width: 48px; height: 48px;
+    background: var(--orange);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 900; color: var(--white);
+    letter-spacing: -1px;
+  }
+  .logo-text { font-size: 1.1rem; font-weight: 700; color: var(--white); line-height: 1.2; }
+  .logo-sub { font-size: .7rem; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 2px; }
+  .cover-meta { font-size: .75rem; color: rgba(255,255,255,.55); text-align: right; line-height: 1.8; }
+
+  .cover-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 48px 48px;
+  }
+  .cover-tag {
+    display: inline-block;
+    background: var(--orange);
+    color: var(--white);
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 18px;
+    width: fit-content;
+  }
+  .cover h1 { font-size: 2.1rem; color: var(--white); margin-bottom: 10px; }
+  .cover-project { font-size: 1rem; color: rgba(255,255,255,.7); margin-bottom: 28px; }
+  .cover-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,.15);
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-width: 480px;
+  }
+  .cover-grid-item {
+    background: rgba(255,255,255,.07);
+    padding: 14px 18px;
+  }
+  .cover-grid-item .label { font-size: .65rem; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+  .cover-grid-item .value { font-size: .85rem; font-weight: 600; color: var(--white); }
+
+  /* ─── SECCIONES ─────────────────────────────────────── */
+  .section {
+    padding: 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .section-num {
+    width: 32px; height: 32px;
+    background: var(--blue);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .75rem; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section h2 { font-size: 1.1rem; color: var(--blue); text-transform: uppercase; letter-spacing: 1px; }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .accent-bar {
+    width: 36px; height: 3px;
+    background: var(--orange);
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+
+  /* ─── RESUMEN EJECUTIVO ──────────────────────────────── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: var(--light);
+    border-radius: var(--radius);
+    padding: 20px;
+    border-left: 3px solid var(--blue);
+  }
+  .kpi-card.accent { border-left-color: var(--orange); }
+  .kpi-label { font-size: .7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--mid); margin-bottom: 6px; }
+  .kpi-value { font-size: 1.4rem; font-weight: 700; color: var(--blue); }
+  .kpi-card.accent .kpi-value { color: var(--orange); }
+  .kpi-sub { font-size: .75rem; color: var(--mid); }
+
+  /* ─── TARJETAS ACTIVIDADES ───────────────────────────── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
+  .card-icon {
+    width: 36px; height: 36px;
+    background: var(--blue);
+    border-radius: 4px;
+    margin-bottom: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-dot {
+    width: 14px; height: 14px;
+    background: var(--white);
+    border-radius: 50%;
+    opacity: .9;
+  }
+  .card h4 { font-size: .9rem; color: var(--dark); margin-bottom: 6px; }
+  .card p { font-size: .8rem; }
+  .card-badge {
+    display: inline-block;
+    margin-top: 10px;
+    background: var(--light);
+    color: var(--mid);
+    font-size: .68rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .card-badge.ok { background: #E6F4EA; color: #2E7D32; }
+  .card-badge.warn { background: #FFF3E0; color: #E65100; }
+
+  /* ─── TABLA TÉCNICA ──────────────────────────────────── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .83rem; }
+  th {
+    background: var(--blue);
+    color: var(--white);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--mid);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: var(--light); }
+  .tag-pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: .7rem;
+    font-weight: 600;
+  }
+  .tag-pill.done  { background: #E6F4EA; color: #2E7D32; }
+  .tag-pill.prog  { background: #E3F2FD; color: #1565C0; }
+  .tag-pill.pend  { background: #F3E5F5; color: #6A1B9A; }
+
+  /* ─── GALERÍA ────────────────────────────────────────── */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .photo-slot {
+    aspect-ratio: 4/3;
+    background: var(--light);
+    border-radius: var(--radius);
+    border: 1.5px dashed var(--border);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 6px;
+    color: var(--border);
+    font-size: .75rem;
+    overflow: hidden;
+    position: relative;
+  }
+  .photo-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .photo-slot .icon { font-size: 1.6rem; }
+  .photo-caption {
+    font-size: .72rem;
+    color: var(--mid);
+    margin-top: 6px;
+    text-align: center;
+  }
+  .gallery-item { display: flex; flex-direction: column; }
+
+  /* ─── HALLAZGOS ──────────────────────────────────────── */
+  .finding {
+    display: flex;
+    gap: 16px;
+    padding: 18px;
+    border-radius: var(--radius);
+    background: var(--light);
+    margin-bottom: 12px;
+    border-left: 3px solid var(--blue);
+  }
+  .finding.warn { border-left-color: var(--orange); }
+  .finding-num { font-size: .75rem; font-weight: 700; color: var(--blue); min-width: 24px; }
+  .finding.warn .finding-num { color: var(--orange); }
+  .finding-body h4 { font-size: .88rem; color: var(--dark); margin-bottom: 4px; }
+  .finding-body p { font-size: .8rem; }
+
+  /* ─── CONDICIONES EXTERNAS ───────────────────────────── */
+  .conditions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .cond-item {
+    background: var(--light);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+  }
+  .cond-item .icon { font-size: 1.5rem; margin-bottom: 6px; }
+  .cond-item .label { font-size: .7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--mid); margin-bottom: 4px; }
+  .cond-item .val { font-size: .9rem; font-weight: 700; color: var(--dark); }
+
+  /* ─── RESULTADOS ─────────────────────────────────────── */
+  .result-bar { margin-bottom: 14px; }
+  .result-bar .bar-label {
+    display: flex; justify-content: space-between;
+    font-size: .78rem; font-weight: 600; margin-bottom: 5px;
+  }
+  .bar-track {
+    height: 8px;
+    background: var(--light);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: var(--blue);
+    border-radius: 20px;
+    transition: width .4s ease;
+  }
+  .bar-fill.accent { background: var(--orange); }
+
+  /* ─── CONCLUSIONES / RECOMENDACIONES ────────────────── */
+  .list-items { list-style: none; }
+  .list-items li {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: .85rem;
+    color: var(--mid);
+    align-items: flex-start;
+  }
+  .list-items li:last-child { border-bottom: none; }
+  .li-marker {
+    width: 22px; height: 22px;
+    background: var(--blue);
+    border-radius: 50%;
+    color: var(--white);
+    font-size: .65rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .li-marker.accent { background: var(--orange); }
+
+  /* ─── GARANTÍAS ──────────────────────────────────────── */
+  .warranty-box {
+    background: var(--blue);
+    color: var(--white);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .warranty-year {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--orange);
+    line-height: 1;
+    min-width: 80px;
+    text-align: center;
+  }
+  .warranty-year span { display: block; font-size: .7rem; font-weight: 600; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+  .warranty-text h4 { font-size: 1rem; color: var(--white); margin-bottom: 6px; }
+  .warranty-text p { font-size: .8rem; color: rgba(255,255,255,.65); }
+  .warranty-divider { width: 1px; background: rgba(255,255,255,.2); align-self: stretch; }
+
+  /* ─── FIRMA / FOOTER ─────────────────────────────────── */
+  .footer-section {
+    padding: 40px 48px;
+    background: var(--light);
+    border-top: 2px solid var(--blue);
+  }
+  .sigs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+  .sig-block { text-align: center; }
+  .sig-line {
+    height: 60px;
+    border-bottom: 1.5px solid var(--dark);
+    margin-bottom: 8px;
+  }
+  .sig-name { font-size: .85rem; font-weight: 700; color: var(--dark); }
+  .sig-role { font-size: .72rem; color: var(--mid); }
+  .footer-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-info p { font-size: .72rem; color: var(--mid); }
+  .footer-logo { font-size: .8rem; font-weight: 700; color: var(--blue); }
+  .footer-logo span { color: var(--orange); }
+
+  /* ─── UTILIDADES ─────────────────────────────────────── */
+  .mb-s  { margin-bottom: 12px; }
+  .mb-m  { margin-bottom: 24px; }
+  .mb-l  { margin-bottom: 36px; }
+  .text-sm { font-size: .82rem; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  /* ─── PRINT ──────────────────────────────────────────── */
+  @media print {
+    body { background: white; }
+    .page { max-width: 100%; box-shadow: none; }
+    .section { break-inside: avoid; }
+    .cover { break-after: page; }
+  }
+
+  /* ─── RESPONSIVE ─────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .section, .footer-section { padding: 28px 20px; }
+    .cover-top, .cover-body { padding-left: 24px; padding-right: 24px; }
+    .cover h1 { font-size: 1.5rem; }
+    .cover-grid { grid-template-columns: 1fr 1fr; }
+    .cover-accent { width: 120px; height: 120px; }
+    .warranty-box { flex-direction: column; }
+    .warranty-divider { width: 100%; height: 1px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ═══ PORTADA ══════════════════════════════════════════ -->
+  <div class="cover">
+    <div class="cover-accent"></div>
+
+    <div class="cover-top">
+      <div class="cover-logo">
+        <div class="logo-icon">FH</div>
+        <div>
+          <div class="logo-text">Fresh House</div>
+          <div class="logo-sub">Ingeniería de Fachadas y Humedades</div>
+        </div>
+      </div>
+      <div class="cover-meta">
+        NIT. 901.718.258-4<br>
+        Calle 3 Norte Cra 18-49 Local 2<br>
+        Armenia, Quindío<br>
+        310 461 7353
+      </div>
+    </div>
+
+    <div class="cover-body">
+      <span class="cover-tag">Informe Técnico de Avance</span>
+      <h1>Título del Informe</h1>
+      <p class="cover-project">Nombre del Proyecto — Ubicación</p>
+      <div class="cover-grid">
+        <div class="cover-grid-item">
+          <div class="label">Fecha</div>
+          <div class="value">Abril 2026</div>
+        </div>
+        <div class="cover-grid-item">
+          <div class="label">Acta N°</div>
+          <div class="value">01</div>
+        </div>
+        <div class="cover-grid-item">
+          <div class="label">Responsable</div>
+          <div class="value">Renso Montoya</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 1. RESUMEN EJECUTIVO ══════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>Resumen Ejecutivo</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="summary-grid mb-m">
+      <div class="kpi-card">
+        <div class="kpi-label">Avance global</div>
+        <div class="kpi-value">65%</div>
+        <div class="kpi-sub">Según acta de corte</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Área ejecutada</div>
+        <div class="kpi-value">510 m²</div>
+        <div class="kpi-sub">De 780 m² totales</div>
+      </div>
+      <div class="kpi-card accent">
+        <div class="kpi-label">Período</div>
+        <div class="kpi-value">Mar–Abr</div>
+        <div class="kpi-sub">2026</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Valor ejecutado</div>
+        <div class="kpi-value">$88M</div>
+        <div class="kpi-sub">Corte acta N° 01</div>
+      </div>
+    </div>
+
+    <p class="text-sm">Texto de resumen del informe. Describir brevemente el estado del proyecto, las actividades más relevantes ejecutadas en el período y las condiciones generales de avance. Máximo 4–5 líneas.</p>
+  </div>
+
+  <!-- ═══ 2. CONTEXTO ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>Contexto del Proyecto</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Campo</th><th>Detalle</th></tr>
+        <tr><td>Proyecto</td><td>Nombre del edificio o conjunto</td></tr>
+        <tr><td>Ubicación</td><td>Dirección completa</td></tr>
+        <tr><td>Contratante</td><td>Administración / Empresa</td></tr>
+        <tr><td>Interventor</td><td>Nombre del interventor</td></tr>
+        <tr><td>Contrato</td><td>Código del contrato</td></tr>
+        <tr><td>Tipo de intervención</td><td>Impermeabilización / Fachadas / Sellamiento</td></tr>
+        <tr><td>Fecha de inicio</td><td>DD/MM/AAAA</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ 3. ALCANCE ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>Alcance de Actividades</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon"><div class="card-dot"></div></div>
+        <h4>Impermeabilización</h4>
+        <p class="text-sm">Descripción breve de la actividad a ejecutar en esta zona.</p>
+        <span class="card-badge ok">510 m²</span>
+      </div>
+      <div class="card">
+        <div class="card-icon"><div class="card-dot"></div></div>
+        <h4>Sellamiento ventanería</h4>
+        <p class="text-sm">Descripción breve de la actividad de sellamiento.</p>
+        <span class="card-badge warn">2.875 ml</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--orange)"><div class="card-dot"></div></div>
+        <h4>Pintura de fachadas</h4>
+        <p class="text-sm">Descripción breve del sistema de pintura aplicado.</p>
+        <span class="card-badge">250 m²</span>
+      </div>
+      <div class="card">
+        <div class="card-icon"><div class="card-dot"></div></div>
+        <h4>Tratamiento de grietas</h4>
+        <p class="text-sm">Descripción breve del procedimiento de reparación.</p>
+        <span class="card-badge">19 m²</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 4. PROCEDIMIENTO ══════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>Procedimiento Ejecutado</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Actividad</th>
+            <th>Producto / Sistema</th>
+            <th>Unidad</th>
+            <th>Cantidad</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Retiro de sistema existente</td>
+            <td>Grata / Pulidora</td>
+            <td>m²</td>
+            <td>510</td>
+            <td><span class="tag-pill done">Ejecutado</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Limpieza de sustrato</td>
+            <td>Sopladora industrial</td>
+            <td>m²</td>
+            <td>510</td>
+            <td><span class="tag-pill done">Ejecutado</span></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Tratamiento de fisuras</td>
+            <td>Sikadur-32 / Sikaflex-401</td>
+            <td>ml</td>
+            <td>85</td>
+            <td><span class="tag-pill done">Ejecutado</span></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Aplicación impermeabilizante</td>
+            <td>Sikalastic-612</td>
+            <td>m²</td>
+            <td>255</td>
+            <td><span class="tag-pill prog">En progreso</span></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Actividad pendiente</td>
+            <td>Producto / sistema</td>
+            <td>m²</td>
+            <td>255</td>
+            <td><span class="tag-pill pend">Pendiente</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ 5. REGISTRO FOTOGRÁFICO ═══════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>Registro Fotográfico</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="gallery">
+      <div class="gallery-item">
+        <div class="photo-slot">
+          <!-- <img src="foto1.jpg" alt=""> -->
+          <span class="icon">📷</span>
+          <span>Foto 01</span>
+        </div>
+        <p class="photo-caption">Descripción de la foto o zona</p>
+      </div>
+      <div class="gallery-item">
+        <div class="photo-slot">
+          <span class="icon">📷</span>
+          <span>Foto 02</span>
+        </div>
+        <p class="photo-caption">Descripción de la foto o zona</p>
+      </div>
+      <div class="gallery-item">
+        <div class="photo-slot">
+          <span class="icon">📷</span>
+          <span>Foto 03</span>
+        </div>
+        <p class="photo-caption">Descripción de la foto o zona</p>
+      </div>
+      <div class="gallery-item">
+        <div class="photo-slot">
+          <span class="icon">📷</span>
+          <span>Foto 04</span>
+        </div>
+        <p class="photo-caption">Descripción de la foto o zona</p>
+      </div>
+      <div class="gallery-item">
+        <div class="photo-slot">
+          <span class="icon">📷</span>
+          <span>Foto 05</span>
+        </div>
+        <p class="photo-caption">Descripción de la foto o zona</p>
+      </div>
+      <div class="gallery-item">
+        <div class="photo-slot">
+          <span class="icon">📷</span>
+          <span>Foto 06</span>
+        </div>
+        <p class="photo-caption">Descripción de la foto o zona</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 6. HALLAZGOS TÉCNICOS ═════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>Hallazgos Técnicos</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-num">01</div>
+      <div class="finding-body">
+        <h4>Título del hallazgo técnico</h4>
+        <p class="text-sm">Descripción detallada del hallazgo. Causa identificada, zona afectada y alcance real vs. lo estimado inicialmente.</p>
+      </div>
+    </div>
+    <div class="finding warn">
+      <div class="finding-num">02</div>
+      <div class="finding-body">
+        <h4>Hallazgo con implicación en alcance</h4>
+        <p class="text-sm">Descripción del hallazgo que generó una variación en cantidades o procedimiento respecto al contrato original.</p>
+      </div>
+    </div>
+    <div class="finding">
+      <div class="finding-num">03</div>
+      <div class="finding-body">
+        <h4>Otro hallazgo relevante</h4>
+        <p class="text-sm">Descripción. Puede incluir riesgos detectados o condiciones del sustrato que afectan el sistema aplicado.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 7. CONDICIONES EXTERNAS ═══════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>Condiciones Externas</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="conditions mb-m">
+      <div class="cond-item">
+        <div class="icon">🌧️</div>
+        <div class="label">Precipitación</div>
+        <div class="val">Alta</div>
+      </div>
+      <div class="cond-item">
+        <div class="icon">💧</div>
+        <div class="label">Humedad relativa</div>
+        <div class="val">78%</div>
+      </div>
+      <div class="cond-item">
+        <div class="icon">🌡️</div>
+        <div class="label">Temperatura</div>
+        <div class="val">18–26°C</div>
+      </div>
+      <div class="cond-item">
+        <div class="icon">⚠️</div>
+        <div class="label">Restricción</div>
+        <div class="val">Lluvia</div>
+      </div>
+    </div>
+
+    <p class="text-sm">Descripción del impacto de las condiciones climáticas sobre la ejecución. Justificar técnicamente cómo afectaron los tiempos de curado, la aplicación de productos y el ritmo de obra.</p>
+  </div>
+
+  <!-- ═══ 8. RESULTADOS ═════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>Resultados</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="mb-m">
+      <div class="result-bar">
+        <div class="bar-label"><span>Impermeabilización grama sintética</span><span>100%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="result-bar">
+        <div class="bar-label"><span>Pintura Koraza exteriores</span><span>100%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="result-bar">
+        <div class="bar-label"><span>Segunda zona impermeabilización</span><span>50%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:50%"></div></div>
+      </div>
+      <div class="result-bar">
+        <div class="bar-label"><span>Infraestructura drenaje pluvial</span><span>0%</span></div>
+        <div class="bar-track"><div class="bar-fill accent" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <p class="text-sm">Descripción del estado general de avance. Resaltar logros del período, indicar lo que queda pendiente y proyectar próxima etapa.</p>
+  </div>
+
+  <!-- ═══ 9. CONCLUSIONES ═══════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <h2>Conclusiones</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <ul class="list-items">
+      <li>
+        <div class="li-marker">1</div>
+        <span>Conclusión técnica 1. Resultado verificable derivado del procedimiento ejecutado en obra.</span>
+      </li>
+      <li>
+        <div class="li-marker">2</div>
+        <span>Conclusión técnica 2. Justificación de decisión tomada durante la ejecución y su impacto en el resultado.</span>
+      </li>
+      <li>
+        <div class="li-marker">3</div>
+        <span>Conclusión técnica 3. Relación causa–intervención–resultado verificada en campo.</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ═══ 10. RECOMENDACIONES ══════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <h2>Recomendaciones</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <ul class="list-items">
+      <li>
+        <div class="li-marker accent">A</div>
+        <span>Recomendación 1. Acción sugerida para garantizar la durabilidad del sistema instalado o prevenir reincidencias.</span>
+      </li>
+      <li>
+        <div class="li-marker accent">B</div>
+        <span>Recomendación 2. Acción preventiva o de mantenimiento recomendada a la administración del edificio.</span>
+      </li>
+      <li>
+        <div class="li-marker accent">C</div>
+        <span>Recomendación 3. Condición o actividad pendiente que debe priorizarse en la siguiente etapa de obra.</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ═══ 11. GARANTÍAS ════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">11</div>
+      <h2>Garantías</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="warranty-box">
+      <div class="warranty-year">5<span>Años</span></div>
+      <div class="warranty-divider"></div>
+      <div class="warranty-text">
+        <h4>Garantía sobre sistema impermeabilizante</h4>
+        <p>Sikalastic-612 / Sikalastic-560 aplicados bajo ficha técnica del fabricante. La garantía cubre defectos de aplicación y desempeño del sistema bajo condiciones normales de uso. No cubre daños estructurales ni nuevas fisuras por movimiento del sustrato.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="warranty-box" style="background:var(--light);">
+      <div class="warranty-year" style="color:var(--blue)">2<span style="color:var(--mid)">Años</span></div>
+      <div class="warranty-divider" style="background:var(--border)"></div>
+      <div class="warranty-text">
+        <h4 style="color:var(--dark)">Garantía sobre pintura de fachadas</h4>
+        <p>Koraza Sol y Lluvia de Pintuco aplicada a 3 manos bajo especificación técnica. Garantía sobre adherencia, color y resistencia a intemperie en condiciones normales de exposición.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FIRMA Y FOOTER ═══════════════════════════════════ -->
+  <div class="footer-section">
+    <div class="sigs">
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-name">Renso Montoya</div>
+        <div class="sig-role">Gerente — Fresh House</div>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-name">Nombre Interventor</div>
+        <div class="sig-role">Interventoría Técnica</div>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-name">Representante Contratante</div>
+        <div class="sig-role">Administración / Cliente</div>
+      </div>
+    </div>
+
+    <div class="footer-info">
+      <div>
+        <div class="footer-logo">Fresh<span>House</span></div>
+        <p>NIT. 901.718.258-4 · Armenia, Quindío · 310 461 7353</p>
+      </div>
+      <p>Código: PNK-000-0000 · Rev. 01 · Abril 2026</p>
+    </div>
+  </div>
+
+</div><!-- /page -->
+</body>
+</html>
