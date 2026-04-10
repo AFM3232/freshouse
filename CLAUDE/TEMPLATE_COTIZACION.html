@@ -362,9 +362,28 @@ body.mode-slides .content-points li{font-size:.9rem!important;padding:.65rem 0!i
   .cover-subtitle{font-size:.95rem!important}
   .content-body,.exec-lead p{font-size:.82rem!important;line-height:1.7!important}
   .content-points li{font-size:.8rem!important}
-  td,th{font-size:.75rem!important;padding:.6rem .8rem!important}
   .kpi-value{font-size:1.8rem!important}
   .content-resumen{font-size:.85rem!important}
+
+  /* TABLA DE ÍTEMS — toda en una sola hoja */
+  #items{
+    page-break-before:always;
+    break-before:page;
+    page-break-inside:avoid;
+    break-inside:avoid;
+    padding:1rem 1.5cm!important;
+  }
+  #items .section-title{font-size:1.1rem!important;margin-bottom:.25rem!important}
+  #items .section-code{margin-bottom:.15rem!important}
+  #items .callout{padding:.5rem .75rem!important;font-size:.72rem!important;margin-top:.5rem!important;margin-bottom:.5rem!important}
+  #items h3{margin:.75rem 0 .4rem!important;font-size:.82rem!important;padding-bottom:.25rem!important}
+  #items .table-wrap{margin-bottom:.5rem!important;box-shadow:none!important}
+  #items table{page-break-inside:avoid;break-inside:avoid}
+  #items td,#items th{font-size:.68rem!important;padding:.35rem .6rem!important;line-height:1.3!important}
+  #items .totals-wrap{margin-top:.75rem!important;max-width:320px!important}
+  #items .total-row{padding:.45rem .9rem!important}
+  #items .total-label,#items .total-value{font-size:.6rem!important}
+  #items .total-row.grand .total-value{font-size:.85rem!important}
 
   /* SEPARADORES */
   .section-divider{display:none!important}
