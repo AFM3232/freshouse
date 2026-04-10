@@ -326,7 +326,7 @@ body.mode-slides .content-points li{font-size:.9rem!important;padding:.65rem 0!i
 /* === PRINT / PDF === */
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;transition:none!important;animation:none!important;box-shadow:none!important}
-  body{background:#fff!important;overflow:visible!important;font-size:13px!important}
+  body{background:#fff!important;overflow:visible!important}
   .blob,.sticky-nav,.mode-bar,.slide-nav,.slide-progress{display:none!important}
   .reveal{opacity:1!important;transform:none!important}
   .report{max-width:100%!important;position:static!important;z-index:auto!important}
@@ -378,73 +378,47 @@ body.mode-slides .content-points li{font-size:.9rem!important;padding:.65rem 0!i
   .exec-grid{grid-template-columns:1fr 1.1fr!important;gap:1.5rem!important}
   .kpi-grid{grid-template-columns:repeat(2,1fr)!important;gap:.6rem!important}
 
-  /* TIPOGRAFÍA limpia para PDF */
-  .section-title{font-size:1.35rem!important}
-  .cover-subtitle{font-size:.95rem!important}
-  .content-body,.exec-lead p{font-size:.82rem!important;line-height:1.7!important}
-  .content-points li{font-size:.8rem!important}
-  .kpi-value{font-size:1.8rem!important}
-  .content-resumen{font-size:.85rem!important}
+  /* RESUMEN — una sola hoja, recortar solo espaciados */
+  #resumen{page-break-before:always;break-before:page;page-break-inside:avoid;break-inside:avoid;padding:1.4rem 1.5cm!important}
+  #resumen .exec-grid{gap:2rem!important;margin-top:.5rem!important}
+  #resumen .content-resumen{padding:.75rem 1.1rem!important;margin-bottom:.75rem!important}
+  #resumen .content-body{margin-bottom:.5rem!important}
+  #resumen .content-points li{padding:.4rem 0!important}
+  #resumen .kpi-grid{gap:.6rem!important}
+  #resumen .kpi-card{padding:1rem 1.1rem!important}
 
-  /* RESUMEN — una sola hoja sin aire */
-  #resumen{page-break-before:always;break-before:page;page-break-inside:avoid;break-inside:avoid;padding:1.2rem 1.5cm!important}
-  #resumen .section-title{font-size:1.2rem!important;margin-bottom:.1rem!important}
-  #resumen .exec-grid{gap:1.25rem!important;margin-top:.75rem!important}
-  #resumen .content-resumen{font-size:.8rem!important;padding:.7rem 1rem!important;margin-bottom:.6rem!important;line-height:1.6!important}
-  #resumen .content-body{font-size:.77rem!important;line-height:1.6!important;margin-bottom:.4rem!important}
-  #resumen .content-points li{font-size:.77rem!important;padding:.35rem 0!important}
-  #resumen .kpi-grid{gap:.5rem!important}
-  #resumen .kpi-card{padding:.9rem 1rem!important}
-  #resumen .kpi-value{font-size:1.5rem!important}
-  #resumen .kpi-label{margin-bottom:.3rem!important}
-
-  /* CONDICIONES + GARANTÍAS — una sola hoja */
-  #condiciones{page-break-before:always;break-before:page;page-break-inside:avoid;break-inside:avoid;padding:1.2rem 1.5cm!important}
+  /* CONDICIONES + GARANTÍAS — una sola hoja, recortar solo espaciados */
+  #condiciones{page-break-before:always;break-before:page;page-break-inside:avoid;break-inside:avoid;padding:1.4rem 1.5cm!important}
   #condiciones .cg-grid{grid-template-columns:1fr auto 1fr!important}
   #condiciones .cg-sep{margin:0 1.5rem!important}
-  #condiciones .cg-title{font-size:1.1rem!important}
-  #condiciones .section-code{margin-bottom:.1rem!important}
-  #condiciones .conditions-grid{gap:.5rem!important;margin-bottom:.6rem!important;grid-template-columns:repeat(2,1fr)!important}
-  #condiciones .condition-item{padding:.75rem .6rem!important;box-shadow:none!important;border:1px solid #dde3ef!important}
-  #condiciones .condition-icon{font-size:1.1rem!important;margin-bottom:.3rem!important}
-  #condiciones .condition-value{font-size:.78rem!important}
-  #condiciones .content-body{font-size:.76rem!important;line-height:1.55!important;margin:.5rem 0!important}
-  #condiciones .num-list li{padding:.5rem 0!important}
-  #condiciones .num-content{font-size:.77rem!important}
-  #condiciones .num-title{font-size:.8rem!important}
-  #condiciones .num-marker{width:22px;height:22px;font-size:.56rem!important}
-  #condiciones .warranty-body{padding:1rem 1.25rem!important}
-  #condiciones .warranty-years{font-size:2rem!important}
-  #condiciones .warranty-text p{font-size:.74rem!important}
-  #condiciones .warranty-text h4{font-size:.85rem!important;margin-bottom:.3rem!important}
-  #condiciones .callout{font-size:.72rem!important;padding:.5rem .75rem!important;margin-top:.75rem!important}
+  #condiciones .conditions-grid{gap:.6rem!important;margin-bottom:.75rem!important;grid-template-columns:repeat(2,1fr)!important}
+  #condiciones .condition-item{padding:.75rem .75rem!important;box-shadow:none!important;border:1px solid #dde3ef!important}
+  #condiciones .content-body{margin:.6rem 0!important}
+  #condiciones .num-list li{padding:.55rem 0!important}
+  #condiciones .warranty{margin-bottom:.6rem!important}
+  #condiciones .warranty-body{padding:1.1rem 1.25rem!important}
+  #condiciones .callout{margin-top:.75rem!important}
 
   /* SOBRE FRESHOUSE */
   #sobre-freshouse{page-break-inside:avoid;break-inside:avoid;padding:1.5rem 1.5cm!important}
   #sobre-freshouse .fh-about-grid{grid-template-columns:1.1fr 1fr!important;gap:2rem!important}
   #sobre-freshouse .fh-dif,#sobre-freshouse .fh-stat{box-shadow:none!important;border:1px solid #dde3ef!important}
-  #sobre-freshouse .content-body{font-size:.78rem!important}
-  #sobre-freshouse .fh-stat-num{font-size:1.6rem!important}
 
-  /* TABLA DE ÍTEMS — toda en una sola hoja */
+  /* TABLA DE ÍTEMS — toda en una sola hoja, recortar solo espaciados */
   #items{
     page-break-before:always;
     break-before:page;
     page-break-inside:avoid;
     break-inside:avoid;
-    padding:1rem 1.5cm!important;
+    padding:1.2rem 1.5cm!important;
   }
-  #items .section-title{font-size:1.1rem!important;margin-bottom:.25rem!important}
-  #items .section-code{margin-bottom:.15rem!important}
-  #items .callout{padding:.5rem .75rem!important;font-size:.72rem!important;margin-top:.5rem!important;margin-bottom:.5rem!important}
-  #items h3{margin:.75rem 0 .4rem!important;font-size:.82rem!important;padding-bottom:.25rem!important}
-  #items .table-wrap{margin-bottom:.5rem!important;box-shadow:none!important}
+  #items .callout{padding:.5rem .75rem!important;margin-top:.5rem!important;margin-bottom:.6rem!important}
+  #items h3{margin:.8rem 0 .5rem!important;padding-bottom:.3rem!important}
+  #items .table-wrap{margin-bottom:.6rem!important;box-shadow:none!important}
   #items table{page-break-inside:avoid;break-inside:avoid}
-  #items td,#items th{font-size:.68rem!important;padding:.35rem .6rem!important;line-height:1.3!important}
-  #items .totals-wrap{margin-top:.75rem!important;max-width:320px!important}
-  #items .total-row{padding:.45rem .9rem!important}
-  #items .total-label,#items .total-value{font-size:.6rem!important}
-  #items .total-row.grand .total-value{font-size:.85rem!important}
+  #items td,#items th{padding:.45rem .7rem!important}
+  #items .totals-wrap{margin-top:.8rem!important;max-width:340px!important}
+  #items .total-row{padding:.5rem 1rem!important}
 
   /* SEPARADORES */
   .section-divider{display:none!important}
