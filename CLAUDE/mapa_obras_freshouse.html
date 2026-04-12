@@ -7,15 +7,33 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', sans-serif; background: #1C2347; color: #fff; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1C2347;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
     header {
       display: flex;
       align-items: center;
       gap: 16px;
-      padding: 14px 24px;
+      padding: 10px 24px;
       background: #1C2347;
       border-bottom: 3px solid #F0921E;
+    }
+    .logo {
+      width: auto;
+      height: 48px;
+      flex-shrink: 0;
+    }
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
     header h1 {
       font-size: 20px;
@@ -38,7 +56,7 @@
       font-size: 13px;
     }
 
-    #map { width: 100%; height: calc(100vh - 58px); }
+    #map { width: 100%; flex: 1; min-height: 0; }
 
     /* Leaflet popup */
     .leaflet-popup-content-wrapper {
@@ -99,9 +117,12 @@
 <body>
 
 <header>
-  <h1>FRESHOUSE</h1>
-  <span>Ingeniería de Fachadas y Humedades</span>
-  <div class="badge">33 Obras</div>
+  <img class="logo" src="../LOGO FRESHOUSE INGENIERIA DE FACHADAS.png" alt="Freshouse" />
+  <div class="brand">
+    <h1>FRESHOUSE</h1>
+    <span>Ingeniería de Fachadas y Humedades</span>
+  </div>
+  <div class="badge">65 Obras</div>
 </header>
 
 <div id="map"></div>
@@ -153,53 +174,87 @@
   // ── OBRAS ──────────────────────────────────────────────────────────────────
 
   // Zona Franca (La Tebaida)
-  marker(4.443,  -75.752, 'Zona Franca Global Latices',     'Km. 13 Vía Armenia-La Tebaida', 'Pinturas especializadas',               'Finalizado',    240000000, 'Camilo Ramírez / 3022682723');
-  marker(4.4445, -75.753, 'Zona Franca UMA Bodegas 45 y 46','Km. 13 Vía Armenia-La Tebaida', 'Pinturas especializadas',               'Finalizado',    280000000, 'Johan Ramírez / 3184341550');
-  marker(4.446,  -75.754, 'Zona Franca Sabimax',             'Km. 13 Vía Armenia-La Tebaida', 'Pinturas especializadas',               'Finalizado',     75000000, 'Juan Cardona / 3103845941');
+  marker(4.443, -75.752, 'Zona Franca Global Latices', 'Km. 13 Vía Armenia-La Tebaida', 'Pinturas especializadas', 'Finalizado', 240000000, 'Camilo Ramírez / 3022682723');
+  marker(4.4445, -75.753, 'Zona Franca UMA Bodegas 45 y 46', 'Km. 13 Vía Armenia-La Tebaida', 'Pinturas especializadas', 'Finalizado', 280000000, 'Johan Ramírez / 3184341550');
+  marker(4.446, -75.754, 'Zona Franca Sabimax', 'Km. 13 Vía Armenia-La Tebaida', 'Pinturas especializadas', 'Finalizado', 75000000, 'Juan Cardona / 3103845941');
 
   // Reserva de la Colina (La Tebaida)
-  marker(4.4440, -75.760, 'Reserva de la Colina — Contrato 1', 'Cl. 10 #3-03, La Tebaida',   'Restauración fachadas (RC-001-2025)',   'Finalizado',    289498090, 'Luz Mary López Montiel');
-  marker(4.4450, -75.761, 'Reserva de la Colina — Contrato 2', 'Cl. 10 #3-03, La Tebaida',   'Mantenimiento fachadas bloques A–G',    'Finalizado',    273802969, 'Luz Mary López Montiel');
+  marker(4.444, -75.76, 'Reserva de la Colina — Contrato 1', 'Cl. 10 #3-03, La Tebaida', 'Restauración fachadas (RC-001-2025)', 'Finalizado', 289498090, 'Luz Mary López Montiel');
+  marker(4.445, -75.761, 'Reserva de la Colina — Contrato 2', 'Cl. 10 #3-03, La Tebaida', 'Mantenimiento fachadas bloques A–G', 'Finalizado', 273802969, 'Luz Mary López Montiel');
 
   // Sur / Centro
-  marker(4.521,  -75.671, 'Centro Comercial Plaza Flora',        'Cra. 6 #3-180, Armenia',    'Reparación fachada',                   'Finalizado',     42000000, 'Luisa Fernanda Muñoz / 3042436298');
-  marker(4.5215, -75.672, 'Centro Comercial Plaza Flora',        'Cra. 6 #3-180, Armenia',    'Restauración integral fachadas',        'En ejecución',   17288044, 'José David López / 3117668652');
+  marker(4.521, -75.671, 'Centro Comercial Plaza Flora', 'Cra. 6 #3-180, Armenia', 'Reparación fachada', 'Finalizado', 42000000, 'Luisa Fernanda Muñoz / 3042436298');
+  marker(4.5215, -75.672, 'Centro Comercial Plaza Flora', 'Cra. 6 #3-180, Armenia', 'Restauración integral fachadas', 'En ejecución', 17288044, 'José David López / 3117668652');
 
   // Centro histórico
-  marker(4.534,  -75.681, 'Condominio Edificio Santo Domingo',   'Parque Sucre, Armenia',     'Restauración fachadas',                'Finalizado',     47000000, 'Idalba Buitrago López / 3155891243');
-  marker(4.5345, -75.680, 'Edificio Romanza',                    'Armenia, Quindío',          'Restauración fachada',                 'Finalizado',     12000000, 'Jonathan Colorado / 3158792654');
-  marker(4.5350, -75.679, 'Edificio Privé',                      'Armenia, Quindío',          'Restauración fachada',                 'Finalizado',     38000000, 'María del Pilar Rubio / 3103288399');
-  marker(4.5355, -75.678, 'Edificio Puerta de Agua',             'Armenia, Quindío',          'Restauración fachadas',                'Finalizado',     43000000, 'Andrea Lorena Duque / 3146082694');
+  marker(4.534, -75.681, 'Condominio Edificio Santo Domingo', 'Cl. 13 #13-61, Armenia, Quindío', 'Restauración fachadas', 'Finalizado', 47000000, 'Idalba Buitrago López / 3155891243');
+  marker(4.5345, -75.68, 'Edificio Romanza', 'Cl. 4 Nte. #13-100, Armenia, Quindío', 'Restauración fachada', 'Finalizado', 12000000, 'Jonathan Colorado / 3158792654');
+  marker(4.535, -75.679, 'Edificio Privé', 'Cl. 10 Nte. #11-40, Armenia, Quindío', 'Restauración fachada', 'Finalizado', 38000000, 'María del Pilar Rubio / 3103288399');
+  marker(4.5355, -75.678, 'Edificio Puerta de Agua', 'Cl. 19 Nte. #15-66, Armenia, Quindío', 'Restauración fachadas', 'Finalizado', 43000000, 'Andrea Lorena Duque / 3146082694');
 
   // Norte bajo (Cl 5N–10N)
-  marker(4.541,  -75.675, 'Conjunto Residencial Torre Almería',  'Cl. 5ª Norte #19-35, Armenia','Restauración fachadas',              'Finalizado',    129600000, 'Mariluz Gallego Varón / 3148728860');
-  marker(4.543,  -75.675, 'Torre Providencia',                   'Cl. 9a Norte #18-183, Armenia','Restauración fachadas',            'Finalizado',     76000000, 'Mariela Gallón Restrepo / 3113396420');
-  marker(4.543,  -75.671, 'Conj. Yulima II Torres D-E',          'Calle 9 #21-51, Armenia',   'Restauración integral fachadas',       'Finalizado',    264866202, 'Luisa Fernanda Gaitán / 3175481749');
-  marker(4.5435, -75.670, 'Conj. Yulima II Unidad C',            'Calle 9 #21-51, Armenia',   'Mantenimiento y pintura fachadas',     'Finalizado',    151145830, 'Cinthya Tatiana Arce Duque');
+  marker(4.541, -75.675, 'Conjunto Residencial Torre Almería', 'Cl. 5ª Norte #19-35, Armenia', 'Restauración fachadas', 'Finalizado', 129600000, 'Mariluz Gallego Varón / 3148728860');
+  marker(4.543, -75.675, 'Torre Providencia', 'Cl. 9a Norte #18-183, Armenia', 'Restauración fachadas', 'Finalizado', 76000000, 'Mariela Gallón Restrepo / 3113396420');
+  marker(4.543, -75.671, 'Conj. Yulima II Torres D-E', 'Calle 9 #21-51, Armenia', 'Restauración integral fachadas', 'Finalizado', 264866202, 'Luisa Fernanda Gaitán / 3175481749');
+  marker(4.5435, -75.67, 'Conj. Yulima II Unidad C', 'Calle 9 #21-51, Armenia', 'Mantenimiento y pintura fachadas', 'Finalizado', 151145830, 'Cinthya Tatiana Arce Duque');
 
   // Norte medio (Cl 12N–19N)
-  marker(4.545,  -75.677, 'Mocawa Plaza',                        'Cra. 14 #9 Norte-00, Armenia','Restauración interiores',            'Finalizado',     30000000, 'Martha L. Castaño / 3155475315');
-  marker(4.548,  -75.678, 'Edificio Torre del Parque',           'Cra. 11A #12N-43, Armenia', 'Restauración fachadas',                'Finalizado',     37000000, 'Sonia Beltrán Arango / 3155911097');
-  marker(4.548,  -75.676, 'Edificio Torres de Altamira',         'Cra. 15 #12 Norte, Armenia','Restauración fachadas',               'Finalizado',    150000000, 'Carlos Alberto Téllez / 3103998749');
-  marker(4.548,  -75.638, 'Conj. Residencial Bello Horizonte',   'Cra. 41 #40-59, Armenia',   'Restauración fachadas',                'Finalizado',     67000000, 'Gloria Mercedes González / 3002692114');
-  marker(4.540,  -75.670, 'Conj. Residencial Parque de la Villa','Armenia, Quindío',          'Restauración de fachadas',             'Finalizado',    170000000, 'Claudia Ceballos / 3136727771');
-  marker(4.553,  -75.675, 'Edificio Atlantis — Piloto',          'Cl. 19 Norte #18-64, Armenia','Impermeabilización terrazas y pintura','Finalizado',   74000000, '—');
-  marker(4.5535, -75.6755,'Edificio Atlantis — Placa',           'Cl. 19 Norte #18-64, Armenia','Impermeabilización placa y áreas comunes','Finalizado',154848413, 'Ing. Luis Fernando Márquez');
-  marker(4.5535, -75.675, 'Edificio Los Madrigales',             'Cl. 19 Norte #18-80, Armenia','Reparación fachadas y cubiertas',    'Finalizado',     99234949, 'Freddy Yohan Vargas Araque');
+  marker(4.545, -75.677, 'Mocawa Plaza', 'Cra. 14 #9 Norte-00, Armenia', 'Restauración interiores', 'Finalizado', 30000000, 'Martha L. Castaño / 3155475315');
+  marker(4.548, -75.678, 'Edificio Torre del Parque', 'Cra. 11A #12N-43, Armenia', 'Restauración fachadas', 'Finalizado', 37000000, 'Sonia Beltrán Arango / 3155911097');
+  marker(4.548, -75.676, 'Edificio Torres de Altamira', 'Cra. 15 #12 Norte, Armenia', 'Restauración fachadas', 'Finalizado', 150000000, 'Carlos Alberto Téllez / 3103998749');
+  marker(4.548, -75.638, 'Conj. Residencial Bello Horizonte', 'Cra. 41 #40-59, Armenia', 'Restauración fachadas', 'Finalizado', 67000000, 'Gloria Mercedes González / 3002692114');
+  marker(4.54, -75.67, 'Conj. Residencial Parque de la Villa', 'Cra. 19 #57-48, Armenia, Quindío', 'Restauración de fachadas', 'Finalizado', 170000000, 'Claudia Ceballos / 3136727771');
+  marker(4.553, -75.675, 'Edificio Atlantis — Piloto', 'Cl. 19 Norte #18-64, Armenia', 'Impermeabilización terrazas y pintura', 'Finalizado', 74000000, '—');
+  marker(4.5535, -75.6755, 'Edificio Atlantis — Placa', 'Cl. 19 Norte #18-64, Armenia', 'Impermeabilización placa y áreas comunes', 'Finalizado', 154848413, 'Ing. Luis Fernando Márquez');
+  marker(4.5535, -75.675, 'Edificio Los Madrigales', 'Cl. 19 Norte #18-80, Armenia', 'Reparación fachadas y cubiertas', 'Finalizado', 99234949, 'Freddy Yohan Vargas Araque');
 
   // Norte alto (Cl 20N–30N)
-  marker(4.558,  -75.675, 'Centro Comercial Portal del Quindío', 'Av. Bolívar #19N-46, Armenia','Restauración integral fachadas',     'Finalizado',    144852324, 'Claudia Milena Arteta / 3158955611');
-  marker(4.560,  -75.674, 'Edificio El Mirador del Quindío',     'Cra. 19 #26N-69, Armenia',  'Restauración integral fachadas y cubiertas','En ejecución',257643547,'Luis Jaime Manjarres Góngora');
-  marker(4.560,  -75.675, 'Conjunto Residencial Santa Catalina', 'Cra. 18 #29N-10, Armenia',  'Restauración fachadas',                'Finalizado',     95000000, 'Magaly Colorado / 3158792654');
-  marker(4.554,  -75.674, 'Edificio Panoramika',                 'Cra. 18 #21N-24, Armenia',  'Restauración integral fachadas',       'En ejecución',  296041122, '—');
-  marker(4.557,  -75.675, 'Conjunto Residencial Ozono',          'Cl. 22 Norte #17-1, Armenia','Restauración integral fachadas',      'En ejecución',  158666142, 'Fernando Galán Martínez / 3125728427');
-  marker(4.562,  -75.679, 'Conjunto Residencial Papiro',         'Cl. 25 Norte #13-41, Armenia','Restauración integral fachadas',     'En ejecución',  301686595, 'Elizabeth López Rojas / 3146614479');
+  marker(4.558, -75.675, 'Centro Comercial Portal del Quindío', 'Av. Bolívar #19N-46, Armenia', 'Restauración integral fachadas', 'Finalizado', 144852324, 'Claudia Milena Arteta / 3158955611');
+  marker(4.56, -75.674, 'Edificio El Mirador del Quindío', 'Cra. 19 #26N-69, Armenia', 'Restauración integral fachadas y cubiertas', 'En ejecución', 257643547, 'Luis Jaime Manjarres Góngora');
+  marker(4.56, -75.675, 'Conjunto Residencial Santa Catalina', 'Cra. 18 #29N-10, Armenia', 'Restauración fachadas', 'Finalizado', 95000000, 'Magaly Colorado / 3158792654');
+  marker(4.554, -75.674, 'Edificio Panoramika', 'Cra. 18 #21N-24, Armenia', 'Restauración integral fachadas', 'En ejecución', 296041122, '—');
+  marker(4.557, -75.675, 'Conjunto Residencial Ozono', 'Cl. 22 Norte #17-1, Armenia', 'Restauración integral fachadas', 'En ejecución', 158666142, 'Fernando Galán Martínez / 3125728427');
+  marker(4.562, -75.679, 'Conjunto Residencial Papiro', 'Cl. 25 Norte #13-41, Armenia', 'Restauración integral fachadas', 'En ejecución', 301686595, 'Elizabeth López Rojas / 3146614479');
 
   // Norte muy alto (Cl 30N+)
-  marker(4.563,  -75.674, 'Edificio Torre Verde',                'Cra. 19 #31N-91, Armenia',  'Restauración fachadas',                'Finalizado',    131000000, 'Jorge Ariza / 3174003077');
-  marker(4.5635, -75.6745,'Edificio Torre Verde — Antepechos',   'Cra. 19 #31N-91, Armenia',  'Reparación antepechos Torre A y tapas','Finalizado',    8044820,  'Jorge Octavio Ariza Marín');
-  marker(4.585,  -75.678, 'Conj. Residencial Oro Negro Atardecer','Cl. 46 Norte #14-10, Armenia','Restauración integral fachadas',    'En ejecución',  547567509, 'Gloria Lucía Parra / 3159289936');
-  marker(4.589,  -75.678, 'Parque Residencial Los Cedros',       'Cl. 50 Norte #15-01, Armenia','Restauración fachadas y cubiertas',  'En ejecución',  692350137, 'María del Pilar Rubio López');
+  marker(4.563, -75.674, 'Edificio Torre Verde', 'Cra. 19 #31N-91, Armenia', 'Restauración fachadas', 'Finalizado', 131000000, 'Jorge Ariza / 3174003077');
+  marker(4.5635, -75.6745, 'Edificio Torre Verde — Antepechos', 'Cra. 19 #31N-91, Armenia', 'Reparación antepechos Torre A y tapas', 'Finalizado', 8044820, 'Jorge Octavio Ariza Marín');
+  marker(4.585, -75.678, 'Conj. Residencial Oro Negro Atardecer', 'Cl. 46 Norte #14-10, Armenia', 'Restauración integral fachadas', 'En ejecución', 547567509, 'Gloria Lucía Parra / 3159289936');
+  marker(4.589, -75.678, 'Parque Residencial Los Cedros', 'Cl. 50 Norte #15-01, Armenia', 'Restauración fachadas y cubiertas', 'En ejecución', 692350137, 'María del Pilar Rubio López');
+
+  // Obras agregadas desde Excel (ubicación aproximada cuando el archivo no trae dirección)
+  marker(4.522, -75.6715, 'Centro Comercial Plaza Flora — Contrato 005-2024', 'Cra. 6 #3-180, Armenia', 'Contrato obra civil 005-2024', 'Finalizado', 17288044, 'Luisa Fernanda Muñoz / 3042436298');
+  marker(4.5225, -75.671, 'Centro Comercial Plaza Flora — Contrato 002-2025', 'Cra. 6 #3-180, Armenia', 'Contrato obra civil 002-2025', 'Finalizado', 49230360, 'Luisa Fernanda Muñoz / 3042436298');
+  marker(4.523, -75.6705, 'Centro Comercial Plaza Flora — Contrato 003-2025', 'Cra. 6 #3-180, Armenia', 'Contrato obra civil 003-2025', 'Finalizado', 19212312, 'Luisa Fernanda Muñoz / 3042436298');
+  marker(4.533, -75.6815, 'Hotel Toledo Plaza', 'Cra. 13 # 21-15, Armenia, Quindío', 'Obra civil', 'Finalizado', 35441316, 'Juan Diego Forero Patiño / 3006117908');
+  marker(4.559, -75.6745, 'Edificio El Mirador — Contrato menor', 'Cra. 19 #26N-69, Armenia', 'Obra civil', 'Finalizado', 7207452, 'Luis Jaime Manjarres Góngora / 3167134582');
+  marker(4.5895, -75.6775, 'Casa 21 Los Cedros', 'Los Cedros, Armenia (ubicación aprox.)', 'Obra civil', 'Finalizado', 9500000, 'Juan Carlos García Leal / 3006136066');
+  marker(4.5565, -75.6735, 'Edificio Solaris', 'Cra. 13 #8N-40, Armenia, Quindío', 'Obra civil', 'Finalizado', 28339956, 'Clarena Villegas Celis / 3117862835');
+  marker(4.5525, -75.6745, 'Conj. Residencial y Comercial Atlantis — AT-001-2025 Piloto', 'Cl. 19 Norte #18-64, Armenia', 'Piloto', 'Finalizado', 5569240, 'Gloria Lucía Parra / 3159289936');
+  marker(4.552, -75.6755, 'Conj. Residencial y Comercial Atlantis — AT-001-2025', 'Cl. 19 Norte #18-64, Armenia', 'Reparación integral en terrazas y cubiertas', 'En ejecución', 150000000, 'Gloria Lucía Parra / 3159289936');
+  marker(4.4435, -75.7605, 'Condominio Reserva de la Colina', 'Cl. 10 #3-03, La Tebaida', 'Obra civil', 'Finalizado', 90000000, 'Lina Alexandra Juanias / 3004440367');
+  marker(4.5375, -75.676, 'Edificio El Portal Propiedad Horizontal', 'Av. Bolívar #1N-51, Armenia, Quindío', 'Obra civil', 'Finalizado', 99591987, 'Luis Jaime Manjarres Góngora');
+  marker(4.545, -75.675, 'Edificio Portobelo', 'Cl. 10 Nte. #14-27, Armenia, Quindío', 'Obra civil', 'Finalizado', 147958598, 'Erika Jhoana Varón Mejía');
+  marker(4.538, -75.672, 'Edificio Torre San Cancio', 'Cl. 2N #18-131/135, Armenia, Quindío', 'Obra civil', 'Finalizado', 45344093, 'Alba Lucía Martínez Morales');
+  marker(4.5845, -75.679, 'Parque Residencial Oro Negro Ocaso', 'Cl. 45 Nte. #13-95, Armenia, Quindío', 'Obra civil', 'Finalizado', 74318532, 'Tatiana Moreno Giraldo');
+  marker(4.5575, -75.6725, 'Edificio Britannia Apartamentos — Contrato 1', 'Cra. 11 # 9-79, Armenia, Quindío', 'Obra civil', 'Finalizado', 29705045, 'Diana Patricia Martínez Parra / 3113196472');
+  marker(4.5585, -75.6755, 'Centro Comercial Portal del Quindío — Contrato adicional', 'Av. Bolívar #19N-46, Armenia', 'Obra civil', 'Finalizado', 95985112, 'Claudia Milena Arteta Torrents');
+  marker(4.535, -75.682, 'Edificio Centro 20', 'Cra. 13 #22-18, Armenia, Quindío', 'Obra civil', 'Finalizado', 18223140, 'María Isabel Urueña Castro');
+  marker(4.536, -75.6815, 'Edificio Flamingo', 'Armenia, Quindío (ubicación aprox.)', 'Obra civil', 'Finalizado', 10258491, 'Luz Melida Buitrago Castaño / 3128501451');
+  marker(4.549, -75.672, 'Edificio Estocolmo', 'Armenia, Quindío (ubicación aprox.)', 'Reparación integral para culatas', 'Finalizado', 20326857, 'Viva Diseño & Construcción S.A.S.');
+  marker(4.55, -75.6715, 'Conjunto Cerrado Hebrón Apartamentos', 'Cl. 19 Nte. #18-23, Armenia, Quindío', 'Obra civil', 'Finalizado', 225359014, 'Alejandra María Parra Flórez / 3127267619');
+  marker(4.5505, -75.6725, 'Edificio Metroloft Apartasuites', 'Cra. 19 #26N-49, Armenia, Quindío', 'Obra civil', 'Finalizado', 34430303, 'Magaly Colorado Ocampo / 3158792654');
+  marker(4.5575, -75.674, 'Edificio Ozono', 'Calle 22N #17-15, Armenia, Quindío', 'Obra civil', 'Finalizado', 37452428, 'Fernando Galán Martínez / 3125728427');
+  marker(4.551, -75.6735, 'Edificio Picasso - Propiedad Horizontal', 'Cl. 10 Nte. #11-40, Armenia, Quindío', 'Obra civil', 'Finalizado', 29705045, 'Jorge Enrique López Agudelo / 3218556336');
+  marker(4.5353, -75.6795, 'Edificio Privé - Propiedad Horizontal', 'Armenia, Quindío', 'Obra civil', 'Finalizado', 50389442, 'María del Pilar Rubio / 3103288399');
+  marker(4.552, -75.6725, 'Edificio Torre San Esteban', 'Cl. 15 Nte., Armenia, Quindío', 'Obra civil', 'Finalizado', 68964066, 'Gloria Mercedes González / 3002692114');
+  marker(4.553, -75.672, 'Conjunto Cerrado San Juan de la Loma', 'Carrera 19, Cl. 22 Nte., Armenia, Quindío', 'Obra civil', 'Finalizado', 294332900, 'Carolina Patiño Chávez');
+  marker(4.5355, -75.6825, 'Edificio Centro 20 / San Pedro', 'Armenia, Quindío (ubicación aprox.)', 'Obra civil', 'Finalizado', 18223140, 'María Isabel Urueña Castro');
+  marker(4.5365, -75.682, 'Edificio Santa Clara', 'Cl. 17 #14-13, Armenia, Quindío', 'Obra civil', 'Finalizado', 29450780, 'Paola Obando Rua');
+  marker(4.564, -75.6735, 'Conjunto Torre Verde Parque Residencial — Contrato 1', 'Cra. 19 #31N-91, Armenia', 'Obra civil', 'Finalizado', 40811745, 'Jorge Octavio Ariza Marín / 3174003077');
+  marker(4.5645, -75.674, 'Conjunto Torre Verde Parque Residencial — Contrato 2', 'Cra. 19 #31N-91, Armenia', 'Obra civil', 'Finalizado', 136835424, 'Jorge Octavio Ariza Marín / 3174003077');
+  marker(4.565, -75.6745, 'Edificio Vértice 2 Norte', 'Cra. 15 #2 Norte 18, Armenia, Quindío', 'Obra civil', 'Finalizado', 74219312, 'Magaly Colorado Ocampo');
+  marker(4.558, -75.672, 'Edificio Britannia Apartamentos — Contrato 2', 'Cra. 11 # 9-79, Armenia, Quindío', 'Obra civil', 'Finalizado', 7086105, 'Diana Patricia Martínez Parra');
 
   // ── LEYENDA ─────────────────────────────────────────────────────────────────
   const legend = L.control({ position: 'bottomright' });
