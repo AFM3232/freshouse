@@ -4,6 +4,8 @@ description: Patrones de hojas, columnas y organización detectados en los archi
 type: project
 ---
 
+← [[_INDICE|Volver al Índice]]
+
 Relevamiento realizado el 2026-03-24 sobre 6 archivos representativos.
 
 ## TIPO 1 — Cotización con APU integrado (más completo)

@@ -1,10 +1,12 @@
 ---
-name: Inventario archivos CLAUDE_SEX
-description: Lista completa de proyectos con archivos xlsx de cotizaciones y APUs en la carpeta CLAUDE_SEX, incluyendo años y cantidad de versiones
+name: Inventario de Proyectos Freshouse
+description: Lista completa de proyectos con archivos xlsx de cotizaciones y APUs disponibles en el repo.
 type: project
 ---
 
-Ruta base: /Users/andresmontoyaosorio/Documents/TRABAJO/CLAUDE_SEX
+← [[_INDICE|Volver al Índice]]
+
+Ruta base: `OBRAS/` (repo CLAUDE_SEXV2 en PC / CLAUDE_SEX en Mac)
 
 Proyectos identificados (30+), con archivos COTIZ/APU/OFERTA/PRESUPUESTO:
 
