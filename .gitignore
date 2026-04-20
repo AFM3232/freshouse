@@ -7,6 +7,9 @@
 .obsidian/workspace-mobile.json
 .obsidian/cache
 
+# Media local — fotos y videos de dron
+CLAUDE/media/
+
 # Archivos grandes (>100MB) — solo locales
 OBRAS/TORRES DE ORENSE/2026/DIAGNOSTICO GENERAL - TORRES DE ORENSE.pdf
 OBRAS/DIAGNOSTICOS/2026/DIAGNOSTICO CUBIERTAS - EDIFICIO BETHESDA.pdf
