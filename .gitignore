@@ -7,8 +7,8 @@
 .obsidian/workspace-mobile.json
 .obsidian/cache
 
-# Media local — fotos y videos de dron
-CLAUDE/media/
+# Videos de dron (no se usan en la presentación)
+CLAUDE/media/fotos-dron/*.MP4
 
 # Archivos grandes (>100MB) — solo locales
 OBRAS/TORRES DE ORENSE/2026/DIAGNOSTICO GENERAL - TORRES DE ORENSE.pdf
