@@ -612,20 +612,34 @@ function BeforeAfter() {
   const [ref,vis]=useReveal();
   const [active,setActive]=React.useState(0);
   return (
-    <section id="proyectos" style={{background:DARK,color:CREAM,padding:mob?'48px 18px':'120px 40px'}}>
-      <div style={{maxWidth:1320,margin:'0 auto'}}>
-        <div ref={ref} style={{display:'flex',alignItems:'flex-end',justifyContent:'space-between',marginBottom:mob?20:48,gap:16,flexWrap:'wrap',opacity:vis?1:0,transform:vis?'translateY(0)':'translateY(18px)',transition:'all .7s ease'}}>
-          <div>
-            <div style={{fontSize:11,letterSpacing:1.5,textTransform:'uppercase',color:O,marginBottom:10,fontWeight:600}}>◆ Antes & Después</div>
-            <h2 style={{fontFamily:DSP,fontWeight:900,fontSize:sm?'clamp(24px,8vw,28px)':mob?32:58,lineHeight:1.02,letterSpacing:-1,margin:0}}>
-              Ver para creer.<br/><em style={{fontStyle:'italic',color:O}}>Resultados reales.</em>
-            </h2>
+    <section id="proyectos" style={{background:DARK,color:CREAM,padding:mob?'48px 0':'120px 40px',overflow:'hidden'}}>
+      <div style={{maxWidth:1320,margin:'0 auto',padding:mob?'0 18px':0}}>
+        <div ref={ref} style={{marginBottom:mob?20:48,opacity:vis?1:0,transform:vis?'translateY(0)':'translateY(18px)',transition:'all .7s ease'}}>
+          {/* título */}
+          <div style={{display:'flex',alignItems:'flex-end',justifyContent:'space-between',flexWrap:'wrap',gap:12,marginBottom:mob?16:0}}>
+            <div>
+              <div style={{fontSize:11,letterSpacing:1.5,textTransform:'uppercase',color:O,marginBottom:10,fontWeight:600}}>◆ Antes & Después</div>
+              <h2 style={{fontFamily:DSP,fontWeight:900,fontSize:sm?'clamp(24px,8vw,28px)':mob?32:58,lineHeight:1.02,letterSpacing:-1,margin:0}}>
+                Ver para creer.<br/><em style={{fontStyle:'italic',color:O}}>Resultados reales.</em>
+              </h2>
+            </div>
+            {/* botones: inline en desktop, scroll horizontal debajo del título en móvil */}
+            {!mob&&(
+              <div style={{display:'flex',gap:8}}>
+                {BA_THEMES.map((t,i)=>(
+                  <button key={i} onClick={()=>setActive(i)} style={{padding:'8px 16px',borderRadius:999,background:active===i?O:'rgba(255,255,255,.06)',color:active===i?'#fff':'rgba(250,246,237,.6)',border:active===i?'none':`1px solid ${BDK}`,fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:BODY,transition:'all .2s',whiteSpace:'nowrap'}}>{t.loc}</button>
+                ))}
+              </div>
+            )}
           </div>
-          <div className="hide-scrollbar" style={{display:'flex',gap:8,overflowX:mob?'auto':'visible',flexShrink:0,paddingBottom:mob?4:0}}>
-            {BA_THEMES.map((t,i)=>(
-              <button key={i} onClick={()=>setActive(i)} style={{flexShrink:0,padding:sm?'6px 12px':'8px 16px',borderRadius:999,background:active===i?O:'rgba(255,255,255,.06)',color:active===i?'#fff':'rgba(250,246,237,.6)',border:active===i?'none':`1px solid ${BDK}`,fontSize:sm?11:12,fontWeight:600,cursor:'pointer',fontFamily:BODY,transition:'all .2s',whiteSpace:'nowrap'}}>{t.loc}</button>
-            ))}
-          </div>
+          {/* fila de botones en móvil — separada para no desborder el padre */}
+          {mob&&(
+            <div className="hide-scrollbar" style={{display:'flex',gap:8,overflowX:'auto',marginLeft:-18,marginRight:-18,paddingLeft:18,paddingRight:18}}>
+              {BA_THEMES.map((t,i)=>(
+                <button key={i} onClick={()=>setActive(i)} style={{flexShrink:0,padding:'7px 14px',borderRadius:999,background:active===i?O:'rgba(255,255,255,.06)',color:active===i?'#fff':'rgba(250,246,237,.6)',border:active===i?'none':`1px solid ${BDK}`,fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:BODY,transition:'all .2s',whiteSpace:'nowrap'}}>{t.loc}</button>
+              ))}
+            </div>
+          )}
         </div>
         <BASlider t={BA_THEMES[active]} vis={vis} key={active}/>
       </div>
