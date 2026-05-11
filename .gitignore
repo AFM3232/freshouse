@@ -6,19 +6,8 @@ Thumbs.db
 *.af
 *.af~lock~
 
-# Videos de dron (no se usan en la presentación)
-CLAUDE/media/fotos-dron/*.MP4
+# Fotos originales sin comprimir (~393 MB) — solo se mantienen en local
+CLAUDE/media/
 
-# Archivos grandes (>100MB) — solo locales
-OBRAS/TORRES DE ORENSE/2026/DIAGNOSTICO GENERAL - TORRES DE ORENSE.pdf
-OBRAS/DIAGNOSTICOS/2026/DIAGNOSTICO CUBIERTAS - EDIFICIO BETHESDA.pdf
-OBRAS/OVIEDO/2025/PRESENTACIÓN OVIEDO.pptx
-OBRAS/LOS CEDROS/2024/PRESENTACIÓN LOS CEDROS 2.pptx
-OBRAS/LOS CEDROS/2025/PRESENTACIÓN LOS CEDROS.pptx
-OBRAS/PARQUE DEL CAFE/2025/PARQUE RESIDENCIAL DEL CAFÉ - PRESENTACIÓN.pptx
-OBRAS/BOSQUES DE PALERMO/2025/Presentación Bosques de Palermo.pptx
-
-# Large uncompressed originals (compress and re-add later)
-# media/IMG_4489.MP4
-# media/IMG_4490.MP4
-# media/IMG_5700.MOV
+# Vercel
+.vercel

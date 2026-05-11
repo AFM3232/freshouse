@@ -1,8 +1,33 @@
 # FRESHOUSE — Índice Central
 
 **Empresa:** Freshouse Ingeniería de Fachadas  
-**Región:** Eje Cafetero — Colombia  
-**Repo:** CLAUDE_SEXV2
+**Región:** Eje Cafetero — Colombia
+
+---
+
+## Repositorios
+
+| Repo | Contenido | URL |
+|---|---|---|
+| `freshouse` | Documentos: cotizaciones, informes, obras, presentaciones | github.com/AFM3232/freshouse |
+| `freshouse-web` | Página web: index.html, logos, media, vercel.json | github.com/AFM3232/freshouse-web |
+
+---
+
+## Estructura del repositorio
+
+```
+CLAUDE/
+  cotizaciones/       — Cotizaciones generadas (HTML, xlsx)
+  informes/           — Informes y presentaciones HTML
+  informes/media/     — Fotos comprimidas para presentaciones (~26 MB)
+  marketing/          — Brochure, mapa de obras
+  media/              — Fotos ORIGINALES sin comprimir (~393 MB, solo local)
+  scripts/            — Scripts Python para generar documentos
+  templates/          — Templates base (HTML, xlsx)
+FRESHOUSE/            — Base de conocimiento (costos, estructura, inventario)
+OBRAS/                — Documentos por obra (cotizaciones, contratos, informes)
+```
 
 ---
 
@@ -23,16 +48,27 @@
 | ATLANTIS             | `OBRAS/ATLANTIS/`             |
 | LOS CEDROS           | `OBRAS/LOS CEDROS/`           |
 
-
 ---
 
 ## Templates y herramientas
 
 | Archivo | Descripción |
 |---|---|
-| `CLAUDE/TEMPLATE_COTIZACION.html` | Template HTML base para cotizaciones |
-| `CLAUDE/TEMPLATE_INFORME.html` | Template HTML base para informes |
-| `CLAUDE/FRESHOUSE_APU_BASE.xlsx` | APU base en Excel |
+| `CLAUDE/templates/TEMPLATE_COTIZACION.html` | Template HTML base para cotizaciones |
+| `CLAUDE/templates/TEMPLATE_INFORME.html` | Template HTML base para informes |
+| `CLAUDE/templates/FRESHOUSE_APU_BASE.xlsx` | APU base en Excel |
+
+---
+
+## Media
+
+| Carpeta | Contenido | Tamaño |
+|---|---|---|
+| `CLAUDE/media/` | Fotos originales (alta calidad, solo local) | ~393 MB |
+| `CLAUDE/informes/media/` | Fotos comprimidas (usadas en presentaciones HTML) | ~26 MB |
+
+> Los originales NO se suben al repo git por su peso.
+> Las comprimidas son las que referencian las presentaciones.
 
 ---
 
