@@ -7,7 +7,7 @@ Thumbs.db
 *.af~lock~
 
 # Fotos originales sin comprimir (~393 MB) — solo se mantienen en local
-CLAUDE/media/
+Freshouse templates y mas/media/
 
 # Vercel
 .vercel

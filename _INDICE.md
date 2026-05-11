@@ -17,7 +17,7 @@
 ## Estructura del repositorio
 
 ```
-CLAUDE/
+Freshouse templates y mas/
   cotizaciones/       — Cotizaciones generadas (HTML, xlsx)
   informes/           — Informes y presentaciones HTML
   informes/media/     — Fotos comprimidas para presentaciones (~26 MB)
@@ -25,7 +25,7 @@ CLAUDE/
   media/              — Fotos ORIGINALES sin comprimir (~393 MB, solo local)
   scripts/            — Scripts Python para generar documentos
   templates/          — Templates base (HTML, xlsx)
-FRESHOUSE/            — Base de conocimiento (costos, estructura, inventario)
+Obsidian-freshouse/   — Base de conocimiento (costos, estructura, inventario)
 OBRAS/                — Documentos por obra (cotizaciones, contratos, informes)
 ```
 
@@ -35,9 +35,9 @@ OBRAS/                — Documentos por obra (cotizaciones, contratos, informes
 
 | Documento | Descripción |
 |---|---|
-| [[FRESHOUSE/base_de_costos_apu\|Base de Costos APU]] | Precios de mano de obra, materiales e insumos. Fuente de verdad para cotizaciones. |
-| [[FRESHOUSE/estructura_cotizaciones_excel\|Estructura Cotizaciones Excel]] | Patrones de hojas y columnas detectados en los xlsx. Base para automatización. |
-| [[FRESHOUSE/inventario_proyectos\|Inventario de Proyectos]] | Lista de 40+ obras con archivos xlsx disponibles. |
+| [[Obsidian-freshouse/base_de_costos_apu\|Base de Costos APU]] | Precios de mano de obra, materiales e insumos. Fuente de verdad para cotizaciones. |
+| [[Obsidian-freshouse/estructura_cotizaciones_excel\|Estructura Cotizaciones Excel]] | Patrones de hojas y columnas detectados en los xlsx. Base para automatización. |
+| [[Obsidian-freshouse/inventario_proyectos\|Inventario de Proyectos]] | Lista de 40+ obras con archivos xlsx disponibles. |
 
 ---
 
@@ -54,9 +54,9 @@ OBRAS/                — Documentos por obra (cotizaciones, contratos, informes
 
 | Archivo | Descripción |
 |---|---|
-| `CLAUDE/templates/TEMPLATE_COTIZACION.html` | Template HTML base para cotizaciones |
-| `CLAUDE/templates/TEMPLATE_INFORME.html` | Template HTML base para informes |
-| `CLAUDE/templates/FRESHOUSE_APU_BASE.xlsx` | APU base en Excel |
+| `Freshouse templates y mas/templates/TEMPLATE_COTIZACION.html` | Template HTML base para cotizaciones |
+| `Freshouse templates y mas/templates/TEMPLATE_INFORME.html` | Template HTML base para informes |
+| `Freshouse templates y mas/templates/FRESHOUSE_APU_BASE.xlsx` | APU base en Excel |
 
 ---
 
@@ -64,8 +64,8 @@ OBRAS/                — Documentos por obra (cotizaciones, contratos, informes
 
 | Carpeta | Contenido | Tamaño |
 |---|---|---|
-| `CLAUDE/media/` | Fotos originales (alta calidad, solo local) | ~393 MB |
-| `CLAUDE/informes/media/` | Fotos comprimidas (usadas en presentaciones HTML) | ~26 MB |
+| `Freshouse templates y mas/media/` | Fotos originales (alta calidad, solo local) | ~393 MB |
+| `Freshouse templates y mas/informes/media/` | Fotos comprimidas (usadas en presentaciones HTML) | ~26 MB |
 
 > Los originales NO se suben al repo git por su peso.
 > Las comprimidas son las que referencian las presentaciones.

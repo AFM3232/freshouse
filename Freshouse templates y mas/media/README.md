@@ -8,4 +8,4 @@ Usar estas como fuente para cualquier compresión o edición futura.
 - `edificio-retiro.jpg` — Foto principal El Retiro
 
 > **No subir al repo git** — archivos muy pesados (~393 MB total).
-> Las versiones comprimidas para presentaciones están en `CLAUDE/informes/media/`.
+> Las versiones comprimidas para presentaciones están en `Freshouse templates y mas/informes/media/`.
