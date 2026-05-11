@@ -1,11 +1,10 @@
+# OS
 .DS_Store
-**/.DS_Store
-.claude/
+Thumbs.db
 
-# Obsidian — estado local por maquina (no sincronizar)
-.obsidian/workspace.json
-.obsidian/workspace-mobile.json
-.obsidian/cache
+# Affinity files
+*.af
+*.af~lock~
 
 # Videos de dron (no se usan en la presentación)
 CLAUDE/media/fotos-dron/*.MP4
@@ -18,3 +17,8 @@ OBRAS/LOS CEDROS/2024/PRESENTACIÓN LOS CEDROS 2.pptx
 OBRAS/LOS CEDROS/2025/PRESENTACIÓN LOS CEDROS.pptx
 OBRAS/PARQUE DEL CAFE/2025/PARQUE RESIDENCIAL DEL CAFÉ - PRESENTACIÓN.pptx
 OBRAS/BOSQUES DE PALERMO/2025/Presentación Bosques de Palermo.pptx
+
+# Large uncompressed originals (compress and re-add later)
+# media/IMG_4489.MP4
+# media/IMG_4490.MP4
+# media/IMG_5700.MOV
