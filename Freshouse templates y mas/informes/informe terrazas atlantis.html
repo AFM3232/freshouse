@@ -585,20 +585,127 @@ body.mode-slides .slide-nav.nav-visible{opacity:1;pointer-events:auto;transform:
 
 /* === RESPONSIVE === */
 @media(max-width:720px){
-  .section,.toc,.conclusion-section,.signatures-section{padding:2rem 1.5rem}
-  .cover-page{padding:1.5rem}
-  .chapter-banner{padding:2.5rem 1.5rem}
-  .cover-title{font-size:2.8rem}
-  .exec-grid{grid-template-columns:1fr}
-  .kpi-grid{grid-template-columns:1fr 1fr}
-  .conclusion-pillars{grid-template-columns:1fr}
-  .photo-grid{grid-template-columns:repeat(2,1fr)}
-  .sig-grid{grid-template-columns:1fr}
-  .report-footer{padding:1rem 1.5rem;flex-direction:column;gap:.5rem;text-align:center}
+  /* Layout general */
+  .section,.toc,.conclusion-section,.signatures-section{padding:1.75rem 1.25rem}
+  .cover-page{padding:1.25rem}
+  .chapter-banner{padding:2rem 1.25rem;min-height:auto}
+  .report{max-width:100%}
+
+  /* Cover */
+  .cover-title{font-size:clamp(2rem,8vw,2.8rem)}
+  .cover-subtitle{font-size:.9rem;margin-bottom:1.5rem}
+  .cover-client{font-size:.68rem}
+  .cover-contact{font-size:.5rem;line-height:1.8}
+  .cover-top{flex-direction:column;gap:1rem}
+  .cover-tags{gap:.5rem}
+  .cover-tag{font-size:.55rem;padding:.35rem .75rem}
+  .cover-cta{font-size:1rem;padding:1.1rem 2rem;width:100%;justify-content:center;margin-top:2rem}
   .cover-meta-bar{flex-direction:column}
-  .cover-meta-item{border-right:none;border-bottom:1px solid var(--border-subtle)}
+  .cover-meta-item{border-right:none;border-bottom:1px solid var(--border-subtle);padding:.75rem 1rem}
   .cover-meta-item:last-child{border-bottom:none}
-  .chapter-number{font-size:5rem}
+
+  /* Sticky nav */
+  .sticky-nav{padding:.6rem 1rem}
+  .nav-links{gap:.75rem}
+  .nav-links a{font-size:.5rem;letter-spacing:.04em}
+  .nav-logo{height:28px!important}
+
+  /* Mode bar */
+  .mode-bar{top:.5rem;right:.75rem;padding:.2rem}
+  .mode-btn{padding:.3rem .6rem;font-size:.48rem}
+
+  /* Chapter banner */
+  .chapter-title{font-size:clamp(1.4rem,5vw,1.8rem)}
+  .chapter-subtitle{font-size:.78rem}
+  .chapter-number{font-size:4rem;opacity:.04}
+  .chapter-stats{flex-direction:column;gap:1rem;margin-top:1.5rem}
+  .chapter-stat-val{font-size:1.2rem}
+  .chapter-badge{font-size:.55rem}
+
+  /* Section headers */
+  .section-title{font-size:1.25rem}
+  .section-code{font-size:.52rem}
+  .section-divider{margin:1.5rem 0}
+
+  /* Content text */
+  .content-resumen{font-size:.82rem;padding:.85rem 1rem;line-height:1.7}
+  .content-body{font-size:.82rem;line-height:1.7}
+  .content-points li{font-size:.8rem;padding:.5rem 0;gap:.6rem}
+
+  /* Card grid — 1 columna en móvil */
+  .card-grid{grid-template-columns:1fr!important;gap:.75rem}
+  .card{padding:1.25rem}
+  .card h4{font-size:.85rem}
+  .card p{font-size:.75rem;line-height:1.55}
+  .card-icon{width:32px;height:32px;font-size:.9rem;margin-bottom:.75rem}
+  .qty-badges{flex-direction:row;flex-wrap:wrap;gap:.3rem}
+  .badge{font-size:.55rem;padding:.2rem .6rem}
+
+  /* Rec cards */
+  .rec-grid{grid-template-columns:1fr}
+  .rec-card{padding:1.25rem}
+  .rec-card h4{font-size:.85rem}
+  .rec-card p{font-size:.75rem}
+
+  /* Photo grids */
+  .photo-grid{grid-template-columns:repeat(2,1fr);gap:.5rem}
+  .photo-grid--2col{grid-template-columns:1fr}
+  .photo-label{font-size:.5rem;padding:.35rem .5rem}
+
+  /* Conclusion */
+  .conclusion-pillars{grid-template-columns:1fr;gap:1rem}
+  .conclusion-pillar{padding:1.5rem 1.25rem}
+  .pillar-title{font-size:.92rem}
+  .pillar-text{font-size:.78rem}
+  .conclusion-statement{font-size:.9rem;margin-top:1.5rem;padding-top:1.5rem}
+
+  /* Table — stacked cards on mobile */
+  .table-wrap{border-radius:8px;border:none;box-shadow:none;overflow:visible}
+  table,thead,tbody,th,td,tr{display:block;width:100%}
+  thead{display:none}
+  tbody tr{background:#FFFFFF;border:1px solid var(--border-subtle);border-radius:10px;margin-bottom:.65rem;padding:1rem 1.15rem;box-shadow:0 1px 4px rgba(13,27,46,0.05)}
+  tbody tr:last-child{margin-bottom:0}
+  td{padding:.25rem 0;border-bottom:none;font-size:.78rem;display:flex;justify-content:space-between;align-items:baseline;gap:.5rem}
+  td::before{content:attr(data-label);font-family:'JetBrains Mono',monospace;font-size:.5rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);flex-shrink:0;min-width:5rem}
+  td:first-child{font-weight:600;color:var(--text-primary);padding-bottom:.35rem;border-bottom:1px solid var(--border-subtle);margin-bottom:.25rem}
+  td:first-child::before{display:none}
+  tbody tr:hover td{background:transparent}
+
+  /* Warranties */
+  .warranty-body{padding:1.25rem;flex-direction:column;gap:1rem;text-align:center}
+  .warranty-divider{width:100%;height:1px;align-self:auto}
+  .warranty-years{font-size:2.4rem}
+  .warranty-text h4{font-size:.88rem}
+  .warranty-text p{font-size:.75rem}
+
+  /* Anexos */
+  .anexo-grid{grid-template-columns:1fr}
+  .anexo-card{padding:1.25rem}
+  .anexo-title{font-size:.82rem}
+  .anexo-desc{font-size:.72rem}
+
+  /* TOC */
+  .toc-label{margin-bottom:1.5rem;font-size:.55rem}
+  .toc-name{font-size:.82rem}
+  .toc-num{font-size:.55rem}
+  .toc-sub li{font-size:.65rem}
+
+  /* Footer */
+  .report-footer{padding:.75rem 1.25rem;flex-direction:column;gap:.5rem;text-align:center}
+  .footer-center,.footer-right{font-size:.5rem}
+
+  /* Registro panel */
+  .registro-panel{padding:1.75rem 1.25rem}
+  .registro-group__title{font-size:1.05rem}
+  .registro-item__trigger{padding:1rem 1.15rem;gap:.75rem}
+  .registro-item__name{font-size:.85rem}
+  .registro-item__meta{font-size:.52rem;padding:.15rem .5rem}
+  .registro-item__content{grid-template-columns:1fr;gap:1.25rem;padding:0 1.15rem 1.15rem}
+  .registro-item__brief{font-size:.82rem}
+  .registro-item__gallery{padding:0 1.15rem 1.15rem}
+  .registro-item__tech-trigger{font-size:.52rem}
+  .registro-item__tech-body p{font-size:.75rem;padding:.85rem 1rem}
+  .registro-item__video-label{font-size:.5rem}
 }
 
 /* === COVER VIDEO LAYOUT === */
@@ -904,18 +1011,18 @@ body.mode-slides .registro-panel{display:none!important}
     <table>
       <thead><tr><th>Zona</th><th>Actividad</th><th>Unidad</th><th>Cant. Ejecutada</th><th>Observaciones</th></tr></thead>
       <tbody>
-        <tr><td>Cubierta</td><td>Impermeabilización zona grama sintética</td><td>m²</td><td>510</td><td>Sikalastic-612 CO — 100%</td></tr>
-        <tr><td>Cubierta</td><td>Impermeabilización piscina pequeña</td><td>m²</td><td>36</td><td>Sikalastic — 100%</td></tr>
-        <tr><td>Cubierta</td><td>Deck cuarto equipos piscina/jacuzzi</td><td>m²</td><td>42</td><td>Sikalastic — 100%</td></tr>
-        <tr><td>Materas</td><td>Tratamiento materas (adicional)</td><td>m²</td><td>52,52</td><td>287% vs estimado 18,31 m²</td></tr>
-        <tr><td>Terrazas</td><td>Pintura Koraza exteriores terrazas</td><td>m²</td><td>303</td><td>121% vs estimado 250 m²</td></tr>
-        <tr><td>Cubierta</td><td>Pintulux 3 en 1 — elementos metálicos</td><td>m²</td><td>60</td><td>100% completo</td></tr>
-        <tr style="background:rgba(249,115,22,.04);border-top:1px solid var(--fh-orange-border)">
+        <tr><td>Cubierta</td><td data-label="Actividad">Impermeabilización zona grama sintética</td><td data-label="Unidad">m²</td><td data-label="Ejecutada">510</td><td data-label="Obs.">Sikalastic-612 CO — 100%</td></tr>
+        <tr><td>Cubierta</td><td data-label="Actividad">Impermeabilización piscina pequeña</td><td data-label="Unidad">m²</td><td data-label="Ejecutada">36</td><td data-label="Obs.">Sikalastic — 100%</td></tr>
+        <tr><td>Cubierta</td><td data-label="Actividad">Deck cuarto equipos piscina/jacuzzi</td><td data-label="Unidad">m²</td><td data-label="Ejecutada">42</td><td data-label="Obs.">Sikalastic — 100%</td></tr>
+        <tr><td>Materas</td><td data-label="Actividad">Tratamiento materas (adicional)</td><td data-label="Unidad">m²</td><td data-label="Ejecutada">52,52</td><td data-label="Obs.">287% vs estimado 18,31 m²</td></tr>
+        <tr><td>Terrazas</td><td data-label="Actividad">Pintura Koraza exteriores terrazas</td><td data-label="Unidad">m²</td><td data-label="Ejecutada">303</td><td data-label="Obs.">121% vs estimado 250 m²</td></tr>
+        <tr><td>Cubierta</td><td data-label="Actividad">Pintulux 3 en 1 — elementos metálicos</td><td data-label="Unidad">m²</td><td data-label="Ejecutada">60</td><td data-label="Obs.">100% completo</td></tr>
+        <tr style="background:rgba(249,115,22,.04);border:1px solid var(--fh-orange-border)">
           <td style="color:var(--fh-orange);font-weight:700">Total impermeabilizado</td>
-          <td style="color:var(--text-primary)">Zonas cubierta + materas · Actas 01+02</td>
-          <td>m²</td>
-          <td style="color:var(--fh-orange);font-family:'JetBrains Mono',monospace;font-weight:700">640,52</td>
-          <td>Sistema Sika · PNK-001-2025</td>
+          <td data-label="Detalle" style="color:var(--text-primary)">Zonas cubierta + materas · Actas 01+02</td>
+          <td data-label="Unidad">m²</td>
+          <td data-label="Ejecutada" style="color:var(--fh-orange);font-family:'JetBrains Mono',monospace;font-weight:700">640,52</td>
+          <td data-label="Ref.">Sistema Sika · PNK-001-2025</td>
         </tr>
       </tbody>
     </table>
