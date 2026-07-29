@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presentación — Edificio Torre 4 Proviteq | Freshouse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2A5E; --navy-deep:#14204A; --orange:#F97316; --orange-dark:#C2410C; --orange-light:#FB923C;
+    --bg-blue:#EEF2FB; --bg-blue-border:#D9E0F4; --bg-orange:#FFF4EB; --bg-orange-border:#F7D9BE;
+    --text-body:#26233A; --text-soft:#45415A; --text-muted:#6E6A7E; --text-faint:#8B879C;
+    --line:#EEEBF4;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:#0E1430;height:100%;overflow:hidden}
+  body{font-family:'Archivo',sans-serif;color:var(--text-body)}
+  img{max-width:100%;display:block}
+  a{color:var(--orange);text-decoration:none}
+
+  /* ===== STAGE (16:9 canvas, scaled to fit viewport) ===== */
+  #stage-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  #stage{position:relative;width:1920px;height:1080px;transform-origin:center center;background:#fff;box-shadow:0 40px 120px rgba(0,0,0,0.5);overflow:hidden}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;background:#FFFFFF}
+  .slide.active{display:flex}
+  .slide-scroll{overflow-y:auto;flex:1;min-height:0}
+  .slide-scroll::-webkit-scrollbar{width:8px}
+  .slide-scroll::-webkit-scrollbar-thumb{background:#D9E0F4;border-radius:4px}
+
+  .section-head{display:flex;align-items:baseline;gap:22px;border-bottom:4px solid var(--navy);padding-bottom:20px;margin-bottom:36px;flex-shrink:0}
+  .section-num{font-size:52px;font-weight:900;color:var(--orange);line-height:1}
+  .section-title{font-size:46px;font-weight:900;color:var(--navy);letter-spacing:-0.02em}
+  .pad{padding:70px 88px;height:100%;display:flex;flex-direction:column}
+
+  .pill{display:inline-block;border-radius:999px;padding:12px 24px;font-size:23px;font-weight:700}
+  .tag-row{display:flex;flex-wrap:wrap;gap:12px}
+
+  /* ===== 01 PORTADA ===== */
+  .portada{flex-direction:row!important;background:var(--navy)}
+  .portada-left{flex:1.08;padding:80px 72px 80px 88px;display:flex;flex-direction:column;justify-content:space-between;position:relative}
+  .portada-left::before{content:'';position:absolute;left:0;top:0;bottom:0;width:14px;background:var(--orange)}
+  .portada-logo-badge{align-self:flex-start;background:#FFFFFF;border-radius:12px;padding:16px 24px;display:inline-block}
+  .portada-logo-badge img{height:56px;width:auto}
+  .portada-eyebrow{background:var(--orange);color:#fff;border-radius:999px;padding:12px 28px;font-size:24px;font-weight:800;letter-spacing:0.12em;display:inline-block;margin-bottom:28px}
+  .portada-title{font-size:84px;font-weight:900;line-height:0.98;letter-spacing:-0.03em;color:#fff;margin-bottom:22px}
+  .portada-title span{color:var(--orange-light)}
+  .portada-sub{font-size:26px;line-height:1.5;color:#C9D0E6;max-width:640px;margin-bottom:30px}
+  .portada-tags{display:flex;gap:12px;flex-wrap:wrap}
+  .portada-tag{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.3);border-radius:999px;padding:11px 22px;font-size:23px;font-weight:700;color:#fff}
+  .portada-tag--fill{background:var(--bg-orange);color:var(--orange-dark);border-color:transparent}
+  .portada-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;border-top:3px solid var(--orange);padding-top:22px}
+  .portada-meta .lbl{font-size:22px;font-weight:800;letter-spacing:0.1em;color:#FDBA74;margin-bottom:5px}
+  .portada-meta .val{font-size:25px;font-weight:700;color:#fff}
+  .portada-right{flex:1;position:relative;overflow:hidden}
+  .portada-right img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .portada-photo-tag{position:absolute;left:36px;bottom:36px;background:var(--orange);border-radius:8px;padding:12px 24px;font-size:22px;font-weight:800;color:#fff;z-index:2}
+
+  /* ===== GRIDS & CARDS ===== */
+  .two-col{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:52px;flex:1;min-height:0}
+  .lead p{font-size:25px;line-height:1.6;color:var(--text-soft);text-align:justify;margin-bottom:16px}
+  .lead p strong{color:var(--navy)}
+  .stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-content:start}
+  .stat-card{background:var(--bg-blue);border:1.5px solid var(--bg-blue-border);border-radius:10px;padding:24px 26px;text-align:center}
+  .stat-card .num{font-size:38px;font-weight:900;color:var(--navy);line-height:1}
+  .stat-card .lbl{font-size:19px;font-weight:700;letter-spacing:0.06em;color:#5A6480;margin-top:8px;text-transform:uppercase}
+  .backers{margin-top:20px;background:var(--bg-blue);border:1.5px solid var(--bg-blue-border);border-radius:10px;padding:18px 26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .backers .lbl{font-size:19px;font-weight:800;letter-spacing:0.1em;color:var(--orange-dark)}
+  .backers .brands{font-size:23px;font-weight:800;color:var(--navy)}
+
+  /* ===== 03 CLIENTES ===== */
+  .client-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;flex:1;min-height:0}
+  .client-photo{position:relative;border-radius:10px;overflow:hidden}
+  .client-photo img{width:100%;height:100%;object-fit:cover}
+  .client-photo .cap{position:absolute;left:0;right:0;bottom:0;background:rgba(30,42,94,0.9);padding:16px 20px;font-size:26px;font-weight:700;color:#fff}
+
+  /* ===== 04 CONTEXTO ===== */
+  .kpi-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-content:start}
+  .kpi-card{border-radius:10px;padding:24px 26px;border:1.5px solid var(--bg-blue-border);background:var(--bg-blue)}
+  .kpi-card.accent{background:var(--bg-orange);border-color:var(--bg-orange-border)}
+  .kpi-card .lbl{font-size:19px;font-weight:800;letter-spacing:0.06em;color:#5A6480;margin-bottom:8px;text-transform:uppercase}
+  .kpi-card.accent .lbl{color:var(--orange-dark)}
+  .kpi-card .val{font-size:36px;font-weight:900;color:var(--navy);line-height:1}
+  .kpi-card.accent .val{color:var(--orange)}
+  .kpi-card .sub{font-size:19px;font-weight:600;color:var(--text-soft);margin-top:8px}
+
+  /* ===== 05 PATOLOGÍAS (galería tipo Provenza) ===== */
+  .path-intro{font-size:22px;line-height:1.5;color:var(--text-soft);margin-bottom:6px;max-width:1500px}
+  .path-hint{font-size:17px;color:var(--text-faint);font-weight:600;margin-bottom:14px}
+  .path-group{margin-top:20px}
+  .path-group:first-child{margin-top:0}
+  .path-group-label{font-size:19px;font-weight:800;letter-spacing:0.05em;color:#5A6480;text-transform:uppercase;margin-bottom:10px}
+  .path-photo-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+  .path-photo{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:3/4;cursor:zoom-in}
+  .path-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
+  .path-photo:hover img{transform:scale(1.05)}
+  .path-photo .cap{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(to top,rgba(30,42,94,.88),transparent);padding:16px 8px 8px;font-size:12.5px;line-height:1.25;font-weight:700;color:#fff}
+
+  #lightbox{position:fixed;inset:0;background:rgba(14,20,48,0.92);display:none;align-items:center;justify-content:center;z-index:500;padding:60px;cursor:zoom-out}
+  #lightbox.open{display:flex}
+  #lightbox img{max-width:100%;max-height:100%;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+  #lightbox .lb-cap{position:absolute;left:0;right:0;bottom:24px;text-align:center;color:#fff;font-size:18px;font-weight:700}
+  #lightbox .lb-close{position:absolute;top:24px;right:32px;color:#fff;font-size:32px;font-weight:300;cursor:pointer}
+
+  /* ===== 05b PROCESO ===== */
+  .proc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;flex:1;min-height:0}
+  .proc-card{border:2px solid var(--bg-blue-border);border-radius:10px;padding:26px 28px}
+  .proc-card.accent{border-color:var(--bg-orange-border);background:var(--bg-orange)}
+  .proc-head{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+  .proc-badge{background:var(--navy);color:#fff;border-radius:8px;width:42px;height:42px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900}
+  .proc-card.accent .proc-badge{background:var(--orange)}
+  .proc-name{font-size:27px;font-weight:900;color:var(--navy)}
+  .proc-card.accent .proc-name{color:var(--orange-dark)}
+  .proc-desc{font-size:22px;line-height:1.5;color:var(--text-soft)}
+  .proc-desc b{color:var(--navy)}
+
+  /* ===== TABLES ===== */
+  table.budget{width:100%;border-collapse:collapse}
+  table.budget th{text-align:left;padding:10px 14px;font-size:20px;font-weight:800;letter-spacing:0.04em;color:var(--orange-dark);background:var(--bg-orange)}
+  table.budget th.c{text-align:center} table.budget th.r{text-align:right}
+  table.budget td{padding:9px 14px;font-size:20px;vertical-align:top;border-bottom:1.5px solid var(--line)}
+  table.budget td.c{text-align:center;color:var(--text-soft)}
+  table.budget td.r{text-align:right;color:var(--text-soft);font-variant-numeric:tabular-nums}
+  table.budget tr.chapter td{background:var(--bg-blue);font-weight:800;color:var(--navy);border-bottom:none;padding:9px 14px}
+  table.budget tr.chapter td.num{color:var(--orange);font-weight:900}
+  table.budget tr.chapter td.tot{text-align:right;font-weight:800;color:var(--navy)}
+  table.budget .item-num{color:var(--orange);font-weight:700}
+  table.budget .item-name{font-size:21px;font-weight:700;color:var(--navy)}
+  table.budget .item-desc{font-size:18px;line-height:1.4;color:var(--text-muted);margin-top:3px}
+  table.budget .item-val{font-weight:700;color:var(--text-body)}
+
+  .totals-wrap{display:flex;justify-content:flex-end;margin-top:16px;flex-shrink:0}
+  .totals-box{width:600px}
+  .totals-row{display:flex;justify-content:space-between;padding:9px 18px;border-bottom:1.5px solid var(--line);font-size:21px;font-weight:700;color:var(--text-soft);white-space:nowrap}
+  .totals-final{display:flex;justify-content:space-between;align-items:center;padding:15px 24px;background:var(--bg-orange);border-radius:10px;margin-top:10px;gap:20px}
+  .totals-final .lbl{font-size:20px;font-weight:800;letter-spacing:0.04em;color:var(--orange-dark);white-space:nowrap}
+  .totals-final .val{font-size:32px;font-weight:900;color:var(--orange);white-space:nowrap}
+  .note-box{background:var(--bg-orange);border-radius:10px;padding:14px 20px;margin-top:14px;text-align:justify;font-size:19px;line-height:1.5;color:var(--text-soft);flex-shrink:0}
+  .note-box b{color:var(--orange-dark)}
+
+  /* ===== 08 CONDICIONES ===== */
+  .cond-top{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-bottom:28px;flex-shrink:0}
+  .cond-card{background:var(--bg-orange);border-radius:10px;padding:22px 24px}
+  .cond-card.dark{background:var(--navy)}
+  .cond-card .lbl{font-size:19px;font-weight:800;letter-spacing:0.06em;color:#A85A22;margin-bottom:8px;text-transform:uppercase}
+  .cond-card.dark .lbl{color:#A9AFC4}
+  .cond-card .big{font-size:30px;font-weight:900;color:var(--orange);line-height:1.1}
+  .cond-card .desc{font-size:19px;line-height:1.45;color:var(--text-soft);margin-top:8px}
+  .cond-card.dark .desc{color:#C9D0E6}
+  .cond-lists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;flex:1;min-height:0}
+  .cond-lists h3{font-size:24px;font-weight:800;color:var(--navy);border-bottom:2px solid var(--orange);padding-bottom:8px;margin-bottom:14px}
+  .cond-lists ul{list-style:none}
+  .cond-lists li{font-size:22px;line-height:1.65;color:var(--text-soft);padding-left:22px;position:relative;text-align:justify;margin-bottom:4px}
+  .cond-lists li::before{content:'—';position:absolute;left:0;color:var(--orange)}
+
+  /* ===== 09 POR QUÉ ===== */
+  .why-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;flex:1;min-height:0}
+  .why-card{border-radius:10px;padding:26px 28px}
+  .why-card:nth-child(odd){background:var(--bg-blue)}
+  .why-card:nth-child(even){background:var(--bg-orange)}
+  .why-card .t{font-size:26px;font-weight:800;color:var(--orange-dark);margin-bottom:8px}
+  .why-card .d{font-size:21px;line-height:1.5;color:var(--text-soft);text-align:justify}
+
+  /* ===== 10 CIERRE ===== */
+  .cierre{flex-direction:row!important}
+  .cierre-left{flex:1.05;padding:96px 76px;display:flex;flex-direction:column;justify-content:space-between}
+  .cierre-left img{height:64px;width:auto;align-self:flex-start;flex-shrink:0}
+  .cierre-title{font-size:70px;font-weight:900;line-height:1.03;letter-spacing:-0.03em;color:var(--navy);margin-bottom:24px}
+  .cierre-text{font-size:25px;line-height:1.55;color:var(--text-soft);max-width:640px;margin-bottom:34px;text-align:justify}
+  .cierre-bar{height:4px;width:110px;background:var(--orange);margin-bottom:26px}
+  .cierre-name{font-size:28px;font-weight:900;color:var(--navy)}
+  .cierre-role{font-size:22px;line-height:1.55;color:var(--text-soft)}
+  .cierre-foot{font-size:21px;font-weight:600;color:var(--text-faint)}
+  .cierre-right{flex:1;position:relative;overflow:hidden}
+  .cierre-right img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+
+  /* ===== NAV CHROME ===== */
+  #hud{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:center;justify-content:center;gap:18px;padding:16px 0;background:linear-gradient(to top,rgba(0,0,0,0.55),transparent);opacity:0;transition:opacity .3s ease;pointer-events:none}
+  #stage-wrap:hover #hud,#hud.show{opacity:1;pointer-events:auto}
+  .nav-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.14);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s ease}
+  .nav-btn:hover{background:rgba(255,255,255,0.28)}
+  .nav-btn:disabled{opacity:0.3;cursor:default}
+  #dots{display:flex;gap:8px;align-items:center;padding:0 10px}
+  .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.35);cursor:pointer;transition:all .2s ease}
+  .dot.active{background:var(--orange);width:24px;border-radius:5px}
+  #counter{font-family:'Archivo',sans-serif;font-size:14px;font-weight:700;color:rgba(255,255,255,0.8);letter-spacing:0.05em;min-width:52px;text-align:center}
+</style>
+</head>
+<body>
+
+<div id="stage-wrap">
+  <div id="stage">
+
+    <!-- 01 PORTADA -->
+    <section class="slide portada active">
+      <div class="portada-left">
+        <div class="portada-logo-badge"><img src="../cotizaciones/assets/logo-freshouse.png" alt="Freshouse"></div>
+        <div>
+          <div class="portada-eyebrow">PROPUESTA COMERCIAL · REPARACIÓN DE FACHADA</div>
+          <h1 class="portada-title">Renovación de<br><span>Fachada</span></h1>
+          <p class="portada-sub">Edificio Torre 4 Proviteq — preliminares, preparación de superficies, acabado y pintura de exteriores e interiores para la intervención integral del bloque 4.</p>
+          <div class="portada-tags">
+            <span class="portada-tag">Preparación · Acabado y pintura</span>
+            <span class="portada-tag portada-tag--fill">Koraza Pro 5 · Pintuco</span>
+          </div>
+        </div>
+        <div class="portada-meta">
+          <div><div class="lbl">CLIENTE</div><div class="val">Torre 4 Proviteq</div></div>
+          <div><div class="lbl">FECHA</div><div class="val">24 de julio de 2026</div></div>
+          <div><div class="lbl">REFERENCIA</div><div class="val">FH-PQ-01 · v.01</div></div>
+        </div>
+      </div>
+      <div class="portada-right">
+        <img src="media/proviteq/portada-torre4.jpg" alt="Edificio Torre 4 Proviteq">
+        <div class="portada-photo-tag">Torre 4 Proviteq · Av. Bolívar # 45N-04</div>
+      </div>
+    </section>
+
+    <!-- 02 QUIÉNES SOMOS -->
+    <section class="slide">
+      <div class="pad">
+        <div class="section-head"><span class="section-num">02</span><h2 class="section-title">Quiénes somos</h2></div>
+        <div class="two-col">
+          <div class="lead">
+            <p><strong>Freshouse S.A.S.</strong> es una empresa de ingeniería con sede en Armenia, dedicada exclusivamente a la intervención técnica de la envolvente de edificaciones: fachadas, impermeabilización y cubiertas.</p>
+            <p>Cada propuesta parte de un diagnóstico real del edificio — un ingeniero especializado recorre la obra, inspecciona en sitio de forma manual y con dron, y define la solución específica para cada patología antes de cotizar. Atacamos la causa del deterioro, no solamente el síntoma.</p>
+            <p>Operamos con equipos profesionales de alta gama, materiales con respaldo directo de fábrica y personal de nómina propia, certificado en trabajo en alturas.</p>
+          </div>
+          <div>
+            <div class="stat-grid">
+              <div class="stat-card"><div class="num">8+</div><div class="lbl">Años de experiencia</div></div>
+              <div class="stat-card"><div class="num">480.000+</div><div class="lbl">M² intervenidos</div></div>
+              <div class="stat-card"><div class="num">60+</div><div class="lbl">Proyectos ejecutados</div></div>
+              <div class="stat-card"><div class="num">100%</div><div class="lbl">Cert. en alturas</div></div>
+            </div>
+            <div class="backers"><span class="lbl">RESPALDADOS POR</span><span class="brands">PINTUCO · SIKA · SOUDAL</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 CLIENTES -->
+    <section class="slide">
+      <div class="pad">
+        <div class="section-head"><span class="section-num">03</span><h2 class="section-title">Proyectos y clientes</h2></div>
+        <div class="client-grid">
+          <div class="client-photo"><img src="media/fotos-clientes/ATLANTIS.JPG" alt="Atlantis"><div class="cap">Atlantis</div></div>
+          <div class="client-photo"><img src="media/fotos-clientes/C.C PLAZA FLORA.jpg" alt="C.C. Plaza Flora"><div class="cap">C.C. Plaza Flora</div></div>
+          <div class="client-photo"><img src="media/fotos-clientes/C.C PORTAL DEL QUINDIO.webp" alt="C.C. Portal del Quindío"><div class="cap">C.C. Portal del Quindío</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 CONTEXTO -->
+    <section class="slide">
+      <div class="pad">
+        <div class="section-head"><span class="section-num">04</span><h2 class="section-title">Contexto del proyecto</h2></div>
+        <div class="two-col">
+          <div class="lead">
+            <p><strong>Edificio Torre 4 Proviteq</strong>, ubicado en la Avenida Bolívar # 45N-04, Armenia, solicitó a Freshouse la propuesta para la reparación general de fachada del bloque 4.</p>
+            <p>El alcance contempla el lavado general de las superficies, el retiro y reemplazo del graniplast deteriorado, la aplicación de pintura acrílica exterior Koraza Pro 5 sobre fachadas y muros, el sello de ventanería en las caras exterior e interior, la pintura de interiores en escalas y pasillos, y el aseo general de la obra.</p>
+            <p>Todos los materiales corresponden a líneas profesionales Pintuco, con ficha técnica y garantía de fabricante.</p>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi-card accent"><div class="lbl">Lavado de superficies</div><div class="val">977,76 m²</div><div class="sub">cloro 10% + Construcleaner</div></div>
+            <div class="kpi-card"><div class="lbl">Pintura de fachada</div><div class="val">965,52 m²</div><div class="sub">Koraza Pro 5</div></div>
+            <div class="kpi-card"><div class="lbl">Graniplast</div><div class="val">48,89 m²</div><div class="sub">retiro y reemplazo</div></div>
+            <div class="kpi-card"><div class="lbl">Sello de ventanería</div><div class="val">361,36 ml</div><div class="sub">cara exterior e interior</div></div>
+            <div class="kpi-card"><div class="lbl">Pintura de interiores</div><div class="val">179 m²</div><div class="sub">escalas y pasillos</div></div>
+            <div class="kpi-card accent"><div class="lbl">Vigencia</div><div class="val">3 meses</div><div class="sub">válida hasta 24 oct. 2026</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 REGISTRO DE PATOLOGÍAS -->
+    <section class="slide">
+      <div class="pad">
+        <div class="section-head"><span class="section-num">05</span><h2 class="section-title">Registro de patologías</h2></div>
+        <p class="path-intro">Registro fotográfico levantado en visita técnica al Bloque 4, agrupado por tipo de defecto. Es la base del alcance y las cantidades definidas en la propuesta.</p>
+        <div class="path-hint">↓ Desplázate para ver todos los casos</div>
+        <div class="slide-scroll">
+          <div class="path-group">
+            <div class="path-group-label">Trabajos mal ejecutados y material suelto (6)</div>
+            <div class="path-photo-grid">
+              <div class="path-photo" onclick="openLightbox(this)"><img src="media/proviteq/patologias/material-suelto-mal-ejecutado.jpg" alt="Material suelto por trabajos mal ejecutados" data-cap="Material suelto por trabajos mal ejecutados"><div class="cap">Material suelto por trabajos mal ejecutados</div></div>
+              <div class="path-photo" onclick="openLightbox(this)"><img src="media/proviteq/patologias/material-suelto-sin-imprimacion.jpg" alt="Material suelto por trabajos sin imprimación correcta" data-cap="Material suelto por trabajos sin imprimación correcta"><div class="cap">Material suelto sin imprimación correcta</div></div>
+              <div class="path-photo" onclick="openLightbox(this)"><img src="media/proviteq/patologias/graniplast-sin-imprimacion.jpg" alt="Graniplast aplicado sin imprimación" data-cap="Graniplast aplicado sin imprimación"><div class="cap">Graniplast aplicado sin imprimación</div></div>
+              <div class="path-photo" onclick="openLightbox(this)"><img src="media/proviteq/patologias/mortero-desprendido.jpg" alt="Mortero desprendido, requiere reposición de material" data-cap="Mortero desprendido, requiere reposición de material"><div class="cap">Mortero desprendido — requiere reposición</div></div>
+              <div class="path-photo" onclick="openLightbox(this)"><img src="media/proviteq/patologias/panos-material-suelto.jpg" alt="Paños completos de material suelto" data-cap="Paños completos de material suelto"><div class="cap">Paños completos de material suelto</div></div>
+              <div class="path-photo" onclick="openLightbox(this)"><img src="media/proviteq/patologias/trabajos-sin-preparacion-superficies.jpg" alt="Trabajos sin preparación de superficies adecuada" data-cap="Trabajos sin preparación de superficies adecuada"><div class="cap">Trabajos sin preparación de superficies</div></div>
+            </div>
+          </div>
+          <div class="path-group">
+            <div class="path-group-label">Humedades y presencia de hongos (2)</div>
+            <div class="path-photo-grid">
+              <div class="path-photo" onclick="openLightbox(this)"><img src="media/proviteq/patologias/humedades-ascendentes.jpg" alt="Humedades ascendentes" data-cap="Humedades ascendentes"><div class="cap">Humedades ascendentes</div></div>
+              <div class="path-photo" onclick="openLightbox(this)"><img src="media/proviteq/patologias/presencia-hongos.jpg" alt="Presencia de hongos" data-cap="Presencia de hongos"><div class="cap">Presencia de hongos</div></div>
+            </div>
+          </div>
+          <div class="path-group">
+            <div class="path-group-label">Fisuras en dilataciones (1)</div>
+            <div class="path-photo-grid">
+              <div class="path-photo" onclick="openLightbox(this)"><img src="media/proviteq/patologias/fisuras-dilataciones.jpg" alt="Se debe hacer tratamiento de fisuras en dilataciones" data-cap="Se debe hacer tratamiento de fisuras en dilataciones"><div class="cap">Requiere tratamiento de fisuras en dilataciones</div></div>
+            </div>
+          </div>
+          <div class="path-group">
+            <div class="path-group-label">Canales (2)</div>
+            <div class="path-photo-grid">
+              <div class="path-photo" onclick="openLightbox(this)"><img src="media/proviteq/patologias/canales-fisuras.jpg" alt="Canales con fisuras" data-cap="Canales con fisuras"><div class="cap">Canales con fisuras</div></div>
+              <div class="path-photo" onclick="openLightbox(this)"><img src="media/proviteq/patologias/canales-impermeabilizacion.jpg" alt="Canales que requieren impermeabilización" data-cap="Canales que requieren impermeabilización"><div class="cap">Canales que requieren impermeabilización</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 PROCESO -->
+    <section class="slide">
+      <div class="pad">
+        <div class="section-head"><span class="section-num">06</span><h2 class="section-title">Proceso de intervención</h2></div>
+        <div class="proc-grid">
+          <div class="proc-card">
+            <div class="proc-head"><span class="proc-badge">1</span><span class="proc-name">Preliminares</span></div>
+            <div class="proc-desc">Adecuación de campamento de obra para almacenamiento de materiales y equipos, más instalación de cerramiento, señalética de riesgo y demarcación conforme a la normativa SST vigente.</div>
+          </div>
+          <div class="proc-card">
+            <div class="proc-head"><span class="proc-badge">2</span><span class="proc-name">Preparación de superficies</span></div>
+            <div class="proc-desc">Lavado general con cloro al 10%, Construcleaner y jabón neutro. Retiro del graniplast en mal estado, puente de adherencia con <b>Revofast</b> y reposición con graniplast esgrafiado Pintuco.</div>
+          </div>
+          <div class="proc-card accent">
+            <div class="proc-head"><span class="proc-badge">3</span><span class="proc-name">Acabado y pintura</span></div>
+            <div class="proc-desc">Aplicación de <b>Koraza Pro 5</b> en fachadas y muros, sello de dilataciones con Pintuco Fill 7 años y tratamiento de humedades ascendentes con Aquablock. Sello de ventanería con Multibond híbrido en ambas caras. Pintura de interiores en escalas y pasillos.</div>
+          </div>
+          <div class="proc-card accent">
+            <div class="proc-head"><span class="proc-badge">4</span><span class="proc-name">Aseo general de obra</span></div>
+            <div class="proc-desc">Limpieza continua de las zonas intervenidas durante la ejecución y aseo final de cierre, incluidos dentro del valor global de la propuesta.</div>
+          </div>
+        </div>
+        <div style="margin-top:26px;border-top:3px solid var(--navy);padding-top:20px;flex-shrink:0">
+          <div style="font-size:20px;font-weight:800;letter-spacing:0.06em;color:#5A6480;margin-bottom:14px">SISTEMA DE PRODUCTOS · TODOS CON FICHA TÉCNICA</div>
+          <div class="tag-row">
+            <span class="pill" style="background:var(--bg-blue);color:var(--navy)">Construcleaner</span>
+            <span class="pill" style="background:var(--bg-orange);color:var(--orange-dark)">Revofast · Graniplast</span>
+            <span class="pill" style="background:var(--bg-blue);color:var(--navy)">Koraza Pro 5</span>
+            <span class="pill" style="background:var(--bg-orange);color:var(--orange-dark)">Pintuco Fill 7 años</span>
+            <span class="pill" style="background:var(--bg-blue);color:var(--navy)">Aquablock</span>
+            <span class="pill" style="background:var(--bg-orange);color:var(--orange-dark)">Multibond Soudal</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 PRESUPUESTO I -->
+    <section class="slide">
+      <div class="pad">
+        <div class="section-head"><span class="section-num">07</span><h2 class="section-title">Presupuesto de obra</h2></div>
+        <div class="slide-scroll">
+        <table class="budget">
+          <thead><tr>
+            <th class="c" style="width:60px">ÍTEM</th><th>DESCRIPCIÓN Y ESPECIFICACIÓN TÉCNICA</th>
+            <th class="c" style="width:70px">UND</th><th class="r" style="width:90px">CANT.</th>
+            <th class="r" style="width:120px">VR. UNIT.</th><th class="r" style="width:150px">VR. TOTAL</th>
+          </tr></thead>
+          <tbody>
+            <tr class="chapter"><td class="num">1</td><td colspan="4">PRELIMINARES</td><td class="tot">$ 900.000</td></tr>
+            <tr><td class="c item-num">1.1</td><td><div class="item-name">Campamento de Obra</div><div class="item-desc">Adecuación y dotación del espacio de trabajo temporal en obra: almacenamiento de materiales y equipos, señalización de área y condiciones básicas de operación.</div></td><td class="c">GBL</td><td class="r">1,00</td><td class="r">300.000</td><td class="r item-val">300.000</td></tr>
+            <tr><td class="c item-num">1.2</td><td><div class="item-name">Señalización y Seguridad de la Obra</div><div class="item-desc">Instalación de cerramiento perimetral, señalética de riesgo, vallas informativas y demarcación de zonas de trabajo conforme a la normativa SST vigente.</div></td><td class="c">GBL</td><td class="r">1,00</td><td class="r">600.000</td><td class="r item-val">600.000</td></tr>
+
+            <tr class="chapter"><td class="num">2</td><td colspan="4">PREPARACIÓN DE SUPERFICIES</td><td class="tot">$ 7.186.536</td></tr>
+            <tr><td class="c item-num">2.1</td><td><div class="item-name">Lavado General de Superficies a Intervenir</div><div class="item-desc">Lavado con cloro al 10%, Construcleaner de Pintuco y jabón neutro sobre todas las superficies de fachada y muros a intervenir. Incluye equipos industriales a presión y mano de obra certificada.</div></td><td class="c">M²</td><td class="r">977,76</td><td class="r">4.750</td><td class="r item-val">4.644.360</td></tr>
+            <tr><td class="c item-num">2.2</td><td><div class="item-name">Retiro y Reemplazo de Graniplast Deteriorado</div><div class="item-desc">Retiro del graniplast en mal estado en fachadas y muros externos, reposición de mortero con Revofast como puente de adherencia inicial y aplicación de graniplast tipo esgrafiado estándar Pintuco.</div></td><td class="c">M²</td><td class="r">48,89</td><td class="r">52.000</td><td class="r item-val">2.542.176</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 PRESUPUESTO II — CIERRE -->
+    <section class="slide">
+      <div class="pad">
+        <div class="section-head"><span class="section-num">08</span><h2 class="section-title">Presupuesto — acabado, aseo y valor total</h2></div>
+        <div class="slide-scroll">
+        <table class="budget">
+          <thead><tr>
+            <th class="c" style="width:60px">ÍTEM</th><th>DESCRIPCIÓN Y ESPECIFICACIÓN TÉCNICA</th>
+            <th class="c" style="width:70px">UND</th><th class="r" style="width:90px">CANT.</th>
+            <th class="r" style="width:120px">VR. UNIT.</th><th class="r" style="width:150px">VR. TOTAL</th>
+          </tr></thead>
+          <tbody>
+            <tr class="chapter"><td class="num">3</td><td colspan="4">ACABADO Y PINTURA</td><td class="tot">$ 30.389.744</td></tr>
+            <tr><td class="c item-num">3.1</td><td><div class="item-name">Pintura Acrílica Exterior — Koraza Pro 5 en Fachadas y Muros</div><div class="item-desc">Aplicación de Koraza Pro 5 de Pintuco sobre fachadas y muros externos del bloque. Incluye sello de dilataciones con Pintuco Fill 7 años y tratamiento de humedades ascendentes con Aquablock en zonas inferiores que lo requieran.</div></td><td class="c">M²</td><td class="r">965,52</td><td class="r">22.000</td><td class="r item-val">21.241.440</td></tr>
+            <tr><td class="c item-num">3.2</td><td><div class="item-name">Sello de Ventanería — Zona Exterior</div><div class="item-desc">Retiro del material desprendido y aplicación de Multibond híbrido en el perímetro de cada ventana, zona pared-aluminio. Sello continuo y adherente para hermeticidad y durabilidad.</div></td><td class="c">ML</td><td class="r">361,36</td><td class="r">8.200</td><td class="r item-val">2.963.152</td></tr>
+            <tr><td class="c item-num">3.3</td><td><div class="item-name">Sello de Ventanería — Zona Interior</div><div class="item-desc">Aplicación complementaria de Multibond híbrido en el perímetro interior de ventanas para cierre total del sistema de sello, desde ambas caras del paño.</div></td><td class="c">ML</td><td class="r">361,36</td><td class="r">8.200</td><td class="r item-val">2.963.152</td></tr>
+            <tr><td class="c item-num">3.4</td><td><div class="item-name">Pintura de Interiores Tipo 1 — Escalas y Pasillos</div><div class="item-desc">Aplicación de pintura vinilo tipo 1 sobre paredes y cielos de zonas comunes. Incluye resane de imperfecciones, primera mano de fondo y dos manos de acabado.</div></td><td class="c">M²</td><td class="r">179,00</td><td class="r">18.000</td><td class="r item-val">3.222.000</td></tr>
+
+            <tr class="chapter"><td class="num">4</td><td colspan="4">ASEO GENERAL DE OBRA</td><td class="tot">Incluido</td></tr>
+            <tr><td class="c item-num">4.1</td><td><div class="item-name">Aseo General Certificado de Obra</div><div class="item-desc">Limpieza continua de zonas intervenidas durante la ejecución y aseo final de cierre de obra. Incluido dentro del precio global de la propuesta.</div></td><td class="c">M²</td><td class="r">—</td><td class="r">1.500</td><td class="r item-val">Incluido</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="totals-wrap">
+          <div class="totals-box">
+            <div class="totals-row"><span>SUBTOTAL</span><span>$ 38.476.280</span></div>
+            <div class="totals-final"><span class="lbl">VALOR PROPUESTA</span><span class="val">$ 38.476.280</span></div>
+          </div>
+        </div>
+        <div class="note-box"><b>NOTA:</b> el aseo general de obra está incluido en el valor global de la propuesta. Los valores contemplan mano de obra, materiales certificados Pintuco y equipos industriales para la intervención completa del bloque 4.</div>
+      </div>
+    </section>
+
+    <!-- 08 CONDICIONES -->
+    <section class="slide">
+      <div class="pad">
+        <div class="section-head"><span class="section-num">09</span><h2 class="section-title">Condiciones comerciales y garantías</h2></div>
+        <div class="cond-top">
+          <div class="cond-card"><div class="lbl">Forma de pago</div><div class="big">20% / 80%</div><div class="desc">20% anticipo y 80% a la entrega a satisfacción.</div></div>
+          <div class="cond-card"><div class="lbl">Validez</div><div class="big">3 meses</div><div class="desc">Desde la fecha de presentación.</div></div>
+          <div class="cond-card"><div class="lbl">Garantía</div><div class="big">3 años</div><div class="desc">Sobre trabajos ejecutados.</div></div>
+          <div class="cond-card dark"><div class="lbl">Plazo de ejecución</div><div class="big">20 días hábiles</div><div class="desc">Desde el acta de inicio de obra.</div></div>
+        </div>
+        <div class="cond-lists">
+          <div>
+            <h3>Alcance de la oferta</h3>
+            <ul>
+              <li>Validez de la oferta: 3 meses desde su presentación.</li>
+              <li>Sistemas de acceso en alturas certificados instalados por Freshouse.</li>
+              <li>Personal con certificación vigente de trabajo en alturas y afiliaciones al día.</li>
+              <li>Registro fotográfico y actas de conformidad por cada frente de trabajo.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>El edificio suministra</h3>
+            <ul>
+              <li>Suministro de energía e instalaciones eléctricas para toma a 110 V.</li>
+              <li>Acceso a las áreas de intervención en los horarios acordados.</li>
+              <li>Espacio concertado para acopio temporal de materiales.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 POR QUÉ FRESHOUSE -->
+    <section class="slide">
+      <div class="pad">
+        <div class="section-head"><span class="section-num">10</span><h2 class="section-title">Por qué elegir Freshouse</h2></div>
+        <div class="why-grid">
+          <div class="why-card"><div class="t">Cotizamos con análisis</div><div class="d">Un ingeniero especializado en fachadas recorre la obra, diagnostica en sitio de forma manual y con dron, y define la solución específica de cada patología antes de llegar a un análisis de precio unitario real, sin sorpresas para el cliente.</div></div>
+          <div class="why-card"><div class="t">Equipos profesionales de alta gama</div><div class="d">Airless, hidrolavadora industrial, rodillos especializados por superficie y equipos de altura certificados en seguridad.</div></div>
+          <div class="why-card"><div class="t">Materiales con respaldo de fábrica</div><div class="d">Líneas profesionales Pintuco y Sika; nos ajustamos al 100% de las fichas técnicas y garantía de fabricante. Somos recomendados por las marcas que aplicamos.</div></div>
+          <div class="why-card"><div class="t">Cada obra queda documentada</div><div class="d">Registro fotográfico por fase, informes de avance con dron, actas y entregable de cierre. La garantía es ejecutable porque hay evidencia.</div></div>
+          <div class="why-card"><div class="t">Somos parte de su equipo</div><div class="d">Comunicación permanente con la administración y el consejo durante toda la obra: avances, novedades y decisiones técnicas sustentadas.</div></div>
+          <div class="why-card"><div class="t">Contratación directa, sin intermediarios</div><div class="d">Equipo de nómina directa, con seguridad social y certificación de trabajo en alturas al día. Así el estándar de obra Freshouse permite una calidad superior.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 CIERRE -->
+    <section class="slide cierre">
+      <div class="cierre-left">
+        <img src="../cotizaciones/assets/logo-freshouse.png" alt="Freshouse">
+        <div>
+          <h2 class="cierre-title">Gracias por<br>su atención</h2>
+          <p class="cierre-text">Con esta propuesta, Freshouse asume el compromiso de dejar la fachada del <strong>Edificio Torre 4 Proviteq</strong> restaurada con materiales certificados Pintuco, acabados de alta durabilidad y el rigor técnico que caracteriza cada obra de nuestro equipo. Quedamos atentos a cualquier inquietud y a su disposición para ampliar el alcance de la propuesta.</p>
+          <div class="cierre-bar"></div>
+          <div class="cierre-name">Renso Montoya</div>
+          <div class="cierre-role">Gerente — Freshouse S.A.S.<br>310 461 7353 · gerencia@freshouse.com.co</div>
+        </div>
+        <div class="cierre-foot">FRESHOUSE S.A.S. · NIT 901.718.258-4 · Armenia, Quindío</div>
+      </div>
+      <div class="cierre-right"><img src="media/proviteq/portada-torre4.jpg" alt="Edificio Torre 4 Proviteq"></div>
+    </section>
+
+  </div>
+</div>
+
+<div id="hud">
+  <button class="nav-btn" id="btnPrev" aria-label="Anterior">‹</button>
+  <div id="dots"></div>
+  <button class="nav-btn" id="btnNext" aria-label="Siguiente">›</button>
+  <span id="counter">1 / 10</span>
+</div>
+
+<div id="lightbox" onclick="closeLightbox()">
+  <span class="lb-close">&times;</span>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lb-cap" id="lightbox-cap"></div>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var dotsWrap = document.getElementById('dots');
+  var counter = document.getElementById('counter');
+  var btnPrev = document.getElementById('btnPrev');
+  var btnNext = document.getElementById('btnNext');
+  var idx = 0;
+
+  slides.forEach(function(_, i){
+    var d = document.createElement('div');
+    d.className = 'dot' + (i===0 ? ' active' : '');
+    d.addEventListener('click', function(){ go(i); });
+    dotsWrap.appendChild(d);
+  });
+  var dots = Array.prototype.slice.call(dotsWrap.children);
+
+  function render(){
+    slides.forEach(function(s,i){ s.classList.toggle('active', i===idx); });
+    dots.forEach(function(d,i){ d.classList.toggle('active', i===idx); });
+    counter.textContent = (idx+1) + ' / ' + slides.length;
+    btnPrev.disabled = idx===0;
+    btnNext.disabled = idx===slides.length-1;
+  }
+  function go(i){ idx = Math.max(0, Math.min(slides.length-1, i)); render(); }
+  function next(){ go(idx+1); }
+  function prev(){ go(idx-1); }
+
+  btnNext.addEventListener('click', next);
+  btnPrev.addEventListener('click', prev);
+  document.addEventListener('keydown', function(e){
+    var lb = document.getElementById('lightbox');
+    if(lb.classList.contains('open')){
+      if(e.key==='Escape'){ closeLightbox(); e.preventDefault(); }
+      return;
+    }
+    if(e.key==='ArrowRight' || e.key===' ' || e.key==='PageDown'){ next(); e.preventDefault(); }
+    else if(e.key==='ArrowLeft' || e.key==='PageUp'){ prev(); e.preventDefault(); }
+    else if(e.key==='Home'){ go(0); }
+    else if(e.key==='End'){ go(slides.length-1); }
+  });
+
+  var stage = document.getElementById('stage');
+  function resize(){
+    var scale = Math.min(window.innerWidth/1920, window.innerHeight/1080);
+    stage.style.transform = 'scale(' + scale + ')';
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  render();
+})();
+
+function openLightbox(el){
+  var img = el.querySelector('img');
+  var lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = img.src;
+  document.getElementById('lightbox-cap').textContent = img.getAttribute('data-cap') || img.alt || '';
+  lb.classList.add('open');
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lightbox-img').src = '';
+}
+</script>
+
+</body>
+</html>
