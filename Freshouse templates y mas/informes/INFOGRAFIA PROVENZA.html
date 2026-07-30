@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resumen de Propuesta — Provenza | Freshouse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2A5E; --navy-deep:#14204A; --orange:#F97316; --orange-dark:#C2410C; --orange-light:#FB923C;
+    --bg-blue:#EEF2FB; --bg-blue-border:#D9E0F4; --bg-orange:#FFF4EB; --bg-orange-border:#F7D9BE;
+    --text-body:#26233A; --text-soft:#45415A; --text-muted:#6E6A7E; --text-faint:#8B879C;
+    --line:#EEEBF4;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:#3A3F55;height:100%;overflow:hidden}
+  body{font-family:'Archivo',sans-serif;color:var(--text-body)}
+  img{max-width:100%;display:block}
+
+  #stage-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  #page{position:relative;width:816px;min-height:1056px;transform-origin:center center;background:#fff;box-shadow:0 30px 90px rgba(0,0,0,0.45);display:flex;flex-direction:column}
+
+  .band-navy{background:var(--navy);color:#fff}
+  .band-navy .lbl{color:#A9AFC4}
+
+  /* HEADER */
+  .header{padding:15px 34px 11px;position:relative}
+  .header::before{content:'';position:absolute;left:0;top:0;bottom:0;width:8px;background:var(--orange)}
+  .header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px}
+  .logo-badge{background:#fff;border-radius:8px;padding:6px 12px;display:inline-block}
+  .logo-badge img{height:22px;width:auto}
+  .header-meta{text-align:right;font-size:8.5px;line-height:1.4;color:#C9D0E6}
+  .eyebrow{display:inline-block;background:var(--orange);color:#fff;border-radius:999px;padding:3px 14px;font-size:9.5px;font-weight:800;letter-spacing:0.12em;margin-bottom:6px}
+  h1{font-size:26px;font-weight:900;line-height:1.02;letter-spacing:-0.02em;color:#fff;margin-bottom:4px}
+  h1 span{color:var(--orange-light)}
+  .header-sub{font-size:10.5px;color:#C9D0E6;margin-bottom:8px;line-height:1.35}
+  .header-meta-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;border-top:2px solid var(--orange);padding-top:7px}
+  .header-meta-row .lbl{font-size:8px;font-weight:800;letter-spacing:0.1em;color:#FDBA74;margin-bottom:2px}
+  .header-meta-row .val{font-size:11px;font-weight:700;color:#fff}
+
+  /* SECTION generic */
+  .sec{padding:6px 34px}
+  .sec-title{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+  .sec-title .dot{width:7px;height:7px;border-radius:50%;background:var(--orange)}
+  .sec-title h2{font-size:12.5px;font-weight:900;color:var(--navy);letter-spacing:0.01em;text-transform:uppercase}
+
+  /* QUIENES SOMOS + FILOSOFIA */
+  .who-row{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:start}
+  .who-text{font-size:10.5px;line-height:1.42;color:var(--text-soft);text-align:justify}
+  .who-text strong{color:var(--navy)}
+  .stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .stat-chip{background:var(--bg-blue);border:1px solid var(--bg-blue-border);border-radius:7px;padding:6px 6px;text-align:center}
+  .stat-chip .num{font-size:13px;font-weight:900;color:var(--navy);line-height:1.1}
+  .stat-chip .lbl{font-size:7px;font-weight:700;letter-spacing:0.04em;color:#5A6480;margin-top:2px;text-transform:uppercase;line-height:1.15}
+  .sif-banner{margin-top:6px;background:var(--bg-orange);border:1.5px solid var(--orange);border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:10px}
+  .sif-badge{flex-shrink:0;background:var(--orange);color:#fff;font-size:11px;font-weight:900;border-radius:6px;padding:3px 8px;letter-spacing:0.02em}
+  .sif-text{font-size:9px;line-height:1.3;color:var(--text-soft)}
+  .sif-text b{color:var(--orange-dark)}
+
+  /* PROCESO */
+  .proc-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+  .proc-row.row2{margin-top:7px}
+  .proc-step{border:1.5px solid var(--bg-blue-border);border-radius:8px;padding:6px 9px;position:relative}
+  .proc-step.accent{border-color:var(--bg-orange-border);background:var(--bg-orange)}
+  .proc-num{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:5px;background:var(--navy);color:#fff;font-size:9px;font-weight:900;margin-bottom:3px}
+  .proc-step.accent .proc-num{background:var(--orange)}
+  .proc-name{font-size:10px;font-weight:800;color:var(--navy);margin-bottom:2px;line-height:1.1}
+  .proc-step.accent .proc-name{color:var(--orange-dark)}
+  .proc-desc{font-size:8.2px;line-height:1.25;color:var(--text-soft)}
+
+  /* QUE INCLUYE */
+  .inc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 22px}
+  .inc-item{display:flex;gap:7px;align-items:flex-start;font-size:9.5px;line-height:1.28;color:var(--text-soft);padding:1px 0}
+  .inc-check{flex-shrink:0;width:12px;height:12px;border-radius:50%;background:var(--bg-orange);color:var(--orange-dark);font-size:8.5px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .inc-item b{color:var(--navy)}
+
+  /* MATERIALES */
+  .brand-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:5px}
+  .brand-row .big{font-size:12.5px;font-weight:900;color:var(--navy);letter-spacing:0.02em}
+  .tag-row{display:flex;flex-wrap:wrap;gap:5px}
+  .mtag{font-size:8.2px;font-weight:700;border-radius:999px;padding:3px 10px}
+  .mtag.a{background:var(--bg-blue);color:var(--navy)}
+  .mtag.b{background:var(--bg-orange);color:var(--orange-dark)}
+
+  /* CONDICIONES */
+  .pay-bar{display:flex;border-radius:8px;overflow:hidden;height:36px;margin-bottom:6px}
+  .pay-seg{display:flex;flex-direction:column;justify-content:center;padding:0 12px}
+  .pay-seg.p80{background:var(--orange);width:80%}
+  .pay-seg.p20{background:var(--navy);width:20%}
+  .pay-pct{font-size:12.5px;font-weight:900;color:#fff;line-height:1}
+  .pay-lbl{font-size:7.5px;font-weight:700;color:rgba(255,255,255,0.9);line-height:1.2;margin-top:1px}
+  .cond-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .cond-chip{background:var(--bg-orange);border-radius:8px;padding:6px 11px}
+  .cond-chip .lbl{font-size:7.5px;font-weight:800;letter-spacing:0.06em;color:#A85A22;text-transform:uppercase;margin-bottom:2px}
+  .cond-chip .big{font-size:12px;font-weight:900;color:var(--orange)}
+  .cond-chip .desc{font-size:8px;color:var(--text-soft);margin-top:2px;line-height:1.25}
+
+  /* FOOTER */
+  .footer{margin-top:auto;padding:10px 34px 12px;display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+  .footer-value .lbl{font-size:10px;font-weight:800;letter-spacing:0.1em;color:#FDBA74;margin-bottom:4px}
+  .footer-value .val{font-size:32px;font-weight:900;color:var(--orange-light);line-height:1}
+  .footer-value .breakdown{font-size:8.5px;color:#A9AFC4;margin-top:5px;max-width:360px;line-height:1.4}
+  .footer-contact{text-align:right}
+  .footer-contact .name{font-size:13px;font-weight:900;color:#fff}
+  .footer-contact .role{font-size:10px;color:#C9D0E6;line-height:1.5}
+  .footer-contact .nit{font-size:8.5px;color:#8792B0;margin-top:6px}
+
+  @media print{
+    *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
+    html,body{height:auto;overflow:visible;background:#fff}
+    #stage-wrap{position:static;display:block;height:auto}
+    #page{width:8.5in;min-height:11in;transform:none!important;box-shadow:none;margin:0}
+    @page{size:letter;margin:0}
+  }
+</style>
+</head>
+<body>
+
+<div id="stage-wrap">
+  <div id="page">
+
+    <div class="header band-navy">
+      <div class="header-top">
+        <div class="logo-badge"><img src="../cotizaciones/assets/logo-freshouse.png" alt="Freshouse"></div>
+        <div class="header-meta">FRESHOUSE S.A.S. · NIT 901.718.258-4<br>Armenia, Quindío · 310 461 7353</div>
+      </div>
+      <div class="eyebrow">PROPUESTA COMERCIAL · COTIZACIÓN DE OBRA CIVIL</div>
+      <h1>Cambio de <span>Cubierta</span> — Provenza</h1>
+      <div class="header-sub">Retiro de teja existente, mantenimiento de la estructura metálica de soporte y suministro e instalación de cubierta nueva en teja UPVC 2.5 mm · Calle 10 N 15-23</div>
+      <div class="header-meta-row">
+        <div><div class="lbl">CLIENTE</div><div class="val">Provenza</div></div>
+        <div><div class="lbl">FECHA</div><div class="val">25 jun. 2026</div></div>
+        <div><div class="lbl">VÁLIDA HASTA</div><div class="val">23 sept. 2026</div></div>
+        <div><div class="lbl">REFERENCIA</div><div class="val">FH-F-02</div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title"><span class="dot"></span><h2>Quiénes somos y cómo trabajamos</h2></div>
+      <div class="who-row">
+        <p class="who-text"><strong>Freshouse Ingeniería de Fachadas y Humedades</strong> es una empresa quindiana especializada en cambio, mantenimiento y reforzamiento estructural de cubiertas, además de fachadas e impermeabilización. Más de 8 años ejecutando proyectos de cambio de cubierta, mantenimiento de estructura metálica, instalación de teja e impermeabilización en edificaciones de mediana y gran altura. Operamos con herramientas de ingeniería, supervisión y control técnico para garantizar calidad, trazabilidad y cumplimiento de plazos.</p>
+        <div class="stat-grid">
+          <div class="stat-chip"><div class="num">+80</div><div class="lbl">Proyectos ejecutados</div></div>
+          <div class="stat-chip"><div class="num" style="font-size:11.5px">Ing. + SISO</div><div class="lbl">Control en obra</div></div>
+          <div class="stat-chip"><div class="num" style="font-size:11.5px">Sello FH</div><div class="lbl">Garantía de calidad</div></div>
+        </div>
+      </div>
+      <div class="sif-banner">
+        <span class="sif-badge">SIF</span>
+        <div class="sif-text"><b>Sistema Integral Freshouse</b> — el consejo y la administración siguen la obra en tiempo real: avance diario, materiales, costos e informes automáticos. Transparencia total, sin necesidad de preguntar.</div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title"><span class="dot"></span><h2>Qué vamos a hacer — proceso de intervención</h2></div>
+      <div class="proc-row">
+        <div class="proc-step"><div class="proc-num">1</div><div class="proc-name">Preliminares</div><div class="proc-desc">Campamento, señalización y SISO permanente durante toda la obra.</div></div>
+        <div class="proc-step"><div class="proc-num">2</div><div class="proc-name">Inspección y retiro</div><div class="proc-desc">Inspección técnica de la cubierta y retiro de la teja termoacústica.</div></div>
+        <div class="proc-step"><div class="proc-num">3</div><div class="proc-name">Mantenimiento de estructura</div><div class="proc-desc">Perfiles 4x8 con anticorrosivo y esmalte Pintuco; reposición de soldaduras sin adherencia.</div></div>
+      </div>
+      <div class="proc-row row2">
+        <div class="proc-step accent"><div class="proc-num">4</div><div class="proc-name">Instalación de teja nueva</div><div class="proc-desc">Teja UPVC 2.5 mm Sigma, con cortes y traslapos correctos.</div></div>
+        <div class="proc-step accent"><div class="proc-num">5</div><div class="proc-name">Flanches</div><div class="proc-desc">Suministro e instalación en encuentros y remates de la cubierta.</div></div>
+        <div class="proc-step accent"><div class="proc-num">6</div><div class="proc-name">Terminado y limpieza</div><div class="proc-desc">Retiro de sobrantes y limpieza general de zonas intervenidas.</div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title"><span class="dot"></span><h2>Qué incluye la propuesta</h2></div>
+      <div class="inc-grid">
+        <div class="inc-item"><span class="inc-check">✓</span><span>Inspección técnica completa de la cubierta existente (<b>335 m²</b>)</span></div>
+        <div class="inc-item"><span class="inc-check">✓</span><span>Retiro de teja termoacústica existente (<b>335 m²</b>)</span></div>
+        <div class="inc-item"><span class="inc-check">✓</span><span>Instalación de perfiles 4x8 protegidos y pintados (<b>209 ml</b>)</span></div>
+        <div class="inc-item"><span class="inc-check">✓</span><span>Reposición de soldaduras sin adherencia + esmalte 3 en 1 Pintuco</span></div>
+        <div class="inc-item"><span class="inc-check">✓</span><span>Suministro e instalación de teja UPVC 2.5 mm Sigma (<b>335 m²</b>)</span></div>
+        <div class="inc-item"><span class="inc-check">✓</span><span>Suministro e instalación de flanches (<b>118 ml</b>)</span></div>
+        <div class="inc-item"><span class="inc-check">✓</span><span>Mano de obra, materiales y herramienta menor</span></div>
+        <div class="inc-item"><span class="inc-check">✓</span><span>Supervisión de ingeniero y SISO permanente</span></div>
+        <div class="inc-item"><span class="inc-check">✓</span><span>Seguridad social riesgo V del personal en obra</span></div>
+        <div class="inc-item"><span class="inc-check">✓</span><span>Registro fotográfico permanente y limpieza final</span></div>
+      </div>
+    </div>
+
+    <div class="sec" style="padding-top:6px;padding-bottom:6px">
+      <div class="sec-title"><span class="dot"></span><h2>Sistema de productos</h2></div>
+      <div class="brand-row"><span class="big">SIGMA</span><span class="big">·</span><span class="big">PINTUCO</span></div>
+      <div class="tag-row">
+        <span class="mtag a">Teja UPVC 2.5 mm Sigma</span>
+        <span class="mtag b">Perfiles 4x8</span>
+        <span class="mtag a">Anticorrosivo + esmalte 3 en 1 Pintuco</span>
+        <span class="mtag b">Flanches</span>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title"><span class="dot"></span><h2>Garantías y condiciones comerciales</h2></div>
+      <div class="pay-bar">
+        <div class="pay-seg p80"><div class="pay-pct">80%</div><div class="pay-lbl">ACTAS DE AVANCE · SIN ANTICIPO</div></div>
+        <div class="pay-seg p20"><div class="pay-pct">20%</div><div class="pay-lbl">RETEGARANTÍA</div></div>
+      </div>
+      <div class="cond-row">
+        <div class="cond-chip"><div class="lbl">Validez</div><div class="big">90 días</div><div class="desc">Desde la presentación</div></div>
+        <div class="cond-chip"><div class="lbl">Garantía</div><div class="big">3 años</div><div class="desc">Mano de obra, desde la entrega</div></div>
+        <div class="cond-chip"><div class="lbl">Plazo</div><div class="big">25 días</div><div class="desc">Hábiles, desde acta de inicio</div></div>
+      </div>
+    </div>
+
+    <div class="footer band-navy">
+      <div class="footer-value">
+        <div class="lbl">VALOR DE LA PROPUESTA</div>
+        <div class="val">$ 55.993.784</div>
+        <div class="breakdown">Costo directo $42.776.000 + Administración (10%) $4.277.600 = Subtotal $47.053.600 + IVA (19%) $8.940.184.</div>
+      </div>
+      <div class="footer-contact">
+        <div class="name">Renso Montoya</div>
+        <div class="role">Gerente — Freshouse S.A.S.<br>310 461 7353 · gerencia@freshouse.com.co</div>
+        <div class="nit">FRESHOUSE S.A.S. · NIT 901.718.258-4</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  var page = document.getElementById('page');
+  function resize(){
+    page.style.transform = 'none';
+    var h = page.offsetHeight;
+    var scale = Math.min(window.innerWidth/816, window.innerHeight/h) * 0.96;
+    page.style.transform = 'scale(' + scale + ')';
+  }
+  window.addEventListener('resize', resize);
+  window.addEventListener('beforeprint', function(){ page.style.transform = 'none'; });
+  window.addEventListener('afterprint', resize);
+  resize();
+})();
+</script>
+
+</body>
+</html>
